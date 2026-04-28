@@ -2,11 +2,6 @@
 session_start();
 header('Content-Type: application/json');
 
-/**
- * Session Check API
- * Returns the current session state and user information if logged in.
- */
-
 if (isset($_SESSION['user_id'])) {
     echo json_encode([
         'success' => true,
@@ -26,4 +21,3 @@ if (isset($_SESSION['user_id'])) {
     ]);
 }
 ?>
-

@@ -9,7 +9,6 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Get POST data
 $input = json_decode(file_get_contents('php://input'), true);
 $username = $input['username'] ?? '';
 $password = $input['password'] ?? '';
@@ -26,7 +25,6 @@ $result = $stmt->get_result();
 
 if ($user = $result->fetch_assoc()) {
     if ($password === $user['password']) {
-        // Login successful
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
         $_SESSION['user_id'] = $user['id'];

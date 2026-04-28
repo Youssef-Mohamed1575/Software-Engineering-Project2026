@@ -1,6 +1,3 @@
-/**
- * Roles available in the system
- */
 const ROLES = {
   HOME_OWNER: 'homeOwner',
   HOME_ADULT: 'homeAdult',
@@ -8,9 +5,6 @@ const ROLES = {
   GUEST: 'guest',
 };
 
-/**
- * Permissions available in the system
- */
 const PERMISSIONS = {
   VIEW_ADMIN_PANEL: 'view_admin_panel',
   ADD_ROOMS: 'add_rooms',
@@ -21,9 +15,6 @@ const PERMISSIONS = {
   TOGGLE_VACATION_MODE: 'toggle_vacation_mode',
 };
 
-/**
- * Mapping of roles to their permissions
- */
 const ROLE_PERMISSIONS = {
   [ROLES.HOME_OWNER]: [
     PERMISSIONS.VIEW_ADMIN_PANEL,
@@ -48,12 +39,6 @@ const ROLE_PERMISSIONS = {
   ],
 };
 
-/**
- * Checks if a role has a specific permission
- * @param {string} role - The role of the user
- * @param {string} permission - The permission to check
- * @returns {boolean} - True if the role has the permission, false otherwise
- */
 function hasPermission(role, permission) {
   const permissions = ROLE_PERMISSIONS[role];
   if (!permissions) {
