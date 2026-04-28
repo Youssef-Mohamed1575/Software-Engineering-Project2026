@@ -28,11 +28,12 @@ $checkEmpty = $conn->query("SELECT COUNT(*) as count FROM users");
 $row = $checkEmpty->fetch_assoc();
 
 if ($row['count'] == 0) {
+    $defaultPassword = 'password123';
     $users = [
-        ['owner', password_hash('owner123', PASSWORD_DEFAULT), 'homeOwner'],
-        ['adult', password_hash('adult123', PASSWORD_DEFAULT), 'homeAdult'],
-        ['kid', password_hash('kid123', PASSWORD_DEFAULT), 'homeKid'],
-        ['guest', password_hash('guest123', PASSWORD_DEFAULT), 'guest']
+        ['owner', $defaultPassword, 'homeOwner'],
+        ['adult', $defaultPassword, 'homeAdult'],
+        ['kid', $defaultPassword, 'homeKid'],
+        ['guest', $defaultPassword, 'guest']
     ];
 
     $stmt = $conn->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
@@ -40,7 +41,7 @@ if ($row['count'] == 0) {
         $stmt->bind_param("sss", $user[0], $user[1], $user[2]);
         $stmt->execute();
     }
-    echo "Default users seeded successfully!<br>";
+    echo "Default users seeded successfully with password: <b>$defaultPassword</b><br>";
 }
 
 echo "Setup complete!";
