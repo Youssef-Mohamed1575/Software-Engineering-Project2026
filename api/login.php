@@ -25,7 +25,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($user = $result->fetch_assoc()) {
-    if (password_verify($password, $user['password'])) {
+    if ($password === $user['password']) {
         // Login successful
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
