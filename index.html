@@ -1,275 +1,117 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Home Sense</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Yellowtail&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
 </head>
 
-<body class="select-none">
-  <div class="fixed top-0 w-screen h-[10%] bg-slate-800 text-white flex items-center px-4 gap-4">
-    <div class="flex items-center justify-between w-full px-4">
-      <div class="flex items-center gap-4">
-        <button onclick="toggleSidebar()" class="p-2 rounded">
-          ☰
-        </button>
-        <div class="text-3xl text-white" style="font-family: Yellowtail, cursive; font-weight: bold">
-          Home Sense
+<body class="bg-gray-100 flex items-center justify-center min-h-screen font-['Inter'] overflow-hidden">
+
+    <div class="bg-slate-900 p-10 rounded-[2rem] w-full max-w-md shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-800 transform transition-all duration-500 hover:scale-[1.01]">
+        <div class="text-center mb-12">
+            <h1 class="font-['Yellowtail'] text-6xl text-white mb-3">Home Sense</h1>
+            <p class="text-slate-400 font-light tracking-[0.2em] uppercase text-[10px]">Secure Smart Home Access</p>
         </div>
-      </div>
-      <div class="text-3xl font-extrabold flex items-center gap-4">
-        Dashboard
-      </div>
-      <div class="flex items-center gap-4 text-black">
-        <span>🌙</span>
-        <span>🔔</span>
-        <span>👤</span>
-      </div>
-    </div>
-  </div>
-  <div id="sidebar"
-    class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300">
-    <div class="p-4 font-bold flex items-center gap-2">
-      <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
-      Menu
-    </div>
 
-    <ul class="p-4 space-y-2">
-      <li>bla</li>
-      <li>bla bla</li>
-      <li>bla bla bla</li>
-    </ul>
-  </div>
+        <form id="loginForm" class="space-y-7">
+            <div>
+                <label for="username" class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2 ml-1">Username</label>
+                <input type="text" id="username" name="username" required
+                    class="w-full bg-slate-800/50 border border-slate-700 text-white px-5 py-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all placeholder-slate-600 shadow-inner"
+                    placeholder="Enter your username">
+            </div>
 
-  <div class="bg-gray-200 mt-[7%] mx-10 rounded-lg text-3xl p-8"
-    style="font-family: Yellowtail, cursive; font-weight: bold;">
-    Welcome , User !
-  </div>
-  <div class="grid grid-cols-3 grid-rows-2 gap-4 mb-6  p-10 bg-gray-200 rounded-lg m-10">
-    <div class="col-span-3 bg-slate-800 p-4 rounded-lg flex justify-between">
-      <div class="flex items-center gap-5">
-        <p class="text-lg text-white text-center">Devices</p>
-        <h2 class="text-2xl font-bold text-center text-white">180</h2>
-      </div>
-      <a href="Household Managment.html"
-        class="text-lg text-green-400 flex items-center gap-1 group transition-colors duration-200 hover:text-green-300">
-        Manage Household
-        <span class="transition-transform duration-200 group-hover:translate-x-1">
-          →
-        </span>
-      </a>
-    </div>
-    <div class="bg-yellow-300 p-4 rounded-lg">
-      <p class="text-sm text-white">Electricity usage</p>
-      <h2 class="text-2xl font-bold">180 kWh</h2>
-    </div>
+            <div>
+                <label for="password" class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2 ml-1">Password</label>
+                <input type="password" id="password" name="password" required
+                    class="w-full bg-slate-800/50 border border-slate-700 text-white px-5 py-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all placeholder-slate-600 shadow-inner"
+                    placeholder="••••••••">
+            </div>
 
-    <div class="bg-emerald-400 p-4 rounded-lg">
-      <p class="text-sm text-white">Gas usage</p>
-      <h2 class="text-2xl font-bold">180 m<sup class="text-sm">3</h2>
-    </div>
+            <div id="errorMessage"
+                class="text-red-400 text-sm hidden text-center bg-red-400/10 py-3 rounded-xl border border-red-400/20">
+                Invalid username or password
+            </div>
 
-    <div class="bg-cyan-500 p-4 rounded-lg">
-      <p class="text-sm text-white">Water usage</p>
-      <h2 class="text-2xl font-bold">180 L</sup></h2>
-    </div>
-  </div>
+            <button type="submit" id="submitBtn"
+                class="w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-cyan-900/20 transform transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                <span class="tracking-wide">Sign In</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                </svg>
+            </button>
+        </form>
 
-  <div class="grid grid-cols-2  gap-4 mb-6  rounded-lg m-10">
-    <div class="grid grid-cols-3 grid-rows-2 gap-4 mb-6 p-10 bg-gray-200 rounded-lg ">
-
-      <div onclick="toggleCard(this,'light')"
-        class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition">
-        <div>
-          <p class="killBtn text-2xl text-center mt-2 text-gray-400 select-none">Turn off<br>all Lights</p>
+        <div class="mt-12 text-center">
+            <p class="text-slate-500 text-xs italic font-light">
+                &ldquo;Welcome home, where security meets comfort.&rdquo;
+            </p>
         </div>
-      </div>
-
-      <div onclick="toggleCard(this,'ac')"
-        class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition">
-        <div>
-          <p class="killBtn text-2xl text-center mt-2 text-gray-400 select-none">Turn off<br>all AC</p>
-        </div>
-      </div>
-
-      <div onclick="toggleCard(this,'heater')"
-        class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition">
-        <div>
-          <p class="killBtn text-2xl text-center mt-2 text-gray-400 select-none">Turn off<br>all Heaters</p>
-        </div>
-      </div>
-
-      <div onclick="toggleCard(this,'devices')"
-        class="bg-slate-700 p-5 col-span-3 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition-all duration-300">
-        <div>
-          <p class="killBtn text-2xl text-center mt-2 text-gray-400 select-none">Turn off<br>all Devices</p>
-        </div>
-      </div>
-
     </div>
 
-    <div class="grid gap-4 mb-6 p-10 bg-gray-200 rounded-lg h-[400px]">
-      <canvas id="usageChart" class="w-full h-full "></canvas>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </div>
+    <script>
+        // Ensure database is ready
+        window.addEventListener('DOMContentLoaded', () => {
+            fetch('api/migrations.php')
+                .then(r => r.text())
+                .then(d => console.log('DB Status:', d));
+        });
 
-  </div>
+        const loginForm = document.getElementById('loginForm');
+        // Redirect if already logged in
+        fetch('api/check_session.php')
+            .then(res => res.json())
+            .then(data => {
+                if (data.loggedIn) window.location.href = 'dashboard.html';
+            });
 
-  <div class="grid grid-cols-3 bg-gray-300 rounded-lg m-10 gap-4">
-    <div class=" col-span-2 bg-slate-600 rounded-lg font-extrabold text-white p-5 m-10">
-      <div class="text-3xl" style="font-family: Yellowtail;">
-        Estimated Bill
-      </div>
-      <div class="text-center pt-[100px] text-2xl">
-        300 EGP
-      </div>
-    </div>
-    <div class=" bg-slate-600 rounded-lg p-5 mr-10 mt-10 mb-10 flex items-center justify-center gap-6 ">
-      <div class="text-3xl w-96" style="font-family: Yellowtail;">
-        <canvas id="billingPie" class=" h-300"></canvas>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+        const errorMessage = document.getElementById('errorMessage');
+        const submitBtn = document.getElementById('submitBtn');
 
-      </div>
-    </div>
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>';
+            errorMessage.classList.add('hidden');
 
-    <div class="bg-slate-600 rounded-lg p-3 text-center ml-10 mr-10 mb-10">
-      <p class="text-gray-300 text-xs">Current</p>
-      <p class="text-white font-semibold">250 EGP</p>
-    </div>
+            const formData = new FormData(loginForm);
+            const data = Object.fromEntries(formData.entries());
 
-    <div class="bg-slate-600 rounded-lg p-3 text-center mr-10 mb-10">
-      <p class="text-gray-300 text-xs">Last Month</p>
-      <p class="text-white font-semibold">270 EGP</p>
-    </div>
+            try {
+                const response = await fetch('api/login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
 
-    <div class="bg-slate-600 rounded-lg text-center mr-10 mb-10">
-      <p class="text-gray-300 text-xs">Change</p>
-      <p class="text-red-600 font-semibold">↑ +8%</p>
-    </div>
+                const result = await response.json();
 
-  </div>
-
-  <script>
-    function toggleSidebar() {
-      document
-        .getElementById("sidebar")
-        .classList.toggle("-translate-x-full");
-    }
-    new Chart(document.getElementById("usageChart"), {
-      type: 'line',
-      data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-          label: 'Electricity',
-          data: [120, 150, 130, 170, 160, 180, 140],
-          borderColor: '#FFF176',
-          tension: 0.4
-        },
-        {
-          label: 'Gas',
-          data: [100, 120, 170, 110, 160, 130, 110],
-          borderColor: '#00d492',
-          tension: 0.4
-        },
-        {
-          label: 'Water',
-          data: [90, 130, 110, 150, 120, 120, 180],
-          borderColor: '#00BCD4',
-          tension: 0.4
-        }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-          padding: 20
-        }
-      }
-    });
-    function toggleCard(card, type) {
-
-      card.classList.add("bg-red-500");
-
-      const change = card.querySelector(".killBtn");
-
-      let deviceType = {
-        light: "Turning off<br>all Lights",
-        ac: "Turning off<br>all AC",
-        heater: "Turning off<br>all Heaters",
-        devices: "Turning off<br>all Devices"
-      };
-      let returnMsg = {
-        light: "Turn off<br>all Lights",
-        ac: "Turn off<br>all AC",
-        heater: "Turn off<br>all Heaters",
-        devices: "Turn off<br>all Devices"
-      };
-
-      // fade out
-      change.classList.add("opacity-0", "scale-95");
-
-      setTimeout(() => {
-        change.innerHTML = deviceType[type];
-
-        // fade in
-        change.classList.remove("opacity-0", "scale-95");
-      }, 150);
-
-      setTimeout(() => {
-        card.classList.remove("bg-red-500");
-
-        // fade out again
-        change.classList.add("opacity-0", "scale-95");
-
-        setTimeout(() => {
-          change.innerHTML = returnMsg[type];
-          change.classList.remove("opacity-0", "scale-95");
-        }, 150);
-
-      }, 1000);
-    }
-    new Chart(document.getElementById("billingPie"), {
-      type: 'pie',
-      data: {
-        labels: ['Electricity', 'Gas', 'Water'],
-        datasets: [{
-          data: [60, 25, 15],
-          backgroundColor: [
-            '#facc15',
-            '#22c55e',
-            '#3b82f6'
-          ],
-          borderWidth: 0
-        }]
-      },
-      plugins: [ChartDataLabels],
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'right',
-            labels: { color: '#e5e7eb' }
-          },
-          datalabels: {
-            color: '#fff',
-            font: {
-              weight: 'bold',
-              size: 12
-            },
-            formatter: (value, context) => {
-              return value + '%';
+                if (result.success) {
+                    window.location.href = 'index.html';
+                } else {
+                    errorMessage.textContent = result.message;
+                    errorMessage.classList.remove('hidden');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalContent;
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorMessage.textContent = 'System error. Please try again.';
+                errorMessage.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalContent;
             }
-          }
-        }
-      }
-    });
-  </script>
-
+        });
+    </script>
 </body>
 
 </html>
