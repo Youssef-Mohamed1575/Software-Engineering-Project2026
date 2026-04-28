@@ -246,7 +246,7 @@
           borderWidth: 0
         }]
       },
-      plugins: [ChartDataLabels], // 👈 important
+      plugins: [ChartDataLabels],
       options: {
         responsive: true,
         maintainAspectRatio: false,
@@ -262,7 +262,7 @@
               size: 12
             },
             formatter: (value, context) => {
-              return value + '%'; // 👈 shows 60%, 25%, etc.
+              return value + '%';
             }
           }
         }
