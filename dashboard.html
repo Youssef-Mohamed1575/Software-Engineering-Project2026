@@ -1,275 +1,361 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap" rel="stylesheet" />
-</head>
+  <body class="font-[Inter]">
+    <div
+      class="fixed top-0 w-screen h-[10%] bg-gradient-to-r from-slate-100 to-slate-300 text-black flex items-center px-4 gap-4 shadow-md"
+    >
+      <div class="flex items-center justify-between w-full px-4">
+        <div class="flex items-center gap-4">
+          <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
+          <div
+            class="text-3xl text-black"
+            style="font-family: Yellowtail, cursive; font-weight: bold"
+          >
+            Home Sense
+          </div>
+        </div>
+        <div class="text-3xl font-extrabold flex items-center gap-4">
+          Dashboard
+        </div>
+        <div class="flex items-center gap-5 text-black mr-8">
+          <button
+            class="transition-transform duration-200 hover:scale-110 active:scale-95"
+          >
+            <img
+              src="icons and images/moon.png"
+              class="h-10 w-10 transition-transform duration-200 hover:rotate-12"
+            />
+          </button>
 
-<body class="select-none">
-  <div class="fixed top-0 w-screen h-[10%] bg-slate-800 text-white flex items-center px-4 gap-4">
-    <div class="flex items-center justify-between w-full px-4">
-      <div class="flex items-center gap-4">
-        <button onclick="toggleSidebar()" class="p-2 rounded">
-          ☰
-        </button>
-        <div class="text-3xl text-white" style="font-family: Yellowtail, cursive; font-weight: bold">
-          Home Sense
+          <button
+            class="transition-transform duration-200 hover:scale-110 active:scale-95 relative"
+          >
+            <img src="icons and images/bell.png" class="h-9 w-9" />
+          </button>
+
+          <button
+            class="transition-transform duration-200 hover:scale-110 active:scale-95"
+          >
+            <img
+              src="icons and images/user.png"
+              class="h-9 w-9 transition-transform duration-200 hover:-translate-y-1"
+            />
+          </button>
         </div>
       </div>
-      <div class="text-3xl font-extrabold flex items-center gap-4">
-        Dashboard
+    </div>
+    <div
+      id="sidebar"
+      class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300"
+    >
+      <div class="p-4 font-bold flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
+        Menu
       </div>
-      <div class="flex items-center gap-4 text-black">
-        <span>🌙</span>
-        <span>🔔</span>
-        <span>👤</span>
+
+      <ul class="p-4 space-y-2">
+        <button><li>Unidentified task (work in progress)</li></button>
+        <button><li>Unidentified task (work in progress)</li></button>
+        <button><li>Unidentified task (work in progress)</li></button>
+      </ul>
+    </div>
+
+    <div
+      class="bg-gradient-to-r from-slate-100 to-slate-200 mt-[7%] mx-10 rounded-lg text-3xl p-8 flex items-center justify-center text-center"
+      style="font-family: Yellowtail, cursive; font-weight: bold"
+    >
+      Welcome, User!
+    </div>
+    <div
+      class="grid grid-cols-3 grid-rows-2 gap-4 mb-6 p-10 bg-gradient-to-r from-slate-100 to-slate-200 rounded-lg m-10"
+    >
+      <div class="col-span-3 bg-slate-800 p-4 rounded-lg flex justify-between">
+        <div class="col-span-3 bg-slate-800 p-4 rounded-lg text-center">
+          <p class="text-2xl font-bold text-white tracking-wide">
+            Devices: <span class="text-yellow-300 font-extrabold">180</span>
+          </p>
+        </div>
+        <a
+          href="Household Managment.html"
+          class="text-lg text-green-400 flex items-center gap-1 group transition-colors duration-200 hover:text-green-300"
+        >
+          Manage Household
+          <span
+            class="transition-transform duration-200 group-hover:translate-x-1"
+          >
+            →
+          </span>
+        </a>
+      </div>
+      <div class="bg-yellow-300 p-5 rounded-lg text-slate-900 shadow-sm">
+        <p class="text-sm font-medium opacity-80 tracking-wide">
+          Electricity usage
+        </p>
+        <h2 class="text-3xl font-bold mt-2">180 kWh</h2>
+      </div>
+
+      <div class="bg-emerald-400 p-5 rounded-lg text-slate-900 shadow-sm">
+        <p class="text-sm font-medium opacity-80 tracking-wide">Gas usage</p>
+        <h2 class="text-3xl font-bold mt-2">180 m³</h2>
+      </div>
+
+      <div class="bg-cyan-500 p-5 rounded-lg text-slate-900 shadow-sm">
+        <p class="text-sm font-medium opacity-80 tracking-wide">Water usage</p>
+        <h2 class="text-3xl font-bold mt-2">180 L</h2>
       </div>
     </div>
-  </div>
-  <div id="sidebar"
-    class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300">
-    <div class="p-4 font-bold flex items-center gap-2">
-      <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
-      Menu
-    </div>
 
-    <ul class="p-4 space-y-2">
-      <li>bla</li>
-      <li>bla bla</li>
-      <li>bla bla bla</li>
-    </ul>
-  </div>
+    <div class="grid grid-cols-2 gap-4 mb-6 rounded-lg m-10">
+      <div
+        class="grid grid-cols-3 grid-rows-2 gap-4 mb-6 p-10 bg-gray-200 rounded-lg"
+      >
+        <div
+          onclick="toggleCard(this, 'light')"
+          class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition"
+        >
+          <div>
+            <p
+              class="killBtn text-2xl text-center mt-2 text-slate-200 font-medium select-none transition-all duration-200"
+            >
+              Turn off<br />all lights
+            </p>
+          </div>
+        </div>
 
-  <div class="bg-gray-200 mt-[7%] mx-10 rounded-lg text-3xl p-8"
-    style="font-family: Yellowtail, cursive; font-weight: bold;">
-    Welcome , User !
-  </div>
-  <div class="grid grid-cols-3 grid-rows-2 gap-4 mb-6  p-10 bg-gray-200 rounded-lg m-10">
-    <div class="col-span-3 bg-slate-800 p-4 rounded-lg flex justify-between">
-      <div class="flex items-center gap-5">
-        <p class="text-lg text-white text-center">Devices</p>
-        <h2 class="text-2xl font-bold text-center text-white">180</h2>
-      </div>
-      <a href="Household Managment.html"
-        class="text-lg text-green-400 flex items-center gap-1 group transition-colors duration-200 hover:text-green-300">
-        Manage Household
-        <span class="transition-transform duration-200 group-hover:translate-x-1">
-          →
-        </span>
-      </a>
-    </div>
-    <div class="bg-yellow-300 p-4 rounded-lg">
-      <p class="text-sm text-white">Electricity usage</p>
-      <h2 class="text-2xl font-bold">180 kWh</h2>
-    </div>
+        <div
+          onclick="toggleCard(this, 'ac')"
+          class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition"
+        >
+          <div>
+            <p
+              class="killBtn text-2xl text-center mt-2 text-slate-200 font-medium select-none transition-all duration-200"
+            >
+              Turn off<br />all ACs
+            </p>
+          </div>
+        </div>
 
-    <div class="bg-emerald-400 p-4 rounded-lg">
-      <p class="text-sm text-white">Gas usage</p>
-      <h2 class="text-2xl font-bold">180 m<sup class="text-sm">3</h2>
-    </div>
+        <div
+          onclick="toggleCard(this, 'heater')"
+          class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition"
+        >
+          <div>
+            <p
+              class="killBtn text-2xl text-center mt-2 text-slate-200 font-medium select-none transition-all duration-200"
+            >
+              Turn off<br />all heaters
+            </p>
+          </div>
+        </div>
 
-    <div class="bg-cyan-500 p-4 rounded-lg">
-      <p class="text-sm text-white">Water usage</p>
-      <h2 class="text-2xl font-bold">180 L</sup></h2>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-2  gap-4 mb-6  rounded-lg m-10">
-    <div class="grid grid-cols-3 grid-rows-2 gap-4 mb-6 p-10 bg-gray-200 rounded-lg ">
-
-      <div onclick="toggleCard(this,'light')"
-        class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition">
-        <div>
-          <p class="killBtn text-2xl text-center mt-2 text-gray-400 select-none">Turn off<br>all Lights</p>
+        <div
+          onclick="toggleCard(this, 'devices')"
+          class="bg-slate-700 p-5 col-span-3 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition-all duration-300"
+        >
+          <div>
+            <p
+              class="killBtn text-2xl text-center mt-2 text-slate-200 font-medium select-none transition-all duration-200"
+            >
+              Turn off<br />all devices
+            </p>
+          </div>
         </div>
       </div>
 
-      <div onclick="toggleCard(this,'ac')"
-        class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition">
-        <div>
-          <p class="killBtn text-2xl text-center mt-2 text-gray-400 select-none">Turn off<br>all AC</p>
+      <div
+        class="grid gap-4 mb-6 p-10 bg-gradient-to-br from-slate-100 to-slate-300 rounded-lg h-[400px]"
+      >
+        <canvas id="usageChart" class="w-full h-full"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      </div>
+    </div>
+
+    <div
+      class="grid grid-cols-3 bg-gradient-to-r from-slate-200 to-slate-300 rounded-lg m-10 gap-4"
+    >
+      <div
+        class="col-span-2 bg-slate-800 rounded-lg font-extrabold text-white p-5 m-10"
+      >
+        <div class="text-4xl" style="font-family: Yellowtail">
+          Estimated Bill :
+        </div>
+        <div class="text-center pt-[100px] text-3xl text-yellow-400">
+          300 EGP
+        </div>
+      </div>
+      <div
+        class="bg-slate-800 rounded-lg p-5 mr-10 mt-10 mb-10 flex items-center justify-center gap-6"
+      >
+        <div class="text-3xl w-96" style="font-family: Yellowtail">
+          <canvas id="billingPie" class="h-300"></canvas>
+          <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
         </div>
       </div>
 
-      <div onclick="toggleCard(this,'heater')"
-        class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition">
-        <div>
-          <p class="killBtn text-2xl text-center mt-2 text-gray-400 select-none">Turn off<br>all Heaters</p>
-        </div>
+      <div
+        class="bg-slate-800 rounded-lg text-center ml-10 mr-10 mb-10 p-5 flex flex-col items-center justify-center"
+      >
+        <p class="text-gray-300 text-sm">Current:</p>
+        <p class="text-yellow-500 font-semibold text-3xl mt-1">250 EGP</p>
       </div>
 
-      <div onclick="toggleCard(this,'devices')"
-        class="bg-slate-700 p-5 col-span-3 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition-all duration-300">
-        <div>
-          <p class="killBtn text-2xl text-center mt-2 text-gray-400 select-none">Turn off<br>all Devices</p>
-        </div>
+      <div
+        class="bg-slate-800 rounded-lg text-center mr-10 mb-10 p-5 flex flex-col items-center justify-center"
+      >
+        <p class="text-gray-300 text-sm">Last Month:</p>
+        <p class="text-yellow-500 font-semibold text-3xl mt-1">270 EGP</p>
       </div>
 
-    </div>
-
-    <div class="grid gap-4 mb-6 p-10 bg-gray-200 rounded-lg h-[400px]">
-      <canvas id="usageChart" class="w-full h-full "></canvas>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </div>
-
-  </div>
-
-  <div class="grid grid-cols-3 bg-gray-300 rounded-lg m-10 gap-4">
-    <div class=" col-span-2 bg-slate-600 rounded-lg font-extrabold text-white p-5 m-10">
-      <div class="text-3xl" style="font-family: Yellowtail;">
-        Estimated Bill
-      </div>
-      <div class="text-center pt-[100px] text-2xl">
-        300 EGP
-      </div>
-    </div>
-    <div class=" bg-slate-600 rounded-lg p-5 mr-10 mt-10 mb-10 flex items-center justify-center gap-6 ">
-      <div class="text-3xl w-96" style="font-family: Yellowtail;">
-        <canvas id="billingPie" class=" h-300"></canvas>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-
+      <div
+        class="bg-slate-800 rounded-lg text-center mr-10 mb-10 p-5 flex flex-col items-center justify-center"
+      >
+        <p class="text-gray-300 text-sm">Change:</p>
+        <p class="text-red-600 font-semibold text-2xl">↑ +8%</p>
       </div>
     </div>
 
-    <div class="bg-slate-600 rounded-lg p-3 text-center ml-10 mr-10 mb-10">
-      <p class="text-gray-300 text-xs">Current</p>
-      <p class="text-white font-semibold">250 EGP</p>
-    </div>
-
-    <div class="bg-slate-600 rounded-lg p-3 text-center mr-10 mb-10">
-      <p class="text-gray-300 text-xs">Last Month</p>
-      <p class="text-white font-semibold">270 EGP</p>
-    </div>
-
-    <div class="bg-slate-600 rounded-lg text-center mr-10 mb-10">
-      <p class="text-gray-300 text-xs">Change</p>
-      <p class="text-red-600 font-semibold">↑ +8%</p>
-    </div>
-
-  </div>
-
-  <script>
-    function toggleSidebar() {
-      document
-        .getElementById("sidebar")
-        .classList.toggle("-translate-x-full");
-    }
-    new Chart(document.getElementById("usageChart"), {
-      type: 'line',
-      data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-          label: 'Electricity',
-          data: [120, 150, 130, 170, 160, 180, 140],
-          borderColor: '#FFF176',
-          tension: 0.4
-        },
-        {
-          label: 'Gas',
-          data: [100, 120, 170, 110, 160, 130, 110],
-          borderColor: '#00d492',
-          tension: 0.4
-        },
-        {
-          label: 'Water',
-          data: [90, 130, 110, 150, 120, 120, 180],
-          borderColor: '#00BCD4',
-          tension: 0.4
-        }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-          padding: 20
-        }
+    <script>
+      function toggleSidebar() {
+        document
+          .getElementById("sidebar")
+          .classList.toggle("-translate-x-full");
       }
-    });
-    function toggleCard(card, type) {
+      new Chart(document.getElementById("usageChart"), {
+        type: "line",
+        data: {
+          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          datasets: [
+            {
+              label: "Electricity",
+              data: [120, 150, 130, 170, 160, 180, 140],
+              borderColor: "#FFF176",
+              tension: 0.4,
+            },
+            {
+              label: "Gas",
+              data: [100, 120, 170, 110, 160, 130, 110],
+              borderColor: "#00d492",
+              tension: 0.4,
+            },
+            {
+              label: "Water",
+              data: [90, 130, 110, 150, 120, 120, 180],
+              borderColor: "#00BCD4",
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: 20,
+          },
+        },
+      });
+      function toggleCard(card, type) {
+        const change = card.querySelector(".killBtn");
 
-      card.classList.add("bg-red-500");
+        let deviceType = {
+          light: "Turning OFF<br>all lights",
+          ac: "Turning OFF<br>all ACs",
+          heater: "Turning OFF<br>all heaters",
+          devices: "Turning OFF<br>all devices",
+        };
 
-      const change = card.querySelector(".killBtn");
+        let turnOnMsg = {
+          light: "Turning ON<br>all lights",
+          ac: "Turning ON<br>all ACs",
+          heater: "Turning ON<br>all heaters",
+          devices: "Turning ON<br>all devices",
+        };
 
-      let deviceType = {
-        light: "Turning off<br>all Lights",
-        ac: "Turning off<br>all AC",
-        heater: "Turning off<br>all Heaters",
-        devices: "Turning off<br>all Devices"
-      };
-      let returnMsg = {
-        light: "Turn off<br>all Lights",
-        ac: "Turn off<br>all AC",
-        heater: "Turn off<br>all Heaters",
-        devices: "Turn off<br>all Devices"
-      };
+        let returnOffMsg = {
+          light: "Turn OFF<br>all lights",
+          ac: "Turn OFF<br>all ACs",
+          heater: "Turn OFF<br>all heaters",
+          devices: "Turn OFF<br>all devices",
+        };
 
-      // fade out
-      change.classList.add("opacity-0", "scale-95");
+        const isOff = card.classList.contains("bg-slate-600");
 
-      setTimeout(() => {
-        change.innerHTML = deviceType[type];
-
-        // fade in
-        change.classList.remove("opacity-0", "scale-95");
-      }, 150);
-
-      setTimeout(() => {
-        card.classList.remove("bg-red-500");
-
-        // fade out again
         change.classList.add("opacity-0", "scale-95");
 
         setTimeout(() => {
-          change.innerHTML = returnMsg[type];
+          if (!isOff) {
+            card.classList.add("bg-slate-600");
+            change.innerHTML = deviceType[type];
+          } else {
+            change.innerHTML = turnOnMsg[type];
+          }
+
           change.classList.remove("opacity-0", "scale-95");
         }, 150);
 
-      }, 1000);
-    }
-    new Chart(document.getElementById("billingPie"), {
-      type: 'pie',
-      data: {
-        labels: ['Electricity', 'Gas', 'Water'],
-        datasets: [{
-          data: [60, 25, 15],
-          backgroundColor: [
-            '#facc15',
-            '#22c55e',
-            '#3b82f6'
-          ],
-          borderWidth: 0
-        }]
-      },
-      plugins: [ChartDataLabels],
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'right',
-            labels: { color: '#e5e7eb' }
-          },
-          datalabels: {
-            color: '#fff',
-            font: {
-              weight: 'bold',
-              size: 12
-            },
-            formatter: (value, context) => {
-              return value + '%';
+        setTimeout(() => {
+          change.classList.add("opacity-0", "scale-95");
+
+          setTimeout(() => {
+            if (!isOff) {
+              change.innerHTML = "Turn ON<br>all devices";
+            } else {
+              card.classList.remove("bg-slate-600");
+              change.innerHTML = returnOffMsg[type];
             }
-          }
-        }
+
+            change.classList.remove("opacity-0", "scale-95");
+          }, 150);
+        }, 1000);
       }
-    });
-  </script>
-
-</body>
-
+      new Chart(document.getElementById("billingPie"), {
+        type: "pie",
+        data: {
+          labels: ["Electricity", "Gas", "Water"],
+          datasets: [
+            {
+              data: [60, 25, 15],
+              backgroundColor: ["#facc15", "#22c55e", "#3b82f6"],
+              borderWidth: 0,
+            },
+          ],
+        },
+        plugins: [ChartDataLabels],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "right",
+              labels: { color: "#e5e7eb" },
+            },
+            datalabels: {
+              color: "#fff",
+              font: {
+                weight: "bold",
+                size: 12,
+              },
+              formatter: (value, context) => {
+                return value + "%";
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </body>
 </html>
