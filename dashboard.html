@@ -16,8 +16,9 @@
   </head>
 
   <body class="font-[Inter]">
+    <!-- Header  -->
     <div
-      class="fixed top-0 w-screen h-[10%] bg-gradient-to-r from-slate-100 to-slate-300 text-black flex items-center px-4 gap-4 shadow-md"
+      class="fixed top-0 w-full h-[8%] z-40 bg-gradient-to-r from-slate-100 to-slate-300 text-black flex items-center px-4 gap-4 shadow-md"
     >
       <div class="flex items-center justify-between w-full px-4">
         <div class="flex items-center gap-4">
@@ -59,9 +60,11 @@
         </div>
       </div>
     </div>
+
+    <!-- Sidebar -->
     <div
       id="sidebar"
-      class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300"
+      class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300 z-50"
     >
       <div class="p-4 font-bold flex items-center gap-2">
         <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
@@ -75,14 +78,16 @@
       </ul>
     </div>
 
+    <!-- Content -->
     <div
-      class="bg-gradient-to-r from-slate-100 to-slate-200 mt-[7%] mx-10 rounded-lg text-3xl p-8 flex items-center justify-center text-center"
+      class="bg-gradient-to-r from-slate-100 to-slate-200 mt-16 mb-4 mx-10 rounded-lg text-3xl p-8 flex items-center justify-center text-center"
       style="font-family: Yellowtail, cursive; font-weight: bold"
     >
       Welcome, User!
     </div>
+
     <div
-      class="grid grid-cols-3 grid-rows-2 gap-4 mb-6 p-10 bg-gradient-to-r from-slate-100 to-slate-200 rounded-lg m-10"
+      class="grid grid-cols-3 grid-rows-2 gap-4 mb-6 p-10 bg-gradient-to-r from-slate-100 to-slate-200 rounded-lg mx-10 mb-4"
     >
       <div class="col-span-3 bg-slate-800 p-4 rounded-lg flex justify-between">
         <div class="col-span-3 bg-slate-800 p-4 rounded-lg text-center">
@@ -102,6 +107,7 @@
           </span>
         </a>
       </div>
+
       <div class="bg-yellow-300 p-5 rounded-lg text-slate-900 shadow-sm">
         <p class="text-sm font-medium opacity-80 tracking-wide">
           Electricity usage
@@ -128,52 +134,36 @@
           onclick="toggleCard(this, 'light')"
           class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition"
         >
-          <div>
-            <p
-              class="killBtn text-2xl text-center mt-2 text-slate-200 font-medium select-none transition-all duration-200"
-            >
-              Turn off<br />all lights
-            </p>
-          </div>
+          <p class="killBtn text-2xl text-center mt-2 text-slate-200">
+            Turn off<br />all lights
+          </p>
         </div>
 
         <div
           onclick="toggleCard(this, 'ac')"
           class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition"
         >
-          <div>
-            <p
-              class="killBtn text-2xl text-center mt-2 text-slate-200 font-medium select-none transition-all duration-200"
-            >
-              Turn off<br />all ACs
-            </p>
-          </div>
+          <p class="killBtn text-2xl text-center mt-2 text-slate-200">
+            Turn off<br />all ACs
+          </p>
         </div>
 
         <div
           onclick="toggleCard(this, 'heater')"
           class="bg-slate-700 p-5 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition"
         >
-          <div>
-            <p
-              class="killBtn text-2xl text-center mt-2 text-slate-200 font-medium select-none transition-all duration-200"
-            >
-              Turn off<br />all heaters
-            </p>
-          </div>
+          <p class="killBtn text-2xl text-center mt-2 text-slate-200">
+            Turn off<br />all heaters
+          </p>
         </div>
 
         <div
           onclick="toggleCard(this, 'devices')"
-          class="bg-slate-700 p-5 col-span-3 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition-all duration-300"
+          class="bg-slate-700 p-5 col-span-3 rounded-xl h-32 flex flex-col justify-between cursor-pointer transition"
         >
-          <div>
-            <p
-              class="killBtn text-2xl text-center mt-2 text-slate-200 font-medium select-none transition-all duration-200"
-            >
-              Turn off<br />all devices
-            </p>
-          </div>
+          <p class="killBtn text-2xl text-center mt-2 text-slate-200">
+            Turn off<br />all devices
+          </p>
         </div>
       </div>
 
@@ -181,7 +171,6 @@
         class="grid gap-4 mb-6 p-10 bg-gradient-to-br from-slate-100 to-slate-300 rounded-lg h-[400px]"
       >
         <canvas id="usageChart" class="w-full h-full"></canvas>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       </div>
     </div>
 
@@ -198,13 +187,11 @@
           300 EGP
         </div>
       </div>
+
       <div
         class="bg-slate-800 rounded-lg p-5 mr-10 mt-10 mb-10 flex items-center justify-center gap-6"
       >
-        <div class="text-3xl w-96" style="font-family: Yellowtail">
-          <canvas id="billingPie" class="h-300"></canvas>
-          <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-        </div>
+        <canvas id="billingPie"></canvas>
       </div>
 
       <div
@@ -229,12 +216,17 @@
       </div>
     </div>
 
+    <!-- SCripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <script>
       function toggleSidebar() {
         document
           .getElementById("sidebar")
           .classList.toggle("-translate-x-full");
       }
+
       new Chart(document.getElementById("usageChart"), {
         type: "line",
         data: {
@@ -263,46 +255,41 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: {
-            padding: 20,
-          },
         },
       });
+
       function toggleCard(card, type) {
         const change = card.querySelector(".killBtn");
 
-        let deviceType = {
+        const messages = {
           light: "Turning OFF<br>all lights",
           ac: "Turning OFF<br>all ACs",
           heater: "Turning OFF<br>all heaters",
           devices: "Turning OFF<br>all devices",
         };
 
-        let turnOnMsg = {
-          light: "Turning ON<br>all lights",
-          ac: "Turning ON<br>all ACs",
-          heater: "Turning ON<br>all heaters",
-          devices: "Turning ON<br>all devices",
+        const finalMessages = {
+          light: "All lights are OFF",
+          ac: "All ACs are OFF",
+          heater: "All heaters are OFF",
+          devices: "All devices are OFF",
         };
+        if (card.classList.contains("processing")) return;
 
-        let returnOffMsg = {
-          light: "Turn OFF<br>all lights",
-          ac: "Turn OFF<br>all ACs",
-          heater: "Turn OFF<br>all heaters",
-          devices: "Turn OFF<br>all devices",
-        };
-
-        const isOff = card.classList.contains("bg-slate-600");
-
+        card.classList.add("processing");
+        const originalBg = card.className;
+        const originalTextColor = change.className;
         change.classList.add("opacity-0", "scale-95");
 
         setTimeout(() => {
-          if (!isOff) {
-            card.classList.add("bg-slate-600");
-            change.innerHTML = deviceType[type];
-          } else {
-            change.innerHTML = turnOnMsg[type];
-          }
+          card.classList.remove("bg-slate-700");
+          card.classList.add("bg-red-500");
+
+          change.classList.remove("text-slate-200");
+          change.classList.add("text-black", "font-bold");
+          change.style.fontFamily = "Yellowtail, cursive";
+
+          change.innerHTML = messages[type];
 
           change.classList.remove("opacity-0", "scale-95");
         }, 150);
@@ -311,17 +298,23 @@
           change.classList.add("opacity-0", "scale-95");
 
           setTimeout(() => {
-            if (!isOff) {
-              change.innerHTML = "Turn ON<br>all devices";
-            } else {
-              card.classList.remove("bg-slate-600");
-              change.innerHTML = returnOffMsg[type];
-            }
+            card.classList.remove("bg-red-500");
+            card.classList.add("bg-slate-700");
+
+            change.classList.remove("text-black");
+            change.classList.add("text-slate-200");
+
+            change.style.fontFamily = "";
+
+            change.innerHTML = finalMessages[type];
 
             change.classList.remove("opacity-0", "scale-95");
+
+            card.classList.remove("processing");
           }, 150);
         }, 1000);
       }
+
       new Chart(document.getElementById("billingPie"), {
         type: "pie",
         data: {
@@ -349,9 +342,7 @@
                 weight: "bold",
                 size: 12,
               },
-              formatter: (value, context) => {
-                return value + "%";
-              },
+              formatter: (value) => value + "%",
             },
           },
         },
