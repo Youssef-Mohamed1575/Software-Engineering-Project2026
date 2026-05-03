@@ -2,8 +2,8 @@
 session_start();
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
+if (($_SESSION['role'] ?? '') !== 'homeOwner') {
+    http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
@@ -30,20 +30,19 @@ try {
     exit;
 }
 
-
-$stmt = $conn->prepare("SELECT id, name FROM rooms WHERE home_id = ?");
+$stmt = $conn->prepare("SELECT id, username, role FROM users WHERE home_id = ?");
 $stmt->bind_param("i", $home_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$rooms = [];
+$users = [];
 while ($row = $result->fetch_assoc()) {
-    $rooms[] = $row;
+    $users[] = $row;
 }
 
 echo json_encode([
     'success' => true,
-    'rooms' => $rooms
+    'users' => $users
 ]);
 
 $stmt->close();

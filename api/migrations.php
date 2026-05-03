@@ -1,9 +1,17 @@
 <?php
-$conn = new mysqli("localhost", "root", "");
+mysqli_report(MYSQLI_REPORT_OFF);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+    $conn = @new mysqli("localhost", "root", "");
+    if ($conn->connect_error) {
+        http_response_code(500);
+        die("Connection failed: " . $conn->connect_error);
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    die("Connection failed: " . $e->getMessage());
 }
+
 
 $conn->query("CREATE DATABASE IF NOT EXISTS projectdb");
 $conn->select_db("projectdb");
