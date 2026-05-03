@@ -12,7 +12,7 @@ $conn->select_db("projectdb");
 $createHomesTableQuery = "CREATE TABLE IF NOT EXISTS homes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    owner_id INT
+    owner_id INT,
 )";
 
 if ($conn->query($createHomesTableQuery)) {
@@ -33,9 +33,6 @@ $createTableQuery = "CREATE TABLE IF NOT EXISTS users (
 if ($conn->query($createTableQuery)) {
     echo "Table 'users' updated or created.<br>";
 }
-
-// Add foreign key for owner_id in homes table (circular dependency with users table)
-$conn->query("ALTER TABLE homes ADD FOREIGN KEY (owner_id) REFERENCES users(id)");
 
 // Create rooms table
 $createRoomsTableQuery = "CREATE TABLE IF NOT EXISTS rooms (
