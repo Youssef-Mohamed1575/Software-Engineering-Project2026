@@ -1,12 +1,17 @@
-export default function getUsername(user) {
-    try{    
-        fetch('api/check_session.php')
-            .then(res => res.json())
-            .then(data => {
-                const userName = data.user.username;
-            });
-        }
-    catch(error){
-        console.log(error);
+export default async function getCurrentUsername() {
+  try {
+    const res = await fetch('api/check_session.php',);
+
+    const data = await res.json();
+
+    if (data.loggedIn && data.user) {
+      return data.user.username;
     }
+
+    return null;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 }
+
