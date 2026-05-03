@@ -1,423 +1,691 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Household Management</title>
-    <link href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body class="font-[Inter]">
+  <body class="font-[Inter]">
     <div
-        class="fixed top-0 w-screen h-[10%] bg-gradient-to-r from-slate-100 to-slate-300 text-black flex items-center px-4 gap-4 shadow-md">
-        <div class="flex items-center justify-between w-full px-4">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
-                <div class="text-3xl text-black" style="font-family: Yellowtail, cursive; font-weight: bold">
-                    Home Sense
-                </div>
-            </div>
-            <div class="text-3xl font-extrabold flex items-center gap-4">
-                Dashboard
-            </div>
-            <div class="flex items-center gap-5 text-black mr-8">
-                <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-                    <img src="icons and images/moon.png"
-                        class="h-10 w-10 transition-transform duration-200 hover:rotate-12" />
-                </button>
-
-                <button class="transition-transform duration-200 hover:scale-110 active:scale-95 relative">
-                    <img src="icons and images/bell.png" class="h-9 w-9" />
-                </button>
-
-                <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-                    <img src="icons and images/user.png"
-                        class="h-9 w-9 transition-transform duration-200 hover:-translate-y-1" />
-                </button>
-            </div>
+      class="fixed top-0 w-screen h-[10%] bg-gradient-to-r from-slate-100 to-slate-300 text-black flex items-center px-4 gap-4 shadow-md"
+    >
+      <div class="flex items-center justify-between w-full px-4">
+        <div class="flex items-center gap-4">
+          <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
+          <div
+            class="text-3xl text-black"
+            style="font-family: Yellowtail, cursive; font-weight: bold"
+          >
+            <a href="dashboard.html">Home Sense</a>
+          </div>
         </div>
+        <div class="text-3xl font-extrabold flex items-center gap-4">
+          Household Management
+        </div>
+        <div class="flex items-center gap-5 text-black mr-8">
+          <button
+            class="transition-transform duration-200 hover:scale-110 active:scale-95"
+          >
+            <img
+              src="icons and images/moon.png"
+              class="h-10 w-10 transition-transform duration-200 hover:rotate-12"
+            />
+          </button>
+
+          <button
+            class="transition-transform duration-200 hover:scale-110 active:scale-95 relative"
+          >
+            <img src="icons and images/bell.png" class="h-9 w-9" />
+          </button>
+
+          <button
+            class="transition-transform duration-200 hover:scale-110 active:scale-95"
+          >
+            <img
+              src="icons and images/user.png"
+              class="h-9 w-9 transition-transform duration-200 hover:-translate-y-1"
+            />
+          </button>
+        </div>
+      </div>
     </div>
-    <div id="sidebar"
-        class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300">
-        <div class="p-4 font-bold flex items-center gap-2">
-            <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
-            Menu
-        </div>
+    <div
+      id="sidebar"
+      class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300"
+    >
+      <div class="p-4 font-bold flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
+        Menu
+      </div>
 
-        <ul class="p-4 space-y-2">
-            <button>
-                <li>Unidentified task (work in progress)</li>
+      <ul class="p-8 space-y-6">
+        <button>
+          <li>
+            <a href="dashboard.html">Dashboard<br /></a>
+          </li>
+        </button>
+        <button>
+          <li>
+            <a href="Household Managment.html">Household Management<br /></a>
+          </li>
+        </button>
+        <button>
+          <li>User Panel<br /></li>
+        </button>
+      </ul>
+    </div>
+    <div
+      class="mt-40 mx-10 p-6 rounded-2xl bg-slate-900 shadow-lg flex items-center justify-between"
+    >
+      <!-- Left -->
+      <div class="text-white text-3xl font-bold ml-10">User's Household</div>
+      <div class="w-full flex justify-end items-end">
+        <button
+          onclick="popup('room')"
+          class="bg-emerald-400 rounded-lg text-white p-3 text-base mr-10 hover:bg-emerald-500 duration-300"
+          style="font-family: cursive"
+        >
+          Add Room
+        </button>
+      </div>
+    </div>
+    <div
+      id="overlay"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"
+    ></div>
+    <div
+      id="room_popup"
+      class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    >
+      <div
+        class="w-full h-full grid grid-cols-2 grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]"
+      >
+        <div
+          class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3"
+        >
+          <!-- Centered title across full row -->
+          <div
+            class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
+            style="font-family: Yellowtail, cursive"
+          >
+            Add Room
+          </div>
+
+          <!-- Right-side close button -->
+          <div class="ml-auto relative z-10">
+            <button
+              class="bg-slate-600 text-white rounded-full w-10 h-10 m-5"
+              onclick="closePopup('room')"
+            >
+              X
             </button>
-            <button>
-                <li>Unidentified task (work in progress)</li>
+          </div>
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Room name
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            id="room_name"
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="text"
+            placeholder=" Enter room name"
+          />
+        </div>
+        <div
+          class="col-span-2 flex justify-center items-center mt-2 mb-2 text-2xl font-bold text-white ml-5"
+          style="font-family: cursive"
+        >
+          Room limits:
+        </div>
+
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Electricity
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="room_electricity"
+            placeholder=" Enter limit in kWh"
+          />
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Gas
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="room_gas"
+            placeholder=" Enter limit in m³"
+          />
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Water
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="room_water"
+            placeholder=" Enter limit in L"
+          />
+        </div>
+        <div></div>
+        <div class="flex justify-center items-center gap-5 mb-2">
+          <button
+            onclick="addRoom()"
+            class="bg-emerald-500 rounded-lg text-white text-base w-[120px] p-3 hover:bg-emerald-400 duration-300"
+            style="font-family: cursive"
+          >
+            Add Room
+          </button>
+          <button
+            onclick="closePopup('room')"
+            class="bg-slate-600 rounded-lg text-white text-base w-[120px] p-3 hover:bg-slate-500 duration-300"
+            style="font-family: cursive"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      id="device_popup"
+      class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    >
+      <div
+        class="w-full h-full grid grid-cols-2 grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]"
+      >
+        <div
+          class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3"
+        >
+          <!-- Centered title across full row -->
+          <div
+            class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
+            style="font-family: Yellowtail, cursive"
+          >
+            Add Device
+          </div>
+
+          <!-- Right-side close button -->
+          <div class="ml-auto relative z-10">
+            <button
+              class="bg-slate-600 text-white rounded-full w-10 h-10 m-5"
+              onclick="closePopup('device')"
+            >
+              X
             </button>
-            <button>
-                <li>Unidentified task (work in progress)</li>
+          </div>
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Device name
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            id="device_name"
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="text"
+            placeholder=" Enter device name"
+          />
+        </div>
+
+        <div
+          class="flex justify-center items-center text-white text-left ml-10"
+        >
+          Device type:
+        </div>
+        <div class="flex justify-center items-center">
+          <select
+            id="device_type"
+            class="rounded-sm w-52 bg-gray-200 text-gray-400 px-2 py-1"
+          >
+            <option id="device_type_placeholder" disabled selected hidden>
+              Select device type
+            </option>
+            <option>light</option>
+            <option>AC</option>
+            <option>Heater</option>
+            <option>Washing Machine</option>
+            <option>Refrigerator</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div
+          class="col-span-2 flex justify-center items-center mt-2 mb-2 text-2xl font-bold text-white ml-5"
+          style="font-family: cursive"
+        >
+          Device Usage:
+        </div>
+
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Electricity
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="device_electricity"
+            placeholder=" Enter usage in kWh"
+          />
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Gas
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="device_gas"
+            placeholder=" Enter usage in m³"
+          />
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Water
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="device_water"
+            placeholder=" Enter usage in L"
+          />
+        </div>
+        <div></div>
+        <div class="flex justify-center items-center gap-5 mb-2">
+          <button
+            class="bg-emerald-500 rounded-lg text-white text-base w-[120px] p-3 hover:bg-emerald-400 duration-300"
+            style="font-family: cursive"
+            onclick="addDevice()"
+          >
+            Add Device
+          </button>
+          <button
+            onclick="closePopup('device')"
+            class="bg-slate-600 rounded-lg text-white text-base w-[120px] p-3 hover:bg-slate-500 duration-300"
+            style="font-family: cursive"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      id="room_edit"
+      class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    >
+      <div
+        class="w-full h-full grid grid-cols-2 grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]"
+      >
+        <div
+          class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3"
+        >
+          <!-- Centered title across full row -->
+          <div
+            class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
+            style="font-family: Yellowtail, cursive"
+          >
+            Edit Room
+          </div>
+
+          <!-- Right-side close button -->
+          <div class="ml-auto relative z-10">
+            <button
+              class="bg-slate-600 text-white rounded-full w-10 h-10 m-5"
+              onclick="closePopup('room_edit')"
+            >
+              X
             </button>
-        </ul>
+          </div>
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Room name
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            id="edit_room_name"
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="text"
+            placeholder=" Enter room name"
+          />
+        </div>
+        <div
+          class="col-span-2 flex justify-center items-center mt-2 mb-2 text-2xl font-bold text-white ml-5"
+          style="font-family: cursive"
+        >
+          Room limits:
+        </div>
+
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Electricity
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="edit_room_electricity"
+            placeholder=" Enter limit in kWh"
+          />
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Gas
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="edit_room_gas"
+            placeholder=" Enter limit in m³"
+          />
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Water
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="edit_room_water"
+            placeholder=" Enter limit in L"
+          />
+        </div>
+        <div></div>
+        <div class="flex justify-center items-center gap-5 mb-2">
+          <button
+            onclick="applyRoomEdit()"
+            class="bg-emerald-500 rounded-lg text-white text-base w-[120px] p-3 hover:bg-emerald-400 duration-300"
+            style="font-family: cursive"
+          >
+            Apply
+          </button>
+          <button
+            onclick="closePopup('room_edit')"
+            class="bg-slate-600 rounded-lg text-white text-base w-[120px] p-3 hover:bg-slate-500 duration-300"
+            style="font-family: cursive"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="grid grid-cols-2 bg-slate-800 mt-52 rounded-lg text-2xl items-center mx-10 py-10">
+    <div
+      id="device_edit"
+      class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    >
+      <div
+        class="w-full h-full grid grid-cols-2 grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]"
+      >
+        <div
+          class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3"
+        >
+          <!-- Centered title across full row -->
+          <div
+            class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
+            style="font-family: Yellowtail, cursive"
+          >
+            Edit Device
+          </div>
 
-        <!-- Left -->
-        <div class="text-white text-3xl font-bold ml-10">
-            User's Household
+          <!-- Right-side close button -->
+          <div class="ml-auto relative z-10">
+            <button
+              class="bg-slate-600 text-white rounded-full w-10 h-10 m-5"
+              onclick="closePopup('device_edit')"
+            >
+              X
+            </button>
+          </div>
         </div>
-        <div class="w-full  flex justify-end items-end ">
-            <button onclick="popup('room')"
-                class="bg-emerald-400 rounded-lg text-white p-3 text-base mr-10 hover:bg-emerald-500 duration-300"
-                style="font-family: cursive;">Add
-                Room</button>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Device name
         </div>
-    </div>
-    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
-    <div id="room_popup"
-        class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin  min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div class="w-full h-full grid  grid-cols-2  grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]">
-            <div class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3">
-
-                <!-- Centered title across full row -->
-                <div class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
-                    style="font-family: Yellowtail, cursive;">
-                    Add Room
-                </div>
-
-                <!-- Right-side close button -->
-                <div class="ml-auto relative z-10">
-                    <button class="bg-slate-600 text-white rounded-full w-10 h-10 m-5" onclick="closePopup('room')">
-                        X
-                    </button>
-                </div>
-
-            </div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Room name</div>
-            <div class="flex justify-center items-center"><input id="room_name"
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="text"
-                    placeholder=" Enter room name"></div>
-            <div class="col-span-2 flex justify-center items-center mt-2 mb-2 text-2xl font-bold text-white ml-5"
-                style="font-family: cursive;">
-                Room limits:
-            </div>
-
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Electricity</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="room_electricity"
-                    placeholder=" Enter limit in kWh"></div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Gas</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="room_gas"
-                    placeholder=" Enter limit in m³"></div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Water</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="room_water"
-                    placeholder=" Enter limit in L"></div>
-            <div></div>
-            <div class="flex justify-center items-center gap-5 mb-2">
-                <button onclick="addRoom()"
-                    class=" bg-emerald-500 rounded-lg text-white text-base w-[120px] p-3 hover:bg-emerald-400 duration-300"
-                    style="font-family: cursive;">Add
-                    Room</button>
-                <button onclick="closePopup('room')"
-                    class=" bg-slate-600 rounded-lg text-white text-base w-[120px] p-3 hover:bg-slate-500 duration-300"
-                    style="font-family: cursive;">
-                    Cancel</button>
-            </div>
-
-
+        <div class="flex justify-center items-center">
+          <input
+            id="edit_device_name"
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="text"
+            placeholder=" Enter device name"
+          />
         </div>
-    </div>
-    <div id="device_popup"
-        class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin  min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div class="w-full h-full grid  grid-cols-2  grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]">
-            <div class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3">
 
-                <!-- Centered title across full row -->
-                <div class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
-                    style="font-family: Yellowtail, cursive;">
-                    Add Device
-                </div>
-
-                <!-- Right-side close button -->
-                <div class="ml-auto relative z-10">
-                    <button class="bg-slate-600 text-white rounded-full w-10 h-10 m-5" onclick="closePopup('device')">
-                        X
-                    </button>
-                </div>
-
-            </div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Device name</div>
-            <div class="flex justify-center items-center"><input id="device_name"
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="text"
-                    placeholder=" Enter device name"></div>
-
-            <div class="flex justify-center items-center text-white text-left ml-10">Device type:</div>
-            <div class="flex justify-center items-center">
-                <select id="device_type" class="rounded-sm w-52 bg-gray-200 text-gray-400 px-2 py-1">
-                    <option id="device_type_placeholder" disabled selected hidden>Select device type</option>
-                    <option>light</option>
-                    <option>AC</option>
-                    <option>Heater</option>
-                    <option>Washing Machine</option>
-                    <option>Refrigerator</option>
-                    <option>Other</option>
-                </select>
-            </div>
-            <div class="col-span-2 flex justify-center items-center mt-2 mb-2 text-2xl font-bold text-white ml-5"
-                style="font-family: cursive;">
-                Device Usage:
-            </div>
-
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Electricity</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="device_electricity"
-                    placeholder=" Enter usage in kWh"></div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Gas</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="device_gas"
-                    placeholder=" Enter usage in m³"></div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Water</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="device_water"
-                    placeholder=" Enter usage in L"></div>
-            <div></div>
-            <div class="flex justify-center items-center gap-5 mb-2">
-                <button
-                    class=" bg-emerald-500 rounded-lg text-white text-base w-[120px] p-3 hover:bg-emerald-400 duration-300"
-                    style="font-family: cursive;" onclick="addDevice()">
-                    Add
-                    Device</button>
-                <button onclick="closePopup('device')"
-                    class=" bg-slate-600 rounded-lg text-white text-base w-[120px] p-3 hover:bg-slate-500 duration-300"
-                    style="font-family: cursive;">
-                    Cancel</button>
-            </div>
-
-
+        <div
+          class="flex justify-center items-center text-white text-left ml-10"
+        >
+          Device type:
         </div>
-    </div>
-    <div id="room_edit"
-        class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin  min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div class="w-full h-full grid  grid-cols-2  grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]">
-            <div class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3">
-
-                <!-- Centered title across full row -->
-                <div class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
-                    style="font-family: Yellowtail, cursive;">
-                    Edit Room
-                </div>
-
-                <!-- Right-side close button -->
-                <div class="ml-auto relative z-10">
-                    <button class="bg-slate-600 text-white rounded-full w-10 h-10 m-5"
-                        onclick="closePopup('room_edit')">
-                        X
-                    </button>
-                </div>
-
-            </div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Room name</div>
-            <div class="flex justify-center items-center"><input id="edit_room_name"
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="text"
-                    placeholder=" Enter room name"></div>
-            <div class="col-span-2 flex justify-center items-center mt-2 mb-2 text-2xl font-bold text-white ml-5"
-                style="font-family: cursive;">
-                Room limits:
-            </div>
-
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Electricity</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number"
-                    id="edit_room_electricity" placeholder=" Enter limit in kWh"></div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Gas</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="edit_room_gas"
-                    placeholder=" Enter limit in m³"></div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Water</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="edit_room_water"
-                    placeholder=" Enter limit in L"></div>
-            <div></div>
-            <div class="flex justify-center items-center gap-5 mb-2">
-                <button onclick="applyRoomEdit()"
-                    class=" bg-emerald-500 rounded-lg text-white text-base w-[120px] p-3 hover:bg-emerald-400 duration-300"
-                    style="font-family: cursive;">Apply</button>
-                <button onclick="closePopup('room_edit')"
-                    class=" bg-slate-600 rounded-lg text-white text-base w-[120px] p-3 hover:bg-slate-500 duration-300"
-                    style="font-family: cursive;">
-                    Cancel</button>
-            </div>
-
-
+        <div class="flex justify-center items-center">
+          <select
+            id="edit_device_type"
+            class="rounded-sm w-52 bg-gray-200 text-gray-400 px-2 py-1"
+          >
+            <option id="device_type_placeholder" disabled selected hidden>
+              Select device type
+            </option>
+            <option>light</option>
+            <option>AC</option>
+            <option>Heater</option>
+            <option>Washing Machine</option>
+            <option>Refrigerator</option>
+            <option>Other</option>
+          </select>
         </div>
-    </div>
-    <div id="device_edit"
-        class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin  min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div class="w-full h-full grid  grid-cols-2  grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]">
-            <div class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3">
-
-                <!-- Centered title across full row -->
-                <div class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
-                    style="font-family: Yellowtail, cursive;">
-                    Edit Device
-                </div>
-
-                <!-- Right-side close button -->
-                <div class="ml-auto relative z-10">
-                    <button class="bg-slate-600 text-white rounded-full w-10 h-10 m-5"
-                        onclick="closePopup('device_edit')">
-                        X
-                    </button>
-                </div>
-
-            </div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Device name</div>
-            <div class="flex justify-center items-center"><input id="edit_device_name"
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="text"
-                    placeholder=" Enter device name"></div>
-
-            <div class="flex justify-center items-center text-white text-left ml-10">Device type:</div>
-            <div class="flex justify-center items-center">
-                <select id="edit_device_type" class="rounded-sm w-52 bg-gray-200 text-gray-400 px-2 py-1">
-                    <option id="device_type_placeholder" disabled selected hidden>Select device type</option>
-                    <option>light</option>
-                    <option>AC</option>
-                    <option>Heater</option>
-                    <option>Washing Machine</option>
-                    <option>Refrigerator</option>
-                    <option>Other</option>
-                </select>
-            </div>
-            <div class="col-span-2 flex justify-center items-center mt-2 mb-2 text-2xl font-bold text-white ml-5"
-                style="font-family: cursive;">
-                Device Usage:
-            </div>
-
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Electricity</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number"
-                    id="edit_device_electricity" placeholder=" Enter usage in kWh"></div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Gas</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="edit_device_gas"
-                    placeholder=" Enter usage in m³"></div>
-            <div class="flex justify-center items-center mb-2 text-white text-left ml-10">Water</div>
-            <div class="flex justify-center items-center"><input
-                    class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2" type="number" id="edit_device_water"
-                    placeholder=" Enter usage in L"></div>
-            <div></div>
-            <div class="flex justify-center items-center gap-5 mb-2">
-                <button
-                    class=" bg-emerald-500 rounded-lg text-white text-base w-[120px] p-3 hover:bg-emerald-400 duration-300"
-                    style="font-family: cursive;" onclick="applyDeviceEdit()">
-                    Apply</button>
-                <button onclick="closePopup('device_edit')"
-                    class=" bg-slate-600 rounded-lg text-white text-base w-[120px] p-3 hover:bg-slate-500 duration-300"
-                    style="font-family: cursive;">
-                    Cancel</button>
-            </div>
-
-
+        <div
+          class="col-span-2 flex justify-center items-center mt-2 mb-2 text-2xl font-bold text-white ml-5"
+          style="font-family: cursive"
+        >
+          Device Usage:
         </div>
+
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Electricity
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="edit_device_electricity"
+            placeholder=" Enter usage in kWh"
+          />
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Gas
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="edit_device_gas"
+            placeholder=" Enter usage in m³"
+          />
+        </div>
+        <div
+          class="flex justify-center items-center mb-2 text-white text-left ml-10"
+        >
+          Water
+        </div>
+        <div class="flex justify-center items-center">
+          <input
+            class="w-52 rounded-sm bg-gray-200 text-black px-2 py-1 mb-2"
+            type="number"
+            id="edit_device_water"
+            placeholder=" Enter usage in L"
+          />
+        </div>
+        <div></div>
+        <div class="flex justify-center items-center gap-5 mb-2">
+          <button
+            class="bg-emerald-500 rounded-lg text-white text-base w-[120px] p-3 hover:bg-emerald-400 duration-300"
+            style="font-family: cursive"
+            onclick="applyDeviceEdit()"
+          >
+            Apply
+          </button>
+          <button
+            onclick="closePopup('device_edit')"
+            class="bg-slate-600 rounded-lg text-white text-base w-[120px] p-3 hover:bg-slate-500 duration-300"
+            style="font-family: cursive"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
     <div id="rooms_container" class="bg-slate-800 p-20 m-10 rounded-lg"></div>
 
-
-
     <script>
-        function toggleSidebar() {
-            document
-                .getElementById("sidebar")
-                .classList.toggle("-translate-x-full");
+      function toggleSidebar() {
+        document
+          .getElementById("sidebar")
+          .classList.toggle("-translate-x-full");
+      }
+      function popup(type) {
+        if (type === "device") {
+          document.getElementById("device_popup").classList.remove("hidden");
+          document.getElementById("overlay").classList.remove("hidden");
+        } else if (type === "room") {
+          document.getElementById("room_popup").classList.remove("hidden");
+          document.getElementById("overlay").classList.remove("hidden");
+        } else if (type === "room_edit") {
+          document.getElementById("room_edit").classList.remove("hidden");
+          document.getElementById("overlay").classList.remove("hidden");
+        } else if (type === "device_edit") {
+          document.getElementById("device_edit").classList.remove("hidden");
+          document.getElementById("overlay").classList.remove("hidden");
         }
-        function popup(type) {
-            if (type === 'device') {
-                document.getElementById('device_popup').classList.remove('hidden');
-                document.getElementById('overlay').classList.remove('hidden');
-            } else if (type === 'room') {
-                document.getElementById('room_popup').classList.remove('hidden');
-                document.getElementById('overlay').classList.remove('hidden');
-            }
-            else if (type === 'room_edit') {
-                document.getElementById('room_edit').classList.remove('hidden');
-                document.getElementById('overlay').classList.remove('hidden');
-            }
-            else if (type === 'device_edit') {
-                document.getElementById('device_edit').classList.remove('hidden');
-                document.getElementById('overlay').classList.remove('hidden');
-            }
+      }
+      function closePopup(type) {
+        if (type === "device") {
+          document.getElementById("device_popup").classList.add("hidden");
+          document.getElementById("overlay").classList.add("hidden");
+          document.getElementById("device_name").value = "";
+          document.getElementById("device_name").placeholder =
+            " Enter device name";
+          document.getElementById("device_type").selectedIndex = 0;
+          document.getElementById("device_electricity").value = "";
+          document.getElementById("device_gas").value = "";
+          document.getElementById("device_water").value = "";
+          document.getElementById("device_type_placeholder").innerHTML =
+            "Select device type";
+          document
+            .getElementById("device_type")
+            .classList.remove("border-2", "border-red-500", "text-red-500");
+          document
+            .getElementById("device_type_placeholder")
+            .classList.add("text-gray-400");
+          document
+            .getElementById("device_name")
+            .classList.remove(
+              "border-2",
+              "border-red-500",
+              "placeholder-red-500",
+            );
+        } else if (type === "room") {
+          document.getElementById("room_popup").classList.add("hidden");
+          document.getElementById("overlay").classList.add("hidden");
+          document
+            .getElementById("room_name")
+            .classList.remove(
+              "border-2",
+              "border-red-500",
+              "placeholder-red-500",
+            );
+          document.getElementById("room_name").placeholder = " Enter room name";
+        } else if (type === "room_edit") {
+          document.getElementById("room_edit").classList.add("hidden");
+          document.getElementById("overlay").classList.add("hidden");
+        } else if (type === "device_edit") {
+          document.getElementById("device_edit").classList.add("hidden");
+          document.getElementById("overlay").classList.add("hidden");
         }
-        function closePopup(type) {
-            if (type === 'device') {
-                document.getElementById('device_popup').classList.add('hidden');
-                document.getElementById('overlay').classList.add('hidden');
-                document.getElementById("device_name").value = "";
-                document.getElementById("device_name").placeholder = " Enter device name";
-                document.getElementById("device_type").selectedIndex = 0;
-                document.getElementById("device_electricity").value = "";
-                document.getElementById("device_gas").value = "";
-                document.getElementById("device_water").value = "";
-                document.getElementById("device_type_placeholder").innerHTML = "Select device type";
-                document.getElementById("device_type").classList.remove("border-2", "border-red-500", "text-red-500");
-                document.getElementById("device_type_placeholder").classList.add("text-gray-400");
-                document.getElementById("device_name").classList.remove("border-2", "border-red-500", "placeholder-red-500");
+      }
+      let rooms = [];
+      let devices = [];
+      let currentRoomIndex = null;
 
-            } else if (type === 'room') {
-                document.getElementById('room_popup').classList.add('hidden');
-                document.getElementById('overlay').classList.add('hidden');
-                document.getElementById("room_name").classList.remove("border-2", "border-red-500", "placeholder-red-500");
-                document.getElementById("room_name").placeholder = " Enter room name";
-            }
-            else if (type === 'room_edit') {
-                document.getElementById('room_edit').classList.add('hidden');
-                document.getElementById('overlay').classList.add('hidden');
-            }
-            else if (type === 'device_edit') {
-                document.getElementById('device_edit').classList.add('hidden');
-                document.getElementById('overlay').classList.add('hidden');
-            }
-
+      function addDevice() {
+        const deviceData = {
+          name: document.getElementById("device_name").value,
+          type: document.getElementById("device_type").value,
+          electricity: document.getElementById("device_electricity").value,
+          gas: document.getElementById("device_gas").value,
+          water: document.getElementById("device_water").value,
+          status: false,
+        };
+        if (!deviceData.name.trim()) {
+          const deviceNameInput = document.getElementById("device_name");
+          deviceNameInput.value = "";
+          deviceNameInput.placeholder = "Please fill this field";
+          deviceNameInput.classList.add(
+            "border-2",
+            "border-red-500",
+            "placeholder-red-500",
+          );
+          return;
         }
-        let rooms = [];
-        let devices = [];
-        let currentRoomIndex = null;
+        if (deviceData.type === "Select device type") {
+          const deviceTypeSelect = document.getElementById("device_type");
+          deviceTypeSelect.selectedIndex = 0;
+          deviceTypeSelect.classList.add(
+            "border-2",
+            "border-red-500",
+            "text-red-500",
+          );
+          document
+            .getElementById("device_type_placeholder")
+            .classList.add("border-2", "border-red-500", "text-red-500");
+          document.getElementById("device_type_placeholder").innerHTML =
+            "Please select device type";
+          return;
+        }
+        console.log(deviceData);
+        devices.push(deviceData);
 
+        rooms[currentRoomIndex].devices.push(deviceData);
 
-        function addDevice() {
-            const deviceData = {
-                name: document.getElementById("device_name").value,
-                type: document.getElementById("device_type").value,
-                electricity: document.getElementById("device_electricity").value,
-                gas: document.getElementById("device_gas").value,
-                water: document.getElementById("device_water").value,
-                status: false
-            };
-            if (!deviceData.name.trim()) {
-                const deviceNameInput = document.getElementById("device_name");
-                deviceNameInput.value = "";
-                deviceNameInput.placeholder = "Please fill this field";
-                deviceNameInput.classList.add("border-2", "border-red-500", "placeholder-red-500");
-                return;
-            }
-            if (deviceData.type === "Select device type") {
-                const deviceTypeSelect = document.getElementById("device_type");
-                deviceTypeSelect.selectedIndex = 0;
-                deviceTypeSelect.classList.add("border-2", "border-red-500", "text-red-500");
-                document.getElementById("device_type_placeholder").classList.add("border-2", "border-red-500", "text-red-500");
-                document.getElementById("device_type_placeholder").innerHTML = "Please select device type";
-                return;
-            }
-            console.log(deviceData);
-            devices.push(deviceData);
+        let currentDeviceIndex = rooms[currentRoomIndex].devices.length - 1;
 
-
-            rooms[currentRoomIndex].devices.push(deviceData);
-
-            let currentDeviceIndex =
-                rooms[currentRoomIndex].devices.length - 1;
-
-            const deviceHTML = `
+        const deviceHTML = `
             <div class="grid grid-cols-[3fr_1fr_1fr_1fr] gap-4 items-center bg-slate-600 p-4 rounded-lg">
 
             <div class="text-white font-semibold" id="device_title_${currentRoomIndex}_${rooms[currentRoomIndex].devices.length - 1}">
@@ -441,49 +709,63 @@
 
         </div>
     `;
-            document.getElementById("device_name").value = "";
-            document.getElementById("device_name").placeholder = " Enter device name";
-            document.getElementById("device_type").selectedIndex = 0;
-            document.getElementById("device_type_placeholder").classList.remove("border-2", "border-red-500", "text-red-500");
-            document.getElementById("device_electricity").value = "";
-            document.getElementById("device_gas").value = "";
-            document.getElementById("device_water").value = "";
-            document.getElementById("device_type_placeholder").innerHTML = "Select device type";
-            document.getElementById("device_type").classList.remove("border-2", "border-red-500", "text-red-500");
+        document.getElementById("device_name").value = "";
+        document.getElementById("device_name").placeholder =
+          " Enter device name";
+        document.getElementById("device_type").selectedIndex = 0;
+        document
+          .getElementById("device_type_placeholder")
+          .classList.remove("border-2", "border-red-500", "text-red-500");
+        document.getElementById("device_electricity").value = "";
+        document.getElementById("device_gas").value = "";
+        document.getElementById("device_water").value = "";
+        document.getElementById("device_type_placeholder").innerHTML =
+          "Select device type";
+        document
+          .getElementById("device_type")
+          .classList.remove("border-2", "border-red-500", "text-red-500");
 
+        document
+          .getElementById(`device_container_${currentRoomIndex}`)
+          .insertAdjacentHTML("beforeend", deviceHTML);
 
-            document.getElementById(`device_container_${currentRoomIndex}`)
-                .insertAdjacentHTML("beforeend", deviceHTML);
+        closePopup("device");
+      }
+      function addRoom() {
+        const roomData = {
+          name: document.getElementById("room_name").value,
+          electricityLimit: document.getElementById("room_electricity").value,
+          gasLimit: document.getElementById("room_gas").value,
+          waterLimit: document.getElementById("room_water").value,
+          devices: [],
+        };
 
-            closePopup('device');
+        if (!roomData.name.trim()) {
+          const roomNameInput = document.getElementById("room_name");
+          roomNameInput.value = "";
+          roomNameInput.placeholder = "Please fill this field";
+          roomNameInput.classList.add(
+            "border-2",
+            "border-red-500",
+            "placeholder-red-500",
+          );
+          return;
+        } else {
+          document
+            .getElementById("room_name")
+            .classList.remove(
+              "border-2",
+              "border-red-500",
+              "placeholder-red-500",
+            );
+          document.getElementById("room_name").placeholder = " Enter room name";
         }
-        function addRoom() {
-            const roomData = {
-                name: document.getElementById("room_name").value,
-                electricityLimit: document.getElementById("room_electricity").value,
-                gasLimit: document.getElementById("room_gas").value,
-                waterLimit: document.getElementById("room_water").value,
-                devices: []
-            };
+        console.log(roomData);
+        rooms.push(roomData);
 
-            if (!roomData.name.trim()) {
-                const roomNameInput = document.getElementById("room_name");
-                roomNameInput.value = "";
-                roomNameInput.placeholder = "Please fill this field";
-                roomNameInput.classList.add("border-2", "border-red-500", "placeholder-red-500");
-                return;
-            }
-            else {
-                document.getElementById("room_name").classList.remove("border-2", "border-red-500", "placeholder-red-500");
-                document.getElementById("room_name").placeholder = " Enter room name";
+        const roomIndex = rooms.length - 1;
 
-            }
-            console.log(roomData);
-            rooms.push(roomData);
-
-            const roomIndex = rooms.length - 1;
-
-            const roomHTML = `
+        const roomHTML = `
             <div id="room_${roomIndex}" class="bg-slate-700 rounded-xl p-6 shadow-lg mb-5">
 
             <!-- Room Header -->
@@ -510,148 +792,146 @@
 
         </div>
     `;
-            document.getElementById("room_name").value = "";
-            document.getElementById("room_electricity").value = "";
-            document.getElementById("room_gas").value = "";
-            document.getElementById("room_water").value = "";
-            document.getElementById("room_name").placeholder = " Enter room name";
+        document.getElementById("room_name").value = "";
+        document.getElementById("room_electricity").value = "";
+        document.getElementById("room_gas").value = "";
+        document.getElementById("room_water").value = "";
+        document.getElementById("room_name").placeholder = " Enter room name";
 
-            document.getElementById("rooms_container").insertAdjacentHTML("beforeend", roomHTML);
+        document
+          .getElementById("rooms_container")
+          .insertAdjacentHTML("beforeend", roomHTML);
 
-            closePopup('room');
-        }
-        let editingRoomIndex = null;
+        closePopup("room");
+      }
+      let editingRoomIndex = null;
 
+      function openEditRoomPopup(roomIndex) {
+        editingRoomIndex = roomIndex;
 
-        function openEditRoomPopup(roomIndex) {
+        const room = rooms[roomIndex];
 
-            editingRoomIndex = roomIndex;
+        document.getElementById("edit_room_name").value = room.name;
+        document.getElementById("edit_room_electricity").value =
+          room.electricityLimit;
+        document.getElementById("edit_room_gas").value = room.gasLimit;
+        document.getElementById("edit_room_water").value = room.waterLimit;
 
-            const room = rooms[roomIndex];
+        popup("room_edit");
+      }
 
-            document.getElementById("edit_room_name").value = room.name;
-            document.getElementById("edit_room_electricity").value = room.electricityLimit;
-            document.getElementById("edit_room_gas").value = room.gasLimit;
-            document.getElementById("edit_room_water").value = room.waterLimit;
+      function applyRoomEdit() {
+        const updatedRoomData = {
+          ...rooms[editingRoomIndex],
+          name: document.getElementById("edit_room_name").value,
+          electricityLimit: document.getElementById("edit_room_electricity")
+            .value,
+          gasLimit: document.getElementById("edit_room_gas").value,
+          waterLimit: document.getElementById("edit_room_water").value,
+        };
 
-            popup("room_edit");
-        }
+        rooms[editingRoomIndex] = updatedRoomData;
 
-        function applyRoomEdit() {
+        document.getElementById(`room_name_${editingRoomIndex}`).innerHTML =
+          updatedRoomData.name;
 
-            const updatedRoomData = {
-                ...rooms[editingRoomIndex],
-                name: document.getElementById("edit_room_name").value,
-                electricityLimit: document.getElementById("edit_room_electricity").value,
-                gasLimit: document.getElementById("edit_room_gas").value,
-                waterLimit: document.getElementById("edit_room_water").value
-            };
+        document.getElementById("edit_room_name").value = "";
+        document.getElementById("edit_room_electricity").value = "";
+        document.getElementById("edit_room_gas").value = "";
+        document.getElementById("edit_room_water").value = "";
+        editingRoomIndex = null;
+        console.log(updatedRoomData);
 
-            rooms[editingRoomIndex] = updatedRoomData;
+        closePopup("room_edit");
+      }
 
-            document.getElementById(`room_name_${editingRoomIndex}`).innerHTML =
-                updatedRoomData.name;
+      let editingDeviceRoomIndex = null;
+      let editingDeviceIndex = null;
 
-            document.getElementById("edit_room_name").value = "";
-            document.getElementById("edit_room_electricity").value = "";
-            document.getElementById("edit_room_gas").value = "";
-            document.getElementById("edit_room_water").value = "";
-            editingRoomIndex = null;
-            console.log(updatedRoomData);
+      function openEditDevicePopup(roomIndex, deviceIndex) {
+        editingDeviceRoomIndex = roomIndex;
+        editingDeviceIndex = deviceIndex;
 
+        const device = rooms[roomIndex].devices[deviceIndex];
 
-            closePopup("room_edit");
-        }
+        document.getElementById("edit_device_name").value = device.name;
+        document.getElementById("edit_device_type").value = device.type;
+        document.getElementById("edit_device_electricity").value =
+          device.electricity;
+        document.getElementById("edit_device_gas").value = device.gas;
+        document.getElementById("edit_device_water").value = device.water;
 
-        let editingDeviceRoomIndex = null;
-        let editingDeviceIndex = null;
+        popup("device_edit");
+      }
 
-        function openEditDevicePopup(roomIndex, deviceIndex) {
+      function applyDeviceEdit() {
+        const updatedDeviceData = {
+          ...rooms[editingDeviceRoomIndex].devices[editingDeviceIndex],
+          name: document.getElementById("edit_device_name").value,
+          type: document.getElementById("edit_device_type").value,
+          electricity: document.getElementById("edit_device_electricity").value,
+          gas: document.getElementById("edit_device_gas").value,
+          water: document.getElementById("edit_device_water").value,
+        };
 
-            editingDeviceRoomIndex = roomIndex;
-            editingDeviceIndex = deviceIndex;
+        rooms[editingDeviceRoomIndex].devices[editingDeviceIndex] =
+          updatedDeviceData;
 
-            const device = rooms[roomIndex].devices[deviceIndex];
+        devices = devices.map((device) =>
+          device.roomNumber === editingDeviceRoomIndex &&
+          device.name ===
+            rooms[editingDeviceRoomIndex].devices[editingDeviceIndex].name
+            ? updatedDeviceData
+            : device,
+        );
 
-            document.getElementById("edit_device_name").value = device.name;
-            document.getElementById("edit_device_type").value = device.type;
-            document.getElementById("edit_device_electricity").value = device.electricity;
-            document.getElementById("edit_device_gas").value = device.gas;
-            document.getElementById("edit_device_water").value = device.water;
+        document.getElementById(
+          `device_title_${editingDeviceRoomIndex}_${editingDeviceIndex}`,
+        ).innerHTML = updatedDeviceData.name;
 
-            popup("device_edit");
-        }
+        document.getElementById("edit_device_name").value = "";
+        document.getElementById("edit_device_type").value = "";
+        document.getElementById("edit_device_electricity").value = "";
+        document.getElementById("edit_device_gas").value = "";
+        document.getElementById("edit_device_water").value = "";
 
-        function applyDeviceEdit() {
+        editingDeviceRoomIndex = null;
+        editingDeviceIndex = null;
 
-            const updatedDeviceData = {
-                ...rooms[editingDeviceRoomIndex].devices[editingDeviceIndex],
-                name: document.getElementById("edit_device_name").value,
-                type: document.getElementById("edit_device_type").value,
-                electricity: document.getElementById("edit_device_electricity").value,
-                gas: document.getElementById("edit_device_gas").value,
-                water: document.getElementById("edit_device_water").value
-            };
+        closePopup("device_edit");
+      }
+      function openDevicePopup(roomIndex) {
+        currentRoomIndex = roomIndex;
+        popup("device");
+      }
+      function removeDevice(roomIndex, deviceIndex) {
+        rooms[roomIndex].devices.splice(deviceIndex, 1);
 
-            rooms[editingDeviceRoomIndex].devices[editingDeviceIndex] = updatedDeviceData;
+        const deviceElement = document.getElementById(
+          `device_title_${roomIndex}_${deviceIndex}`,
+        )?.parentElement;
 
-            devices = devices.map(device =>
-                device.roomNumber === editingDeviceRoomIndex &&
-                    device.name === rooms[editingDeviceRoomIndex].devices[editingDeviceIndex].name
-                    ? updatedDeviceData
-                    : device
-            );
-
-            document.getElementById(
-                `device_title_${editingDeviceRoomIndex}_${editingDeviceIndex}`
-            ).innerHTML = updatedDeviceData.name;
-
-            document.getElementById("edit_device_name").value = "";
-            document.getElementById("edit_device_type").value = "";
-            document.getElementById("edit_device_electricity").value = "";
-            document.getElementById("edit_device_gas").value = "";
-            document.getElementById("edit_device_water").value = "";
-
-            editingDeviceRoomIndex = null;
-            editingDeviceIndex = null;
-
-            closePopup("device_edit");
-        }
-        function openDevicePopup(roomIndex) {
-            currentRoomIndex = roomIndex;
-            popup('device');
-        }
-        function removeDevice(roomIndex, deviceIndex) {
-
-            rooms[roomIndex].devices.splice(deviceIndex, 1);
-
-            const deviceElement = document.getElementById(
-                `device_title_${roomIndex}_${deviceIndex}`
-            )?.parentElement;
-
-            if (deviceElement) {
-                deviceElement.remove();
-            }
-
-            devices = devices.filter(device =>
-                !(
-                    device.roomNumber === roomIndex &&
-                    device.name === device.name
-                )
-            );
-
-            refreshRoomDevices(roomIndex);
+        if (deviceElement) {
+          deviceElement.remove();
         }
 
-        function refreshRoomDevices(roomIndex) {
+        devices = devices.filter(
+          (device) =>
+            !(device.roomNumber === roomIndex && device.name === device.name),
+        );
 
-            const container = document.getElementById(`device_container_${roomIndex}`);
+        refreshRoomDevices(roomIndex);
+      }
 
-            container.innerHTML = "";
+      function refreshRoomDevices(roomIndex) {
+        const container = document.getElementById(
+          `device_container_${roomIndex}`,
+        );
 
-            rooms[roomIndex].devices.forEach((device, deviceIndex) => {
+        container.innerHTML = "";
 
-                const deviceHTML = `
+        rooms[roomIndex].devices.forEach((device, deviceIndex) => {
+          const deviceHTML = `
             <div class="grid grid-cols-[3fr_1fr_1fr_1fr] gap-4 items-center bg-slate-600 p-4 rounded-lg">
 
             <div class="text-white font-semibold" id="device_title_${roomIndex}_${rooms[roomIndex].devices.length - 1}">
@@ -661,9 +941,11 @@
             <button
                 id="device_toggle_${roomIndex}_${deviceIndex}"
                 onclick="toggleDeviceStatus(${roomIndex}, ${deviceIndex})"
-                class="${device.status
-                        ? 'bg-green-500 hover:bg-green-400'
-                        : 'bg-yellow-500 hover:bg-yellow-400'} text-white px-2 py-1 rounded">
+                class="${
+                  device.status
+                    ? "bg-green-500 hover:bg-green-400"
+                    : "bg-yellow-500 hover:bg-yellow-400"
+                } text-white px-2 py-1 rounded">
                 ${device.status ? "ON" : "OFF"}
             </button>
 
@@ -678,31 +960,28 @@
         </div>
         `;
 
-                container.insertAdjacentHTML("beforeend", deviceHTML);
-            });
+          container.insertAdjacentHTML("beforeend", deviceHTML);
+        });
+      }
+      function toggleDeviceStatus(roomIndex, deviceIndex) {
+        const device = rooms[roomIndex].devices[deviceIndex];
+
+        device.status = !device.status;
+
+        const toggleButton = document.getElementById(
+          `device_toggle_${roomIndex}_${deviceIndex}`,
+        );
+
+        if (device.status) {
+          toggleButton.innerHTML = "ON";
+          toggleButton.classList.remove("bg-yellow-500", "hover:bg-yellow-400");
+          toggleButton.classList.add("bg-green-500", "hover:bg-green-400");
+        } else {
+          toggleButton.innerHTML = "OFF";
+          toggleButton.classList.remove("bg-green-500", "hover:bg-green-400");
+          toggleButton.classList.add("bg-yellow-500", "hover:bg-yellow-400");
         }
-        function toggleDeviceStatus(roomIndex, deviceIndex) {
-
-            const device = rooms[roomIndex].devices[deviceIndex];
-
-            device.status = !device.status;
-
-            const toggleButton = document.getElementById(
-                `device_toggle_${roomIndex}_${deviceIndex}`
-            );
-
-            if (device.status) {
-                toggleButton.innerHTML = "ON";
-                toggleButton.classList.remove("bg-yellow-500", "hover:bg-yellow-400");
-                toggleButton.classList.add("bg-green-500", "hover:bg-green-400");
-            } else {
-                toggleButton.innerHTML = "OFF";
-                toggleButton.classList.remove("bg-green-500", "hover:bg-green-400");
-                toggleButton.classList.add("bg-yellow-500", "hover:bg-yellow-400");
-            }
-        }
-
+      }
     </script>
-</body>
-
+  </body>
 </html>
