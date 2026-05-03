@@ -28,12 +28,21 @@ if (!in_array($role, $valid_roles)) {
     exit;
 }
 
-$conn = new mysqli("localhost", "root", "", "projectdb");
-if($conn->connect_error){
+mysqli_report(MYSQLI_REPORT_OFF);
+
+try {
+    $conn = @new mysqli("localhost", "root", "", "projectdb");
+    if ($conn->connect_error) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Database connection failed']);
+        exit;
+    }
+} catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["success"=> false,"message"=> $conn->connect_error]);
-    exit();
+    echo json_encode(['success' => false, 'message' => 'Database connection failed']);
+    exit;
 }
+
 
 $check_stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
 $check_stmt->bind_param("s", $username);

@@ -15,13 +15,21 @@ if (!$home_id) {
     exit;
 }
 
-$conn = new mysqli("localhost", "root", "", "projectdb");
+mysqli_report(MYSQLI_REPORT_OFF);
 
-if ($conn->connect_error) {
+try {
+    $conn = @new mysqli("localhost", "root", "", "projectdb");
+    if ($conn->connect_error) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Database connection failed']);
+        exit;
+    }
+} catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database connection failed']);
     exit;
 }
+
 
 $stmt = $conn->prepare("SELECT id, name FROM rooms WHERE home_id = ?");
 $stmt->bind_param("i", $home_id);
