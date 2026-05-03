@@ -18,7 +18,7 @@ if (empty($username) || empty($password)) {
     exit;
 }
 
-$stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE username = ?");
+$stmt = $conn->prepare("SELECT id, username, password, role, home_id FROM users WHERE username = ?");
 $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -28,6 +28,7 @@ if ($user = $result->fetch_assoc()) {
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['home_id'] = $user['home_id'];
 
         echo json_encode([
             'success' => true,
