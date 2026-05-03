@@ -62,7 +62,7 @@
   </div>
 
   <!-- Content -->
-  <div
+  <div id="welcome"
     class="bg-gradient-to-r from-slate-100 to-slate-200 mt-[5%] mb-4 mx-10 rounded-lg text-3xl p-8 flex items-center justify-center text-center"
     style="font-family: Yellowtail, cursive; font-weight: bold">
     Welcome, User!
@@ -301,9 +301,10 @@
         },
       },
     });
-    
+
     getCurrentUsername().then(username => {
       console.log(username);
+      document.getElementById('welcome').textContent = `Welcome, ${username}!`;
     });
 
   </script>
