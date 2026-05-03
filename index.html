@@ -57,7 +57,12 @@
     </div>
 
     <script>
-        // Ensure database is ready
+        /*
+            the vision here is that i dont know how i can run the migarations file on file startup so instead i made that
+            the user will always start here if he already has a session then we move him to the dashboard otherwise he sign-in
+            and always run the migration when the user come here 
+        */   
+        
         window.addEventListener('DOMContentLoaded', () => {
             fetch('api/migrations.php')
                 .then(r => r.text())
@@ -69,7 +74,9 @@
         fetch('api/check_session.php')
             .then(res => res.json())
             .then(data => {
-                if (data.loggedIn) window.location.href = 'dashboard.html';
+                if (data.loggedIn){
+                    window.location.href = 'dashboard.html';
+                }
             });
 
         const errorMessage = document.getElementById('errorMessage');
@@ -96,7 +103,7 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    window.location.href = 'index.html';
+                    window.location.href = 'dashboard.html';
                 } else {
                     errorMessage.textContent = result.message;
                     errorMessage.classList.remove('hidden');
