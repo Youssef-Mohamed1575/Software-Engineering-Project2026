@@ -51,20 +51,22 @@ if ($new_status === "on") {
 // TURNING OFF
 else {
 
-    $stmt = $conn->prepare("
-        UPDATE devices
-        SET status = 'off',
-            active_minutes = active_minutes +
-                TIMESTAMPDIFF(
-                    MINUTE,
-                    last_activated_at,
-                    NOW()
-                ),
-            last_activated_at = NULL
-        WHERE id = ? AND home_id = ?
-    ");
+// REPLACE OFF query with this safer version:
 
-    $stmt->bind_param("ii", $device_id, $home_id);
+$stmt = $conn->prepare("
+    UPDATE devices
+    SET
+        status = 'off',
+        active_minutes = active_minutes +
+            CASE
+                WHEN last_activated_at IS NOT NULL
+                THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
+                ELSE 0
+            END,
+        last_activated_at = NULL
+    WHERE id = ? AND home_id = ?
+");
+$stmt->bind_param("ii", $device_id, $home_id);
 }
 
 if ($stmt->execute()) {
