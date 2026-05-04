@@ -62,6 +62,16 @@ $createDevicesTableQuery = "CREATE TABLE IF NOT EXISTS devices (
     name VARCHAR(100) NOT NULL,
     type VARCHAR(50) NOT NULL,
     status VARCHAR(20) DEFAULT 'off',
+
+    electricity DECIMAL(10,2) DEFAULT 0,
+    gas DECIMAL(10,2) DEFAULT 0,
+    water DECIMAL(10,2) DEFAULT 0,
+
+
+    active_minutes INT DEFAULT 0,
+    last_activated_at DATETIME DEFAULT NULL
+
+
     home_id INT,
     room_id INT DEFAULT NULL,
     FOREIGN KEY (home_id) REFERENCES homes(id),

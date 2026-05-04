@@ -1,0 +1,84 @@
+<?php
+session_start();
+header('Content-Type: application/json');
+
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Unauthorized'
+    ]);
+    exit;
+}
+
+$input = json_decode(file_get_contents('php://input'), true);
+
+$device_id = intval($input['device_id'] ?? 0);
+$new_status = $input['status'] ?? 'off';
+
+$home_id = intval($_SESSION['home_id'] ?? 0);
+
+if (!$device_id) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid device'
+    ]);
+    exit;
+}
+
+$conn = new mysqli("localhost", "root", "", "projectdb");
+
+if ($conn->connect_error) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Database connection failed'
+    ]);
+    exit;
+}
+
+// TURNING ON
+if ($new_status === "on") {
+
+    $stmt = $conn->prepare("
+        UPDATE devices
+        SET status = 'on',
+            last_activated_at = NOW()
+        WHERE id = ? AND home_id = ?
+    ");
+
+    $stmt->bind_param("ii", $device_id, $home_id);
+}
+
+// TURNING OFF
+else {
+
+    $stmt = $conn->prepare("
+        UPDATE devices
+        SET status = 'off',
+            active_minutes = active_minutes +
+                TIMESTAMPDIFF(
+                    MINUTE,
+                    last_activated_at,
+                    NOW()
+                ),
+            last_activated_at = NULL
+        WHERE id = ? AND home_id = ?
+    ");
+
+    $stmt->bind_param("ii", $device_id, $home_id);
+}
+
+if ($stmt->execute()) {
+    echo json_encode([
+        'success' => true,
+        'message' => 'Device status updated'
+    ]);
+} else {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Failed to update status'
+    ]);
+}
+
+$stmt->close();
+$conn->close();
+?>

@@ -446,6 +446,8 @@
         gas: document.getElementById("device_gas").value,
         water: document.getElementById("device_water").value,
         status: false,
+        active_minutes: 0,
+        lastActivatedTime: null,
         room_id: rooms[currentRoomIndex].id
       };
 
@@ -486,6 +488,9 @@
             type: deviceData.type,
             status: "off",
             room_id: deviceData.room_id,
+            electricity: parseFloat(deviceData.electricity) || 0,
+            gas: parseFloat(deviceData.gas) || 0,
+            water: parseFloat(deviceData.water) || 0
           })
         });
 
@@ -516,7 +521,7 @@
             <button
                 id="device_toggle_${currentRoomIndex}_${currentDeviceIndex}"
                 onclick="toggleDeviceStatus(${currentRoomIndex}, ${currentDeviceIndex})"
-                class="bg-green-500 hover:bg-green-400 text-white px-2 py-1 rounded">
+                class="bg-yellow-500 hover:bg-green-400 text-white px-2 py-1 rounded">
                 OFF
             </button>
 
@@ -679,29 +684,64 @@
       popup("room_edit");
     }
 
-    function applyRoomEdit() {
+    async function applyRoomEdit() {
+
       const updatedRoomData = {
         ...rooms[editingRoomIndex],
+
         name: document.getElementById("edit_room_name").value,
-        electricityLimit: document.getElementById("edit_room_electricity")
-          .value,
-        gasLimit: document.getElementById("edit_room_gas").value,
-        waterLimit: document.getElementById("edit_room_water").value,
+        electricityLimit: parseFloat(
+          document.getElementById("edit_room_electricity").value
+        ) || 0,
+        gasLimit: parseFloat(
+          document.getElementById("edit_room_gas").value
+        ) || 0,
+        waterLimit: parseFloat(
+          document.getElementById("edit_room_water").value
+        ) || 0
       };
 
-      rooms[editingRoomIndex] = updatedRoomData;
+      try {
 
-      document.getElementById(`room_name_${editingRoomIndex}`).innerHTML =
-        updatedRoomData.name;
+        const response = await fetch("api/edit_room.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            room_id: updatedRoomData.id,
+            name: updatedRoomData.name,
+            electricity: updatedRoomData.electricityLimit,
+            gas: updatedRoomData.gasLimit,
+            water: updatedRoomData.waterLimit
+          })
+        });
 
-      document.getElementById("edit_room_name").value = "";
-      document.getElementById("edit_room_electricity").value = "";
-      document.getElementById("edit_room_gas").value = "";
-      document.getElementById("edit_room_water").value = "";
-      editingRoomIndex = null;
-      console.log(updatedRoomData);
+        const result = await response.json();
 
-      closePopup("room_edit");
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
+
+        rooms[editingRoomIndex] = updatedRoomData;
+
+        document.getElementById(`room_${editingRoomIndex}`).innerHTML =
+          updatedRoomData.name;
+
+        document.getElementById("edit_room_name").value = "";
+        document.getElementById("edit_room_electricity").value = "";
+        document.getElementById("edit_room_gas").value = "";
+        document.getElementById("edit_room_water").value = "";
+
+        editingRoomIndex = null;
+
+        closePopup("room_edit");
+
+      } catch (error) {
+        console.error("Edit room error:", error);
+        alert("Failed to connect to server.");
+      }
     }
 
     let editingDeviceRoomIndex = null;
@@ -715,71 +755,119 @@
 
       document.getElementById("edit_device_name").value = device.name;
       document.getElementById("edit_device_type").value = device.type;
-      document.getElementById("edit_device_electricity").value =
-        device.electricity;
+      document.getElementById("edit_device_electricity").value = device.electricity;
       document.getElementById("edit_device_gas").value = device.gas;
       document.getElementById("edit_device_water").value = device.water;
 
       popup("device_edit");
     }
 
-    function applyDeviceEdit() {
+    async function applyDeviceEdit() {
+
       const updatedDeviceData = {
         ...rooms[editingDeviceRoomIndex].devices[editingDeviceIndex],
+
         name: document.getElementById("edit_device_name").value,
         type: document.getElementById("edit_device_type").value,
         electricity: document.getElementById("edit_device_electricity").value,
         gas: document.getElementById("edit_device_gas").value,
         water: document.getElementById("edit_device_water").value,
       };
+      console.log(updatedDeviceData);
 
-      rooms[editingDeviceRoomIndex].devices[editingDeviceIndex] =
-        updatedDeviceData;
+      try {
 
-      devices = devices.map((device) =>
-        device.roomNumber === editingDeviceRoomIndex &&
-          device.name ===
-          rooms[editingDeviceRoomIndex].devices[editingDeviceIndex].name
-          ? updatedDeviceData
-          : device,
-      );
+        const response = await fetch("api/edit_device.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            device_id: updatedDeviceData.id,
+            name: updatedDeviceData.name,
+            type: updatedDeviceData.type,
+            electricity: parseFloat(updatedDeviceData.electricity) || 0,
+            gas: parseFloat(updatedDeviceData.gas) || 0,
+            water: parseFloat(updatedDeviceData.water) || 0
+          })
+        });
 
-      document.getElementById(
-        `device_title_${editingDeviceRoomIndex}_${editingDeviceIndex}`,
-      ).innerHTML = updatedDeviceData.name;
+        const result = await response.json();
 
-      document.getElementById("edit_device_name").value = "";
-      document.getElementById("edit_device_type").value = "";
-      document.getElementById("edit_device_electricity").value = "";
-      document.getElementById("edit_device_gas").value = "";
-      document.getElementById("edit_device_water").value = "";
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
 
-      editingDeviceRoomIndex = null;
-      editingDeviceIndex = null;
+        // Update room-local array
+        rooms[editingDeviceRoomIndex].devices[editingDeviceIndex] =
+          updatedDeviceData;
 
-      closePopup("device_edit");
+        // Update global devices array
+        devices = devices.map(device =>
+          device.id === updatedDeviceData.id
+            ? updatedDeviceData
+            : device
+        );
+
+        // Full UI refresh
+        refreshRoomDevices(editingDeviceRoomIndex);
+
+        // Reset popup
+        document.getElementById("edit_device_name").value = "";
+        document.getElementById("edit_device_type").value = "";
+        document.getElementById("edit_device_electricity").value = "";
+        document.getElementById("edit_device_gas").value = "";
+        document.getElementById("edit_device_water").value = "";
+
+        editingDeviceRoomIndex = null;
+        editingDeviceIndex = null;
+
+        closePopup("device_edit");
+
+      } catch (error) {
+        console.error("Edit device error:", error);
+        alert("Failed to connect to server.");
+      }
     }
+
     function openDevicePopup(roomIndex) {
       currentRoomIndex = roomIndex;
       popup("device");
     }
-    function removeDevice(roomIndex, deviceIndex) {
-      rooms[roomIndex].devices.splice(deviceIndex, 1);
+    async function removeDevice(roomIndex, deviceIndex) {
 
-      const deviceElement = document.getElementById(
-        `device_title_${roomIndex}_${deviceIndex}`,
-      )?.parentElement;
+      const device = rooms[roomIndex].devices[deviceIndex];
 
-      if (deviceElement) {
-        deviceElement.remove();
+      try {
+        const response = await fetch("api/remove_device.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            device_id: device.id
+          })
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
+
+        // Remove locally
+        rooms[roomIndex].devices.splice(deviceIndex, 1);
+
+        devices = devices.filter(d => d.id !== device.id);
+
+        refreshRoomDevices(roomIndex);
+
+      } catch (error) {
+        console.error("Remove device error:", error);
+        alert("Failed to connect to server.");
       }
-
-      devices = devices.filter(
-        (device) =>
-          !(device.roomNumber === roomIndex && device.name === device.name),
-      );
-
-      refreshRoomDevices(roomIndex);
     }
 
     function refreshRoomDevices(roomIndex) {
@@ -821,23 +909,63 @@
         container.insertAdjacentHTML("beforeend", deviceHTML);
       });
     }
-    function toggleDeviceStatus(roomIndex, deviceIndex) {
+    async function toggleDeviceStatus(roomIndex, deviceIndex) {
+
       const device = rooms[roomIndex].devices[deviceIndex];
 
-      device.status = !device.status;
+      const newStatus = !device.status;
 
-      const toggleButton = document.getElementById(
-        `device_toggle_${roomIndex}_${deviceIndex}`,
-      );
+      try {
+        const response = await fetch("api/toggle_device_status.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            device_id: device.id,
+            status: newStatus ? "on" : "off"
+          })
+        });
 
-      if (device.status) {
-        toggleButton.innerHTML = "ON";
-        toggleButton.classList.remove("bg-yellow-500", "hover:bg-yellow-400");
-        toggleButton.classList.add("bg-green-500", "hover:bg-green-400");
-      } else {
-        toggleButton.innerHTML = "OFF";
-        toggleButton.classList.remove("bg-green-500", "hover:bg-green-400");
-        toggleButton.classList.add("bg-yellow-500", "hover:bg-yellow-400");
+        const result = await response.json();
+
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
+
+        // Update local state
+        device.status = newStatus;
+
+        const toggleButton = document.getElementById(
+          `device_toggle_${roomIndex}_${deviceIndex}`
+        );
+
+        if (device.status) {
+          toggleButton.innerHTML = "ON";
+          toggleButton.classList.remove(
+            "bg-yellow-500",
+            "hover:bg-yellow-400"
+          );
+          toggleButton.classList.add(
+            "bg-green-500",
+            "hover:bg-green-400"
+          );
+        } else {
+          toggleButton.innerHTML = "OFF";
+          toggleButton.classList.remove(
+            "bg-green-500",
+            "hover:bg-green-400"
+          );
+          toggleButton.classList.add(
+            "bg-yellow-500",
+            "hover:bg-yellow-400"
+          );
+        }
+
+      } catch (error) {
+        console.error("Toggle device error:", error);
+        alert("Failed to connect to server.");
       }
     }
     window.addEventListener("DOMContentLoaded", async () => {
@@ -868,7 +996,10 @@
           rooms.push({
             id: room.id,
             name: room.name,
-            devices: []
+            devices: [],
+            electricityLimit: room.electricity_limit || 0,
+            gasLimit: room.gas_limit || 0,
+            waterLimit: room.water_limit || 0
           });
         });
 
@@ -881,7 +1012,10 @@
               id: device.id,
               name: device.name,
               type: device.type,
-              status: device.status === "on"
+              status: device.status === "on",
+              electricity: device.electricity,
+              gas: device.gas,
+              water: device.water
             });
           }
         });

@@ -24,6 +24,9 @@ if (!$home_id) {
 
 $input = json_decode(file_get_contents('php://input'), true);
 $name = $input['name'] ?? '';
+$electricity = floatval($input['electricity'] ?? 0);
+$gas = floatval($input['gas'] ?? 0);
+$water = floatval($input['water'] ?? 0);
 
 if (empty($name)) {
     http_response_code(400);
@@ -47,9 +50,20 @@ try {
 }
 
 
-$stmt = $conn->prepare("INSERT INTO rooms (name, home_id) VALUES (?, ?)");
-$stmt->bind_param("si", $name, $home_id);
+$stmt = $conn->prepare("
+    INSERT INTO rooms
+    (name, home_id, electricity_limit, gas_limit, water_limit)
+    VALUES (?, ?, ?, ?, ?)
+");
 
+$stmt->bind_param(
+    "siddd",
+    $name,
+    $home_id,
+    $electricity,
+    $gas,
+    $water
+);
 if ($stmt->execute()) {
     echo json_encode([
         'success' => true,

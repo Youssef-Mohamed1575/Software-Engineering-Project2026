@@ -31,7 +31,7 @@ try {
 }
 
 
-$stmt = $conn->prepare("SELECT id, name FROM rooms WHERE home_id = ?");
+$stmt = $conn->prepare("SELECT id, name, electricity_limit, gas_limit, water_limit FROM rooms WHERE home_id = ?");
 $stmt->bind_param("i", $home_id);
 $stmt->execute();
 $result = $stmt->get_result();

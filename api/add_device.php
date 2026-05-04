@@ -25,6 +25,10 @@ $name = $input['name'] ?? '';
 $type = $input['type'] ?? '';
 $status = $input['status'] ?? 'off';
 $room_id = $input['room_id'] ?? null;
+$electricity = $input['electricity'] ?? 0;
+$gas = $input['gas'] ?? 0;
+$water = $input['water'] ?? 0;
+
 
 if (empty($name) || empty($type)) {
     http_response_code(400);
@@ -48,8 +52,12 @@ try {
 }
 
 
-$stmt = $conn->prepare("INSERT INTO devices (name, type, status, home_id, room_id) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("sssii", $name, $type, $status, $home_id, $room_id);
+$stmt = $conn->prepare("
+    INSERT INTO devices
+    (name, type, status, home_id, room_id, electricity, gas, water)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+");
+    $stmt->bind_param("sssiiddd", $name, $type, $status, $home_id, $room_id, $electricity, $gas, $water);
 
 if ($stmt->execute()) {
     echo json_encode([
