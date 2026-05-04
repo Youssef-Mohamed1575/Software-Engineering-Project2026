@@ -47,8 +47,6 @@ function hasPermission(role, permission) {
   return permissions.includes(permission);
 }
 
-module.exports = {
-  ROLES,
-  PERMISSIONS,
-  hasPermission,
-};
+window.ROLES = ROLES;
+window.PERMISSIONS = PERMISSIONS;
+window.hasPermission = hasPermission;
