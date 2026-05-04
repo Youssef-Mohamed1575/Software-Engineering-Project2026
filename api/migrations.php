@@ -20,7 +20,7 @@ $conn->select_db("projectdb");
 $createHomesTableQuery = "CREATE TABLE IF NOT EXISTS homes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    owner_id INT,
+    owner_id INT
 )";
 
 if ($conn->query($createHomesTableQuery)) {
@@ -76,9 +76,10 @@ if ($conn->query($createDevicesTableQuery)) {
 
 // Seed users
 $checkEmpty = $conn->query("SELECT COUNT(*) as count FROM users");
-$row = $checkEmpty->fetch_assoc();
+if ($checkEmpty) {
+    $row = $checkEmpty->fetch_assoc();
 
-if ($row['count'] == 0) {
+    if ($row['count'] == 0) {
     $defaultPassword = 'password123';
     $users = [
         ['owner', $defaultPassword, 'homeOwner'],
@@ -102,6 +103,9 @@ if ($row['count'] == 0) {
     $conn->query("UPDATE users SET home_id = $homeId");
 
     echo "Default users and home seeded successfully with password: <b>$defaultPassword</b><br>";
+    }
+} else {
+    echo "Error checking users table for seeding: " . $conn->error . "<br>";
 }
 
 echo "Setup complete!";
