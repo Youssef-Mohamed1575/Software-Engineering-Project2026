@@ -24,6 +24,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 $name = $input['name'] ?? '';
 $type = $input['type'] ?? '';
 $status = $input['status'] ?? 'off';
+$room_id = $input['room_id'] ?? null;
 
 if (empty($name) || empty($type)) {
     http_response_code(400);
@@ -47,8 +48,8 @@ try {
 }
 
 
-$stmt = $conn->prepare("INSERT INTO devices (name, type, status, home_id) VALUES (?, ?, ?, ?)");
-$stmt->bind_param("sssi", $name, $type, $status, $home_id);
+$stmt = $conn->prepare("INSERT INTO devices (name, type, status, home_id, room_id) VALUES (?, ?, ?, ?, ?)");
+$stmt->bind_param("sssii", $name, $type, $status, $home_id, $room_id);
 
 if ($stmt->execute()) {
     echo json_encode([
