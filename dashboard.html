@@ -82,8 +82,8 @@
             <a href="Household Managment.html">Household Management<br /></a>
           </li>
         </button>
-        <button>
-          <li>User Panel<br /></li>
+        <button id="userPanelBtn" class="hidden">
+          <li><a href="admin.html">User Panel<br /></a></li>
         </button>
       </ul>
     </div>
@@ -232,8 +232,22 @@
     <!-- SCripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="role-access-control/permissions.js"></script>
 
     <script>
+      // Session and Permissions Check
+      fetch('api/check_session.php')
+        .then(res => res.json())
+        .then(data => {
+          if (data.loggedIn && data.user) {
+            if (window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ADMIN_PANEL)) {
+              document.getElementById('userPanelBtn').classList.remove('hidden');
+            }
+          } else {
+            window.location.href = 'login.html';
+          }
+        });
+
       document.addEventListener("click", function (event) {
         const sidebar = document.getElementById("sidebar");
         const burgerBtn = event.target.closest("button");
