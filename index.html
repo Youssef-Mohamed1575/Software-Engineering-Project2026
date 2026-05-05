@@ -56,69 +56,25 @@
         </div>
     </div>
 
+    <script src="js/login.js"></script>
     <script>
         /*
-            the vision here is that i dont know how i can run the migarations file on file startup so instead i made that
+            the vision here is that i dont know how i can run the migarations file on server startup so instead i made that
             the user will always start here if he already has a session then we move him to the dashboard otherwise he sign-in
             and always run the migration when the user come here 
         */   
         
-        window.addEventListener('DOMContentLoaded', () => {
-            fetch('api/migrations.php')
-                .then(r => r.text())
-                .then(d => console.log('DB Status:', d));
-        });
+        window.addEventListener('DOMContentLoaded', runMigrations);
+
+        checkSessionAndRedirect();
 
         const loginForm = document.getElementById('loginForm');
-        // Redirect if already logged in
-        fetch('api/check_session.php')
-            .then(res => res.json())
-            .then(data => {
-                if (data.loggedIn){
-                    window.location.href = 'dashboard.html';
-                }
-            });
-
         const errorMessage = document.getElementById('errorMessage');
         const submitBtn = document.getElementById('submitBtn');
 
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            submitBtn.disabled = true;
-            const originalContent = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>';
-            errorMessage.classList.add('hidden');
-
-            const formData = new FormData(loginForm);
-            const data = Object.fromEntries(formData.entries());
-
-            try {
-                const response = await fetch('api/login.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    window.location.href = 'dashboard.html';
-                } else {
-                    errorMessage.textContent = result.message;
-                    errorMessage.classList.remove('hidden');
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalContent;
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                errorMessage.textContent = 'System error. Please try again.';
-                errorMessage.classList.remove('hidden');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalContent;
-            }
-        });
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => handleLoginSubmit(e, loginForm, submitBtn, errorMessage));
+        }
     </script>
 </body>
-
 </html>
