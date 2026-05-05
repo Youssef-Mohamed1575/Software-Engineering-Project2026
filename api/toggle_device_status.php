@@ -3,6 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
     echo json_encode([
         'success' => false,
         'message' => 'Unauthorized'
@@ -18,6 +19,7 @@ $new_status = $input['status'] ?? 'off';
 $home_id = intval($_SESSION['home_id'] ?? 0);
 
 if (!$device_id) {
+    http_response_code(400);
     echo json_encode([
         'success' => false,
         'message' => 'Invalid device'
@@ -28,6 +30,7 @@ if (!$device_id) {
 $conn = new mysqli("localhost", "root", "", "projectdb");
 
 if ($conn->connect_error) {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Database connection failed'
@@ -75,6 +78,7 @@ if ($stmt->execute()) {
         'message' => 'Device status updated'
     ]);
 } else {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Failed to update status'

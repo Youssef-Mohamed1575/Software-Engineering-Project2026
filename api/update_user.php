@@ -49,7 +49,6 @@ try {
     exit;
 }
 
-// Ensure the user exists and belongs to the same home
 $check_stmt = $conn->prepare("SELECT id FROM users WHERE id = ? AND home_id = ?");
 $check_stmt->bind_param("ii", $user_id, $home_id);
 $check_stmt->execute();
@@ -62,7 +61,6 @@ if ($check_stmt->get_result()->num_rows === 0) {
 }
 $check_stmt->close();
 
-// Check if username is already taken by a different user
 $username_stmt = $conn->prepare("SELECT id FROM users WHERE username = ? AND id != ?");
 $username_stmt->bind_param("si", $username, $user_id);
 $username_stmt->execute();
@@ -75,7 +73,6 @@ if ($username_stmt->get_result()->num_rows > 0) {
 }
 $username_stmt->close();
 
-// Update user
 if (!empty($password)) {
     $stmt = $conn->prepare("UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?");
     $stmt->bind_param("sssi", $username, $password, $role, $user_id);

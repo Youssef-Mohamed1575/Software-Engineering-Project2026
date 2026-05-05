@@ -3,6 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
     echo json_encode([
         'success' => false,
         'message' => 'Unauthorized'
@@ -25,6 +26,7 @@ $device_id = intval($input['device_id'] ?? 0);
 $home_id = intval($_SESSION['home_id'] ?? 0);
 
 if (!$device_id || !$home_id) {
+    http_response_code(400);
     echo json_encode([
         'success' => false,
         'message' => 'Invalid device or home'
@@ -35,6 +37,7 @@ if (!$device_id || !$home_id) {
 $conn = new mysqli("localhost", "root", "", "projectdb");
 
 if ($conn->connect_error) {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Database connection failed'
@@ -55,6 +58,7 @@ if ($stmt->execute()) {
         'message' => 'Device removed successfully'
     ]);
 } else {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Failed to remove device'

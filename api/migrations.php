@@ -26,6 +26,7 @@ $createHomesTableQuery = "CREATE TABLE IF NOT EXISTS homes (
 if ($conn->query($createHomesTableQuery)) {
     echo "Table 'homes' created or already exists.<br>";
 } else {
+    http_response_code(500);
     echo "Error creating table 'homes': " . $conn->error . "<br>";
 }
 
@@ -40,6 +41,9 @@ $createTableQuery = "CREATE TABLE IF NOT EXISTS users (
 
 if ($conn->query($createTableQuery)) {
     echo "Table 'users' updated or created.<br>";
+} else {
+    http_response_code(500);
+    echo "Error creating table 'users': " . $conn->error . "<br>";
 }
 
 // Create rooms table
@@ -53,6 +57,7 @@ $createRoomsTableQuery = "CREATE TABLE IF NOT EXISTS rooms (
 if ($conn->query($createRoomsTableQuery)) {
     echo "Table 'rooms' created or already exists.<br>";
 } else {
+    http_response_code(500);
     echo "Error creating table 'rooms': " . $conn->error . "<br>";
 }
 
@@ -62,16 +67,11 @@ $createDevicesTableQuery = "CREATE TABLE IF NOT EXISTS devices (
     name VARCHAR(100) NOT NULL,
     type VARCHAR(50) NOT NULL,
     status VARCHAR(20) DEFAULT 'off',
-
     electricity DECIMAL(10,2) DEFAULT 0,
     gas DECIMAL(10,2) DEFAULT 0,
     water DECIMAL(10,2) DEFAULT 0,
-
-
     active_minutes INT DEFAULT 0,
     last_activated_at DATETIME DEFAULT NULL
-
-
     home_id INT,
     room_id INT DEFAULT NULL,
     FOREIGN KEY (home_id) REFERENCES homes(id),
@@ -81,6 +81,7 @@ $createDevicesTableQuery = "CREATE TABLE IF NOT EXISTS devices (
 if ($conn->query($createDevicesTableQuery)) {
     echo "Table 'devices' created or already exists.<br>";
 } else {
+    http_response_code(500);
     echo "Error creating table 'devices': " . $conn->error . "<br>";
 }
 
@@ -115,6 +116,7 @@ if ($checkEmpty) {
     echo "Default users and home seeded successfully with password: <b>$defaultPassword</b><br>";
     }
 } else {
+    http_response_code(500);
     echo "Error checking users table for seeding: " . $conn->error . "<br>";
 }
 

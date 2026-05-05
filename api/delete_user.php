@@ -45,7 +45,6 @@ try {
     exit;
 }
 
-// Ensure the user exists and belongs to the same home
 $check_stmt = $conn->prepare("SELECT id FROM users WHERE id = ? AND home_id = ?");
 $check_stmt->bind_param("ii", $user_id, $home_id);
 $check_stmt->execute();

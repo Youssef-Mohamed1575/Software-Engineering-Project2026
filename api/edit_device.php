@@ -3,6 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
     echo json_encode([
         'success' => false,
         'message' => 'Unauthorized'
@@ -32,6 +33,7 @@ $water = floatval($input['water'] ?? 0);
 $home_id = intval($_SESSION['home_id'] ?? 0);
 
 if (!$device_id || empty($name) || empty($type)) {
+    http_response_code(400);
     echo json_encode([
         'success' => false,
         'message' => 'Missing required fields'
@@ -42,6 +44,7 @@ if (!$device_id || empty($name) || empty($type)) {
 $conn = new mysqli("localhost", "root", "", "projectdb");
 
 if ($conn->connect_error) {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Database connection failed'
@@ -72,6 +75,7 @@ if ($stmt->execute()) {
         'message' => 'Device updated successfully'
     ]);
 } else {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Failed to update device'

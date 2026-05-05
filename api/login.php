@@ -23,6 +23,7 @@ $username = $input['username'] ?? '';
 $password = $input['password'] ?? '';
 
 if (empty($username) || empty($password)) {
+    http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Username and password are required']);
     exit;
 }
@@ -45,9 +46,11 @@ if ($user = $result->fetch_assoc()) {
             'role' => $user['role']
         ]);
     } else {
+        http_response_code(401);
         echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
     }
 } else {
+    http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
 }
 

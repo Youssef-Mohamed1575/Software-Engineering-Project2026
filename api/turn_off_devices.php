@@ -3,6 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
     echo json_encode([
         'success' => false,
         'message' => 'Unauthorized'
@@ -13,6 +14,7 @@ if (!isset($_SESSION['user_id'])) {
 $home_id = intval($_SESSION['home_id'] ?? 0);
 
 if (!$home_id) {
+    http_response_code(400);
     echo json_encode([
         'success' => false,
         'message' => 'No home associated with this user'
@@ -26,6 +28,7 @@ $type = strtolower(trim($input['type'] ?? 'devices'));
 $conn = new mysqli("localhost", "root", "", "projectdb");
 
 if ($conn->connect_error) {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Database connection failed'
@@ -33,7 +36,6 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Device type filters
 if ($type === "devices") {
 
     $stmt = $conn->prepare("
@@ -52,7 +54,7 @@ WHEN last_activated_at IS NOT NULL
 
     $stmt->bind_param("i", $home_id);
 
-}// LIGHT
+}
 else if ($type === "light") {
 
     $stmt = $conn->prepare("
@@ -72,7 +74,6 @@ else if ($type === "light") {
     $stmt->bind_param("is", $home_id, $type);
 }
 
-// HEATER
 else if ($type === "heater") {
 
     $stmt = $conn->prepare("
@@ -92,7 +93,6 @@ else if ($type === "heater") {
     $stmt->bind_param("is", $home_id, $type);
 }
 
-// AC
 else if ($type === "ac") {
 
     $stmt = $conn->prepare("
@@ -114,6 +114,7 @@ else if ($type === "ac") {
 
 
 else {
+    http_response_code(400);
     echo json_encode([
         'success' => false,
         'message' => 'Invalid type specified'
@@ -126,6 +127,7 @@ if ($stmt->execute()) {
         'message' => ucfirst($type) . ' turned off successfully'
     ]);
 } else {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Failed to update devices'

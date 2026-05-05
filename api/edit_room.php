@@ -3,6 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
     echo json_encode([
         'success' => false,
         'message' => 'Unauthorized'
@@ -31,6 +32,7 @@ $water = floatval($input['water'] ?? 0);
 $home_id = intval($_SESSION['home_id'] ?? 0);
 
 if (!$room_id || empty($name)) {
+    http_response_code(400);
     echo json_encode([
         'success' => false,
         'message' => 'Missing required fields'
@@ -41,6 +43,7 @@ if (!$room_id || empty($name)) {
 $conn = new mysqli("localhost", "root", "", "projectdb");
 
 if ($conn->connect_error) {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Database connection failed'
@@ -70,6 +73,7 @@ if ($stmt->execute()) {
         'message' => 'Room updated successfully'
     ]);
 } else {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Failed to update room'
