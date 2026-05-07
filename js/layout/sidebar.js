@@ -5,27 +5,6 @@ function toggleSidebar() {
   }
 }
 
-function hideSidePanel(role) {
-  const userPanelBtn = document.getElementById('userPanelBtn');
-  const activityLogBtn = document.getElementById('activityLogBtn');
-
-  if (userPanelBtn) {
-    if (window.hasPermission(role, window.PERMISSIONS.VIEW_ADMIN_PANEL)) {
-      userPanelBtn.classList.remove('hidden');
-    } else {
-      userPanelBtn.classList.add('hidden');
-    }
-  }
-
-  if (activityLogBtn) {
-    if (window.hasPermission(role, window.PERMISSIONS.VIEW_ACTIVITY_LOG)) {
-      activityLogBtn.classList.remove('hidden');
-    } else {
-      activityLogBtn.classList.add('hidden');
-    }
-  }
-}
-
 // Close sidebar on click outside
 document.addEventListener("click", function (event) {
   const sidebar = document.getElementById("sidebar");
@@ -40,4 +19,3 @@ document.addEventListener("click", function (event) {
 });
 
 window.toggleSidebar = toggleSidebar;
-window.hideSidePanel = hideSidePanel;

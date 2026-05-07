@@ -119,7 +119,6 @@
   <script src="role-access-control/permissions.js"></script>
   <script src="js/layout/sidebar.js"></script>
   <script>
-    // Session and Authorization check on load
     window.checkSession()
       .then(data => {
         if (!data.loggedIn) {
@@ -128,13 +127,11 @@
           alert('Access denied: Homeowners only.');
           window.location.href = 'dashboard.html';
         } else {
-          // Render conditional sidebar items
           window.hideSidePanel(data.user.role);
           fetchActivities();
         }
       });
 
-    // Fetch and render activities
     async function fetchActivities() {
       const tbody = document.getElementById('activityTableBody');
       try {
