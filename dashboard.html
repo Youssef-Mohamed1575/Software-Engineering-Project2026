@@ -62,6 +62,9 @@
       <button id="userPanelBtn" class="hidden">
         <li><a href="admin.html">User Panel<br /></a></li>
       </button>
+      <button id="activityLogBtn" class="hidden">
+        <li><a href="activity_log.html">Activity Log<br /></a></li>
+      </button>
     </ul>
   </div>
 
@@ -185,6 +188,9 @@
         if (data.loggedIn && data.user) {
           if (window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ADMIN_PANEL)) {
             document.getElementById('userPanelBtn').classList.remove('hidden');
+          }
+          if (window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ACTIVITY_LOG)) {
+            document.getElementById('activityLogBtn').classList.remove('hidden');
           }
         } else {
           window.location.href = 'login.html';

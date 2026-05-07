@@ -56,8 +56,11 @@
           <a href="Household Managment.html">Household Management<br /></a>
         </li>
       </button>
-      <button>
-        <li>User Panel<br /></li>
+      <button id="userPanelBtn" class="hidden">
+        <li><a href="admin.html">User Panel<br /></a></li>
+      </button>
+      <button id="activityLogBtn" class="hidden">
+        <li><a href="activity_log.html">Activity Log<br /></a></li>
       </button>
     </ul>
   </div>
@@ -367,7 +370,9 @@
   </div>
   <div id="rooms_container" class="bg-slate-800 p-20 m-10 rounded-lg"></div>
 
-  <script src="js/layout/sidebar.js">
+  <script src="role-access-control/permissions.js"></script>
+  <script src="js/layout/sidebar.js"></script>
+  <script>
     function popup(type) {
       if (type === "device") {
         document.getElementById("device_popup").classList.remove("hidden");
@@ -964,6 +969,24 @@
       }
     }
     window.addEventListener("DOMContentLoaded", async () => {
+      // Check session and permissions
+      try {
+        const res = await fetch('api/check_session.php');
+        const data = await res.json();
+        if (!data.loggedIn) {
+          window.location.href = 'index.html';
+          return;
+        }
+        if (window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ADMIN_PANEL)) {
+          document.getElementById('userPanelBtn').classList.remove('hidden');
+        }
+        if (window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ACTIVITY_LOG)) {
+          document.getElementById('activityLogBtn').classList.remove('hidden');
+        }
+      } catch (err) {
+        console.error('Session check failed:', err);
+      }
+
       await loadDashboardData();
     });
     async function loadDashboardData() {
