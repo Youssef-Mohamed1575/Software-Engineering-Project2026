@@ -50,6 +50,9 @@ if ($conn->query($createTableQuery)) {
 $createRoomsTableQuery = "CREATE TABLE IF NOT EXISTS rooms (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
+    electricity_limit DECIMAL(10,2) DEFAULT 0,
+    gas_limit DECIMAL(10,2) DEFAULT 0,
+    water_limit DECIMAL(10,2) DEFAULT 0,
     home_id INT,
     FOREIGN KEY (home_id) REFERENCES homes(id)
 )";
