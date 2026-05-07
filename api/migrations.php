@@ -71,7 +71,7 @@ $createDevicesTableQuery = "CREATE TABLE IF NOT EXISTS devices (
     gas DECIMAL(10,2) DEFAULT 0,
     water DECIMAL(10,2) DEFAULT 0,
     active_minutes INT DEFAULT 0,
-    last_activated_at DATETIME DEFAULT NULL
+    last_activated_at DATETIME DEFAULT NULL,
     home_id INT,
     room_id INT DEFAULT NULL,
     FOREIGN KEY (home_id) REFERENCES homes(id),
@@ -83,6 +83,24 @@ if ($conn->query($createDevicesTableQuery)) {
 } else {
     http_response_code(500);
     echo "Error creating table 'devices': " . $conn->error . "<br>";
+}
+
+// Create device_activities table
+$createActivitiesTableQuery = "CREATE TABLE IF NOT EXISTS device_activities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    device_name VARCHAR(100) NOT NULL,
+    activity VARCHAR(100) NOT NULL,
+    done_by VARCHAR(50) NOT NULL,
+    home_id INT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (home_id) REFERENCES homes(id)
+)";
+
+if ($conn->query($createActivitiesTableQuery)) {
+    echo "Table 'device_activities' created or already exists.<br>";
+} else {
+    http_response_code(500);
+    echo "Error creating table 'device_activities': " . $conn->error . "<br>";
 }
 
 // Seed users
