@@ -184,44 +184,17 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <script src="role-access-control/permissions.js"></script>
+  <script src="js/layout/sidebar.js"></script>
 
   <script>
-    fetch('api/check_session.php')
-      .then(res => res.json())
+    window.checkSession()
       .then(data => {
         if (data.loggedIn && data.user) {
-          if (window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ADMIN_PANEL)) {
-            document.getElementById('userPanelBtn').classList.remove('hidden');
-          }
-          if (window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ACTIVITY_LOG)) {
-            document.getElementById('activityLogBtn').classList.remove('hidden');
-          }
+          window.hideSidePanel(data.user.role);
         } else {
           window.location.href = 'login.html';
         }
       });
-
-    document.addEventListener("click", function (event) {
-      const sidebar = document.getElementById("sidebar");
-      const burgerBtn = event.target.closest("button");
-
-      const isClickInsideSidebar = sidebar.contains(event.target);
-      const isBurgerButton =
-        burgerBtn && burgerBtn.getAttribute("onclick") === "toggleSidebar()";
-      if (
-        !sidebar.classList.contains("-translate-x-full") &&
-        !isClickInsideSidebar &&
-        !isBurgerButton
-      ) {
-        sidebar.classList.add("-translate-x-full");
-      }
-    });
-
-    function toggleSidebar() {
-      document
-        .getElementById("sidebar")
-        .classList.toggle("-translate-x-full");
-    }
 
     new Chart(document.getElementById("usageChart"), {
       type: "line",
@@ -345,8 +318,7 @@
       },
     });
 
-    fetch('api/check_session.php')
-      .then(res => res.json())
+    window.checkSession()
       .then(data => {
         if (data.loggedIn && data.user) {
           document.getElementById('welcome').textContent =

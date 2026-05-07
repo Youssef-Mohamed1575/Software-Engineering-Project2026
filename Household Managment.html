@@ -975,18 +975,12 @@
     window.addEventListener("DOMContentLoaded", async () => {
       // Check session and permissions
       try {
-        const res = await fetch('api/check_session.php');
-        const data = await res.json();
+        const data = await window.checkSession();
         if (!data.loggedIn) {
           window.location.href = 'index.html';
           return;
         }
-        if (window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ADMIN_PANEL)) {
-          document.getElementById('userPanelBtn').classList.remove('hidden');
-        }
-        if (window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ACTIVITY_LOG)) {
-          document.getElementById('activityLogBtn').classList.remove('hidden');
-        }
+        window.hideSidePanel(data.user.role);
       } catch (err) {
         console.error('Session check failed:', err);
       }
