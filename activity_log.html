@@ -202,18 +202,18 @@
 
           const rowHTML = `
             <tr class="hover:bg-slate-50/50 transition duration-150 group">
-              <td class="px-8 py-4.5 whitespace-nowrap">
+              <td class="px-8 py-6 whitespace-nowrap">
                 <div class="flex items-center gap-3">
                   <div class="w-2.5 h-2.5 rounded-full ${getRandomDotColor(act.device_name)}"></div>
                   <span class="font-semibold text-slate-800 group-hover:text-emerald-600 transition duration-150">${escapeHtml(act.device_name)}</span>
                 </div>
               </td>
-              <td class="px-8 py-4.5 whitespace-nowrap">
+              <td class="px-8 py-6 whitespace-nowrap">
                 <span class="${badgeClass}">
                   ${escapeHtml(act.activity)}
                 </span>
               </td>
-              <td class="px-8 py-4.5 whitespace-nowrap">
+              <td class="px-8 py-6 whitespace-nowrap">
                 <div class="flex items-center gap-2">
                   <div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs uppercase">
                     ${escapeHtml(act.done_by.charAt(0))}
@@ -221,7 +221,7 @@
                   <span class="text-sm font-bold text-slate-700">${escapeHtml(act.done_by)}</span>
                 </div>
               </td>
-              <td class="px-8 py-4.5 whitespace-nowrap text-sm text-slate-500 font-medium">
+              <td class="px-8 py-6 whitespace-nowrap text-sm text-slate-500 font-medium">
                 ${timestampFormatted}
               </td>
             </tr>
