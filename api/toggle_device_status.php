@@ -38,6 +38,16 @@ if ($conn->connect_error) {
     exit;
 }
 
+$device_name = "Unknown Device";
+$name_stmt = $conn->prepare("SELECT name FROM devices WHERE id = ? AND home_id = ?");
+$name_stmt->bind_param("ii", $device_id, $home_id);
+$name_stmt->execute();
+$name_result = $name_stmt->get_result();
+if ($row = $name_result->fetch_assoc()) {
+    $device_name = $row['name'];
+}
+$name_stmt->close();
+
 // TURNING ON
 if ($new_status === "on") {
 
@@ -73,6 +83,15 @@ $stmt->bind_param("ii", $device_id, $home_id);
 }
 
 if ($stmt->execute()) {
+    // Log activity
+    $activity = ($new_status === 'on') ? 'Turned ON' : 'Turned OFF';
+    $done_by = $_SESSION['username'] ?? 'Unknown';
+
+    $log_stmt = $conn->prepare("INSERT INTO device_activities (device_name, activity, done_by, home_id) VALUES (?, ?, ?, ?)");
+    $log_stmt->bind_param("sssi", $device_name, $activity, $done_by, $home_id);
+    $log_stmt->execute();
+    $log_stmt->close();
+
     echo json_encode([
         'success' => true,
         'message' => 'Device status updated'

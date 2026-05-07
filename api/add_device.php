@@ -61,6 +61,15 @@ $stmt = $conn->prepare("
     $stmt->bind_param("sssiiddd", $name, $type, $status, $home_id, $room_id, $electricity, $gas, $water);
 
 if ($stmt->execute()) {
+    // Log activity
+    $activity = "Added Device";
+    $done_by = $_SESSION['username'] ?? 'Unknown';
+
+    $log_stmt = $conn->prepare("INSERT INTO device_activities (device_name, activity, done_by, home_id) VALUES (?, ?, ?, ?)");
+    $log_stmt->bind_param("sssi", $name, $activity, $done_by, $home_id);
+    $log_stmt->execute();
+    $log_stmt->close();
+
     echo json_encode([
         'success' => true,
         'message' => 'Device added successfully',

@@ -70,6 +70,15 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
+    // Log activity
+    $activity = "Edited Device Details";
+    $done_by = $_SESSION['username'] ?? 'Unknown';
+
+    $log_stmt = $conn->prepare("INSERT INTO device_activities (device_name, activity, done_by, home_id) VALUES (?, ?, ?, ?)");
+    $log_stmt->bind_param("sssi", $name, $activity, $done_by, $home_id);
+    $log_stmt->execute();
+    $log_stmt->close();
+
     echo json_encode([
         'success' => true,
         'message' => 'Device updated successfully'
