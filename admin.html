@@ -46,25 +46,34 @@
     </div>
 
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300 z-50">
-      <div class="p-4 font-bold flex items-center gap-2">
-        <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
+    <div id="sidebar"
+      class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300 z-50 shadow-2xl">
+      <div class="p-4 font-bold flex items-center gap-2 border-b border-slate-700">
+        <button onclick="toggleSidebar()" class="p-2 rounded hover:bg-slate-700 transition">☰</button>
         Menu
       </div>
 
-      <ul class="p-8 space-y-6">
-        <button>
-          <li><a href="dashboard.html">Dashboard<br /></a></li>
-        </button>
-        <button>
-          <li><a href="Household Managment.html">Household Management<br /></a></li>
-        </button>
-        <button id="userPanelBtn" class="hidden">
-          <li><a href="admin.html">User Panel<br /></a></li>
-        </button>
-        <button id="activityLogBtn" class="hidden">
-          <li><a href="activity_log.html">Activity Log<br /></a></li>
-        </button>
+      <ul class="p-6 space-y-4">
+        <li>
+          <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="Household Managment.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+            Household Management
+          </a>
+        </li>
+        <li id="userPanelBtn" class="hidden">
+          <a href="admin.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition font-medium">
+            User Panel
+          </a>
+        </li>
+        <li id="activityLogBtn" class="hidden">
+          <a href="activity_log.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+            Activity Log
+          </a>
+        </li>
       </ul>
     </div>
 
