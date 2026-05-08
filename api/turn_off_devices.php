@@ -39,17 +39,23 @@ if ($conn->connect_error) {
 if ($type === "devices") {
 
     $stmt = $conn->prepare("
-        UPDATE devices
-        SET
-            status = 'off',
-            active_minutes = active_minutes +
-                CASE
-WHEN last_activated_at IS NOT NULL
-                    THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
-                    ELSE 0
-                END,
-            last_activated_at = NULL
-        WHERE home_id = ?
+UPDATE devices
+SET
+    status = 'off',
+    active_minutes = active_minutes +
+        CASE
+            WHEN last_activated_at IS NOT NULL
+            THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
+            ELSE 0
+        END,
+    total_minutes = total_minutes +
+        CASE
+            WHEN last_activated_at IS NOT NULL
+            THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
+            ELSE 0
+        END,
+    last_activated_at = NULL
+WHERE home_id = ?
     ");
 
     $stmt->bind_param("i", $home_id);
@@ -61,12 +67,19 @@ else if ($type === "light") {
         UPDATE devices
         SET
             status = 'off',
-            active_minutes = active_minutes +
-                CASE
-                    WHEN last_activated_at IS NOT NULL
-                    THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
-                    ELSE 0
-                END,
+        active_minutes = active_minutes +
+            CASE
+                WHEN last_activated_at IS NOT NULL
+                THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
+                ELSE 0
+            END,
+
+        total_minutes = total_minutes +
+            CASE
+                WHEN last_activated_at IS NOT NULL
+                THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
+                ELSE 0
+            END,
             last_activated_at = NULL
         WHERE home_id = ? AND LOWER(type) = ?
     ");
@@ -81,6 +94,12 @@ else if ($type === "heater") {
         SET
             status = 'off',
             active_minutes = active_minutes +
+                CASE
+                    WHEN last_activated_at IS NOT NULL
+                    THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
+                    ELSE 0
+                END,
+            total_minutes = total_minutes +
                 CASE
                     WHEN last_activated_at IS NOT NULL
                     THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
