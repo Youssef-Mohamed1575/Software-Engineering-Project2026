@@ -110,17 +110,17 @@
       <p class="text-sm font-medium opacity-80 tracking-wide">
         Electricity usage
       </p>
-      <h2 class="text-3xl font-bold mt-2">180 kWh</h2>
+      <h2 id="electricityUsage" class="text-3xl font-bold mt-2">180 kWh</h2>
     </div>
 
     <div class="bg-emerald-400 p-5 rounded-lg text-slate-900 shadow-sm">
       <p class="text-sm font-medium opacity-80 tracking-wide">Gas usage</p>
-      <h2 class="text-3xl font-bold mt-2">180 m³</h2>
+      <h2 id="gasUsage" class="text-3xl font-bold mt-2">180 m³</h2>
     </div>
 
     <div class="bg-cyan-500 p-5 rounded-lg text-slate-900 shadow-sm">
       <p class="text-sm font-medium opacity-80 tracking-wide">Water usage</p>
-      <h2 class="text-3xl font-bold mt-2">180 L</h2>
+      <h2 id="waterUsage" class="text-3xl font-bold mt-2">180 L</h2>
     </div>
   </div>
 
@@ -206,36 +206,52 @@
         }
       });
 
-    new Chart(document.getElementById("usageChart"), {
-      type: "line",
-      data: {
-        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        datasets: [
-          {
-            label: "Electricity",
-            data: [120, 150, 130, 170, 160, 180, 140],
-            borderColor: "#FFF176",
-            tension: 0.4,
+    fetch("api/UsageChart.php", {
+      method: "GET",
+      credentials: "same-origin",
+      cache: "no-store"
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.success) {
+          console.error(data.message);
+          return;
+        }
+
+        new Chart(document.getElementById("usageChart"), {
+          type: "line",
+          data: {
+            labels: data.labels,
+            datasets: [
+              {
+                label: "Electricity",
+                data: data.electricity,
+                borderColor: "#FFF176",
+                tension: 0.4,
+              },
+              {
+                label: "Gas",
+                data: data.gas,
+                borderColor: "#00d492",
+                tension: 0.4,
+              },
+              {
+                label: "Water",
+                data: data.water,
+                borderColor: "#00BCD4",
+                tension: 0.4,
+              },
+            ],
           },
-          {
-            label: "Gas",
-            data: [100, 120, 170, 110, 160, 130, 110],
-            borderColor: "#00d492",
-            tension: 0.4,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
           },
-          {
-            label: "Water",
-            data: [90, 130, 110, 150, 120, 120, 180],
-            borderColor: "#00BCD4",
-            tension: 0.4,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    });
+        });
+      })
+      .catch(error => {
+        console.error("Failed to load chart data:", error);
+      });
 
     function toggleCard(card, type) {
       const change = card.querySelector(".killBtn");
@@ -379,6 +395,84 @@
       } catch (error) {
         console.error("Failed to turn off devices:", error);
       }
+    }
+
+
+    function checkDailyReset() {
+      const today = new Date().toISOString().split("T")[0];
+      const lastReset = localStorage.getItem("lastDailyReset");
+
+      if (lastReset !== today) {
+        return fetch("api/dailyUsage.php", {
+          method: "GET",
+          credentials: "same-origin",
+          cache: "no-store"
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log("Daily reset completed:", data);
+
+            if (data.success) {
+              localStorage.setItem("lastDailyReset", today);
+            }
+          })
+          .catch(err => {
+            console.error("Daily reset failed:", err);
+          });
+      }
+
+      return Promise.resolve();
+    }
+
+    function updateUsageTable() {
+      fetch("api/dailyUsage.php", {
+        method: "GET",
+        credentials: "same-origin",
+        cache: "no-store"
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Usage table refreshed:", data);
+
+          // Update UI table values here
+        })
+        .catch(err => {
+          console.error("Usage update failed:", err);
+        });
+    }
+
+    window.addEventListener("load", () => {
+      checkDailyReset().then(() => {
+        updateUsageTable();
+        loadDashboardUsage();
+      });
+    });
+
+    function loadDashboardUsage() {
+      fetch("api/DashboardUsage.php", {
+        method: "GET",
+        credentials: "same-origin",
+        cache: "no-store"
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (!data.success) {
+            console.error(data.message);
+            return;
+          }
+
+          document.getElementById("electricityUsage").textContent =
+            data.usage.electricity + " kWh";
+
+          document.getElementById("gasUsage").textContent =
+            data.usage.gas + " m³";
+
+          document.getElementById("waterUsage").textContent =
+            data.usage.water + " L";
+        })
+        .catch(error => {
+          console.error("Failed to load dashboard usage:", error);
+        });
     }
 
 

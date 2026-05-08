@@ -76,6 +76,12 @@ $stmt = $conn->prepare("
                 THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
                 ELSE 0
             END,
+        total_minutes = total_minutes +
+            CASE
+                WHEN last_activated_at IS NOT NULL
+                THEN TIMESTAMPDIFF(MINUTE, last_activated_at, NOW())
+                ELSE 0
+            END,
         last_activated_at = NULL
     WHERE id = ? AND home_id = ?
 ");

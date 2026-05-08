@@ -74,6 +74,7 @@ $createDevicesTableQuery = "CREATE TABLE IF NOT EXISTS devices (
     gas DECIMAL(10,2) DEFAULT 0,
     water DECIMAL(10,2) DEFAULT 0,
     active_minutes INT DEFAULT 0,
+    total_minutes INT DEFAULT 0,
     last_activated_at DATETIME DEFAULT NULL,
     home_id INT,
     room_id INT DEFAULT NULL,
@@ -98,6 +99,20 @@ $createActivitiesTableQuery = "CREATE TABLE IF NOT EXISTS device_activities (
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (home_id) REFERENCES homes(id)
 )";
+
+$createDailyUsageTableQuery = "CREATE TABLE IF NOT EXISTS daily_resource_usage (
+    usage_date DATE PRIMARY KEY,
+    total_electricity DECIMAL(12,2) DEFAULT 0,
+    total_gas DECIMAL(12,2) DEFAULT 0,
+    total_water DECIMAL(12,2) DEFAULT 0
+)";
+
+if ($conn->query($createDailyUsageTableQuery)) {
+    echo "Table 'daily_resource_usage' created or already exists.<br>";
+} else {
+    http_response_code(500);
+    echo "Error creating table 'daily_resource_usage': " . $conn->error . "<br>";
+}
 
 if ($conn->query($createActivitiesTableQuery)) {
     echo "Table 'device_activities' created or already exists.<br>";
