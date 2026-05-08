@@ -49,13 +49,15 @@ $totalElectricity = $data['total_electricity'] ?? 0;
 $totalGas = $data['total_gas'] ?? 0;
 $totalWater = $data['total_water'] ?? 0;
 
+$home_id = intval($_SESSION['home_id']);
 $stmt = $conn->prepare("
     INSERT INTO daily_resource_usage (
         usage_date,
+        home_id,
         total_electricity,
         total_gas,
         total_water
-    ) VALUES (?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
         total_electricity = VALUES(total_electricity),
         total_gas = VALUES(total_gas),
@@ -63,8 +65,9 @@ $stmt = $conn->prepare("
 ");
 
 $stmt->bind_param(
-    "sddd",
+    "siddd",
     $dateToday,
+    $home_id,
     $totalElectricity,
     $totalGas,
     $totalWater

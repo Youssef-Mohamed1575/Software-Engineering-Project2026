@@ -28,17 +28,39 @@ if ($conn->connect_error) {
 Formula:
 (total_minutes / 60) * resource_rate
 */
-
+$currentMonth = date('m');
+$currentYear = date('Y');
+$home_id = intval($_SESSION['home_id']);
 $stmt = $conn->prepare("
     SELECT 
-        SUM((total_minutes / 60) * electricity) AS total_electricity,
-        SUM((total_minutes / 60) * gas) AS total_gas,
-        SUM((total_minutes / 60) * water) AS total_water
-    FROM devices
-    WHERE home_id = ?
-");
+    SUM(
+        CASE
+            WHEN MONTH(usage_date) = ? AND YEAR(usage_date) = ?
+            THEN total_electricity
+            ELSE 0
+        END
+    ) AS total_electricity,
 
-$stmt->bind_param("i", $home_id);
+    SUM(
+        CASE
+            WHEN MONTH(usage_date) = ? AND YEAR(usage_date) = ?
+            THEN total_gas
+            ELSE 0
+        END
+    ) AS total_gas,
+
+    SUM(
+        CASE
+            WHEN MONTH(usage_date) = ? AND YEAR(usage_date) = ?
+            THEN total_water
+            ELSE 0
+        END
+    ) AS total_water
+
+FROM daily_resource_usage
+WHERE home_id = ?
+");
+$stmt->bind_param("iiiiiii", $currentMonth, $currentYear, $currentMonth, $currentYear, $currentMonth, $currentYear   , $home_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $data = $result->fetch_assoc();

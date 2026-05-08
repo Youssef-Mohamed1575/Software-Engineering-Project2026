@@ -16,6 +16,12 @@ if (!isset($_SESSION['home_id'])) {
 
 $home_id = intval($_SESSION['home_id']);
 
+$currentMonth = date('m');
+$currentYear = date('Y');
+
+$lastMonth = date('m', strtotime('-1 month'));
+$lastMonthYear = date('Y', strtotime('-1 month'));
+
 $conn = new mysqli("localhost", "root", "", "projectdb");
 
 if ($conn->connect_error) {
@@ -43,24 +49,88 @@ $waterTariff = 0.08;       // EGP per liter
 CURRENT TOTAL USAGE
 ---------------------------------
 */
-
 $stmt = $conn->prepare("
     SELECT 
-        SUM((total_minutes / 60) * electricity) AS electricity_usage,
-        SUM((total_minutes / 60) * gas) AS gas_usage,
-        SUM((total_minutes / 60) * water) AS water_usage
-    FROM devices
+        SUM(
+            CASE 
+                WHEN MONTH(usage_date) = ? AND YEAR(usage_date) = ?
+                THEN total_electricity
+                ELSE 0
+            END
+        ) AS current_electricity,
+
+        SUM(
+            CASE 
+                WHEN MONTH(usage_date) = ? AND YEAR(usage_date) = ?
+                THEN total_gas
+                ELSE 0
+            END
+        ) AS current_gas,
+
+        SUM(
+            CASE 
+                WHEN MONTH(usage_date) = ? AND YEAR(usage_date) = ?
+                THEN total_water
+                ELSE 0
+            END
+        ) AS current_water,
+
+        SUM(
+            CASE 
+                WHEN MONTH(usage_date) = ? AND YEAR(usage_date) = ?
+                THEN total_electricity
+                ELSE 0
+            END
+        ) AS last_electricity,
+
+        SUM(
+            CASE 
+                WHEN MONTH(usage_date) = ? AND YEAR(usage_date) = ?
+                THEN total_gas
+                ELSE 0
+            END
+        ) AS last_gas,
+
+        SUM(
+            CASE 
+                WHEN MONTH(usage_date) = ? AND YEAR(usage_date) = ?
+                THEN total_water
+                ELSE 0
+            END
+        ) AS last_water
+
+    FROM daily_resource_usage
     WHERE home_id = ?
 ");
 
-$stmt->bind_param("i", $home_id);
+$home_id = intval($_SESSION['home_id']);
+$stmt->bind_param(
+    "iiiiiiiiiiiii",
+    $currentMonth,
+    $currentYear,
+    $currentMonth,
+    $currentYear,
+    $currentMonth,
+    $currentYear,
+    $lastMonth,
+    $lastMonthYear,
+    $lastMonth,
+    $lastMonthYear,
+    $lastMonth,
+    $lastMonthYear,
+    $home_id
+);
+
 $stmt->execute();
 $current = $stmt->get_result()->fetch_assoc();
 
-$currentElectricity = $current['electricity_usage'] ?? 0;
-$currentGas = $current['gas_usage'] ?? 0;
-$currentWater = $current['water_usage'] ?? 0;
+$currentElectricity = $current['current_electricity'] ?? 0;
+$currentGas = $current['current_gas'] ?? 0;
+$currentWater = $current['current_water'] ?? 0;
 
+$lastElectricity = $current['last_electricity'] ?? 0;
+$lastGas = $current['last_gas'] ?? 0;
+$lastWater = $current['last_water'] ?? 0;
 /*
 ---------------------------------
 CURRENT BILL
@@ -93,7 +163,10 @@ Simple placeholder:
 Could later use archived monthly data
 */
 
-$lastMonthBill = $currentBill * 1.5;
+$lastMonthBill =
+    ($lastElectricity * $electricityTariff) +
+    ($lastGas * $gasTariff) +
+    ($lastWater * $waterTariff);
 
 /*
 ---------------------------------

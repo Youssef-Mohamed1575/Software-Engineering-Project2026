@@ -101,10 +101,13 @@ $createActivitiesTableQuery = "CREATE TABLE IF NOT EXISTS device_activities (
 )";
 
 $createDailyUsageTableQuery = "CREATE TABLE IF NOT EXISTS daily_resource_usage (
-    usage_date DATE PRIMARY KEY,
+    usage_date DATE,
+    home_id INT,
     total_electricity DECIMAL(12,2) DEFAULT 0,
     total_gas DECIMAL(12,2) DEFAULT 0,
-    total_water DECIMAL(12,2) DEFAULT 0
+    total_water DECIMAL(12,2) DEFAULT 0,
+    PRIMARY KEY (usage_date, home_id),
+    FOREIGN KEY (home_id) REFERENCES homes(id)
 )";
 
 if ($conn->query($createDailyUsageTableQuery)) {
