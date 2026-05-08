@@ -13,7 +13,7 @@ async function logoutUser() {
             localStorage.clear();
             sessionStorage.removeItem("user");
 
-            window.location.replace("login.html");
+            window.location.replace("index.html");
         }
 
     } catch (error) {
