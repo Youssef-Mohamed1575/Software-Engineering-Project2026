@@ -47,22 +47,26 @@
 
     <ul class="p-6 space-y-4">
       <li>
-        <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+        <a href="dashboard.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
           Dashboard
         </a>
       </li>
       <li>
-        <a href="Household Managment.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition font-medium">
+        <a href="Household Managment.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition font-medium">
           Household Management
         </a>
       </li>
       <li id="userPanelBtn" class="hidden">
-        <a href="admin.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+        <a href="admin.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
           User Panel
         </a>
       </li>
       <li id="activityLogBtn" class="hidden">
-        <a href="activity_log.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+        <a href="activity_log.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
           Activity Log
         </a>
       </li>
@@ -76,7 +80,7 @@
   </div>
   <div class="mt-40 mx-10 p-6 rounded-2xl bg-slate-900 shadow-lg flex items-center justify-between">
     <!-- Left -->
-    <div class="text-white text-3xl font-bold ml-10">User's Household</div>
+    <div id="welcome" class="text-white text-3xl font-bold ml-10">User's Household</div>
     <div class="w-full flex justify-end items-end">
       <button onclick="popup('room')"
         class="bg-emerald-400 rounded-lg text-white p-3 text-base mr-10 hover:bg-emerald-500 duration-300"
@@ -1088,6 +1092,13 @@
         refreshRoomDevices(roomIndex);
       });
     }
+    window.checkSession()
+      .then(data => {
+        if (data.loggedIn && data.user) {
+          document.getElementById('welcome').textContent =
+            ` ${data.user.username}'s Household.`;
+        }
+      });
   </script>
 </body>
 
