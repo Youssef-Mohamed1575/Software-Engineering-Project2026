@@ -1,5 +1,7 @@
 <?php
 mysqli_report(MYSQLI_REPORT_OFF);
+session_start();              // add this
+header('Content-Type: application/json');  // add this
 
 try {
     $conn = new mysqli("localhost", "root", "", "projectdb");
