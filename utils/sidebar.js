@@ -5,7 +5,6 @@ function toggleSidebar() {
   }
 }
 
-// Close sidebar on click outside
 document.addEventListener("click", function (event) {
   const sidebar = document.getElementById("sidebar");
   const burgerBtn = event.target.closest("button");
