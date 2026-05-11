@@ -1,201 +1,223 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Admin Management</title>
-    <link href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-      /* Modal styles */
-      .modal {
-        display: none;
-      }
-      .modal.active {
-        display: flex;
-      }
-    </style>
-  </head>
 
-  <body class="font-[Inter] bg-slate-100">
-    <!-- Header  -->
-    <div class="fixed top-0 w-full h-[8%] z-40 bg-gradient-to-r from-slate-100 to-slate-300 text-black flex items-center px-4 gap-4 shadow-md">
-      <div class="flex items-center justify-between w-full px-4">
-        <div class="flex items-center gap-4">
-          <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
-          <div class="text-3xl text-black" style="font-family: Yellowtail, cursive; font-weight: bold">
-            <a href="dashboard.html">Home Sense</a>
-          </div>
-        </div>
-        <div class="text-3xl font-extrabold flex items-center gap-4">
-          Admin Management
-        </div>
-        <div class="flex items-center gap-5 text-black mr-8">
-          <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-            <img src="icons and images/moon.png" class="h-10 w-10 transition-transform duration-200 hover:rotate-12" />
-          </button>
-          <button class="transition-transform duration-200 hover:scale-110 active:scale-95 relative">
-            <img src="icons and images/bell.png" class="h-9 w-9" />
-          </button>
-          <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-            <img src="icons and images/user.png" class="h-9 w-9 transition-transform duration-200 hover:-translate-y-1" />
-          </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Admin Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Modal styles */
+    .modal {
+      display: none;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+  </style>
+</head>
+
+<body class="font-[Inter] bg-slate-100">
+  <!-- Header  -->
+  <div
+    class="fixed top-0 w-full h-[8%] z-40 bg-gradient-to-r from-slate-100 to-slate-300 text-black flex items-center px-4 gap-4 shadow-md">
+    <div class="flex items-center justify-between w-full px-4">
+      <div class="flex items-center gap-4">
+        <button onclick="toggleSidebar()" class="p-2 rounded">☰</button>
+        <div class="text-3xl text-black" style="font-family: Yellowtail, cursive; font-weight: bold">
+          <a href="dashboard.html">Home Sense</a>
         </div>
       </div>
-    </div>
-
-    <!-- Sidebar -->
-    <div id="sidebar"
-      class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300 z-50 shadow-2xl">
-      <div class="p-4 font-bold flex items-center gap-2 border-b border-slate-700">
-        <button onclick="toggleSidebar()" class="p-2 rounded hover:bg-slate-700 transition">☰</button>
-        Menu
+      <div class="text-3xl font-extrabold flex items-center gap-4">
+        Admin Management
       </div>
-
-      <ul class="p-6 space-y-4">
-        <li>
-          <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
-            Dashboard
-          </a>
-        </li>
-        <li>
-          <a href="Household Managment.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
-            Household Management
-          </a>
-        </li>
-        <li id="userPanelBtn" class="hidden">
-          <a href="admin.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition font-medium">
-            User Panel
-          </a>
-        </li>
-        <li id="activityLogBtn" class="hidden">
-          <a href="activity_log.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
-            Activity Log
-          </a>
-        </li>
-        <li id="LogOutBtn">
-          <a href="index.html" onclick="logoutUser(); return false;"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium text-red-500">
-            Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Content -->
-    <div class="mt-[8%] p-10 max-w-6xl mx-auto">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-slate-800">Household Users</h1>
-        <button onclick="openModal('addModal')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">
-          + Add User
+      <div class="flex items-center gap-5 text-black mr-8">
+        <button class="transition-transform duration-200 hover:scale-110 active:scale-95 relative">
+          <img src="icons and images/bell.png" class="h-9 w-9" />
         </button>
       </div>
+    </div>
+  </div>
 
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <table class="min-w-full leading-normal">
-          <thead>
-            <tr>
-              <th class="px-5 py-3 border-b-2 border-slate-200 bg-slate-100 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                Username
-              </th>
-              <th class="px-5 py-3 border-b-2 border-slate-200 bg-slate-100 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                Role
-              </th>
-              <th class="px-5 py-3 border-b-2 border-slate-200 bg-slate-100 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody id="usersTableBody">
-            <!-- Users will be populated here -->
-          </tbody>
-        </table>
-      </div>
+  <!-- Sidebar -->
+  <div id="sidebar"
+    class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300 z-50 shadow-2xl">
+    <div class="p-4 font-bold flex items-center gap-2 border-b border-slate-700">
+      <button onclick="toggleSidebar()" class="p-2 rounded hover:bg-slate-700 transition">☰</button>
+      Menu
     </div>
 
-    <!-- Add User Modal -->
-    <div id="addModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 justify-center items-center">
-      <div class="bg-white rounded-lg shadow-xl w-96 p-6">
-        <h2 class="text-2xl font-bold mb-4 text-slate-800">Add New User</h2>
-        <form id="addUserForm" onsubmit="handleAddUser(event)">
-          <div class="mb-4">
-            <label class="block text-slate-700 text-sm font-bold mb-2">Username</label>
-            <input type="text" id="addUsername" required class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div class="mb-4">
-            <label class="block text-slate-700 text-sm font-bold mb-2">Password</label>
-            <input type="password" id="addPassword" required class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div class="mb-6">
-            <label class="block text-slate-700 text-sm font-bold mb-2">Role</label>
-            <select id="addRole" required class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="homeAdult">Home Adult</option>
-              <option value="homeKid">Home Kid</option>
-              <option value="guest">Guest</option>
-            </select>
-          </div>
-          <div class="flex items-center justify-end gap-4">
-            <button type="button" onclick="closeModal('addModal')" class="text-slate-500 hover:text-slate-700 font-bold py-2 px-4">Cancel</button>
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none">Save User</button>
-          </div>
-        </form>
-      </div>
+    <ul class="p-6 space-y-4">
+      <li>
+        <a href="dashboard.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="Household Managment.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+          Household Management
+        </a>
+      </li>
+      <li id="userPanelBtn" class="hidden">
+        <a href="admin.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition font-medium">
+          User Panel
+        </a>
+      </li>
+      <li id="activityLogBtn" class="hidden">
+        <a href="activity_log.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+          Activity Log
+        </a>
+      </li>
+      <li id="LogOutBtn">
+        <a href="index.html" onclick="logoutUser(); return false;"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium text-red-500">
+          Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="mt-[8%] p-10 max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-slate-800">Household Users</h1>
+      <button onclick="openModal('addModal')"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">
+        + Add User
+      </button>
     </div>
 
-    <!-- Edit User Modal -->
-    <div id="editModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 justify-center items-center">
-      <div class="bg-white rounded-lg shadow-xl w-96 p-6">
-        <h2 class="text-2xl font-bold mb-4 text-slate-800">Edit User</h2>
-        <form id="editUserForm" onsubmit="handleEditUser(event)">
-          <input type="hidden" id="editUserId">
-          <div class="mb-4">
-            <label class="block text-slate-700 text-sm font-bold mb-2">Username</label>
-            <input type="text" id="editUsername" required class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div class="mb-4">
-            <label class="block text-slate-700 text-sm font-bold mb-2">New Password (leave blank to keep current)</label>
-            <input type="password" id="editPassword" class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div class="mb-6">
-            <label class="block text-slate-700 text-sm font-bold mb-2">Role</label>
-            <select id="editRole" required class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="homeOwner">Home Owner</option>
-              <option value="homeAdult">Home Adult</option>
-              <option value="homeKid">Home Kid</option>
-              <option value="guest">Guest</option>
-            </select>
-          </div>
-          <div class="flex items-center justify-end gap-4">
-            <button type="button" onclick="closeModal('editModal')" class="text-slate-500 hover:text-slate-700 font-bold py-2 px-4">Cancel</button>
-            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none">Update User</button>
-          </div>
-        </form>
-      </div>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <table class="min-w-full leading-normal">
+        <thead>
+          <tr>
+            <th
+              class="px-5 py-3 border-b-2 border-slate-200 bg-slate-100 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+              Username
+            </th>
+            <th
+              class="px-5 py-3 border-b-2 border-slate-200 bg-slate-100 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+              Role
+            </th>
+            <th
+              class="px-5 py-3 border-b-2 border-slate-200 bg-slate-100 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <!-- Users will be populated here -->
+        </tbody>
+      </table>
     </div>
+  </div>
 
-    <script src="role-access-control/permissions.js"></script>
-    <script src="js/layout/sidebar.js"></script>
-    <script src="js/admin/userManager.js"></script>
-    <script src="utils/logout.js"></script>
-    <script>
-      let currentUserId = null;
+  <!-- Add User Modal -->
+  <div id="addModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 justify-center items-center">
+    <div class="bg-white rounded-lg shadow-xl w-96 p-6">
+      <h2 class="text-2xl font-bold mb-4 text-slate-800">Add New User</h2>
+      <form id="addUserForm" onsubmit="handleAddUser(event)">
+        <div class="mb-4">
+          <label class="block text-slate-700 text-sm font-bold mb-2">Username</label>
+          <input type="text" id="addUsername" required
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="mb-4">
+          <label class="block text-slate-700 text-sm font-bold mb-2">Password</label>
+          <input type="password" id="addPassword" required
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="mb-6">
+          <label class="block text-slate-700 text-sm font-bold mb-2">Role</label>
+          <select id="addRole" required
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="homeAdult">Home Adult</option>
+            <option value="homeKid">Home Kid</option>
+            <option value="guest">Guest</option>
+          </select>
+        </div>
+        <div class="flex items-center justify-end gap-4">
+          <button type="button" onclick="closeModal('addModal')"
+            class="text-slate-500 hover:text-slate-700 font-bold py-2 px-4">Cancel</button>
+          <button type="submit"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none">Save
+            User</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-      // Check session and permissions
-      window.checkSession()
-        .then(data => {
-          if (!data.loggedIn) {
-            window.location.href = 'index.html';
-          } else if (!window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ADMIN_PANEL)) {
-            alert('Unauthorized access');
-            window.location.href = 'dashboard.html';
-          } else {
-            window.hideSidePanel(data.user.role);
-            currentUserId = data.user.id;
-            fetchUsers();
-          }
-        });
+  <!-- Edit User Modal -->
+  <div id="editModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 justify-center items-center">
+    <div class="bg-white rounded-lg shadow-xl w-96 p-6">
+      <h2 class="text-2xl font-bold mb-4 text-slate-800">Edit User</h2>
+      <form id="editUserForm" onsubmit="handleEditUser(event)">
+        <input type="hidden" id="editUserId">
+        <div class="mb-4">
+          <label class="block text-slate-700 text-sm font-bold mb-2">Username</label>
+          <input type="text" id="editUsername" required
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="mb-4">
+          <label class="block text-slate-700 text-sm font-bold mb-2">New Password (leave blank to keep current)</label>
+          <input type="password" id="editPassword"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="mb-6">
+          <label class="block text-slate-700 text-sm font-bold mb-2">Role</label>
+          <select id="editRole" required
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="homeOwner">Home Owner</option>
+            <option value="homeAdult">Home Adult</option>
+            <option value="homeKid">Home Kid</option>
+            <option value="guest">Guest</option>
+          </select>
+        </div>
+        <div class="flex items-center justify-end gap-4">
+          <button type="button" onclick="closeModal('editModal')"
+            class="text-slate-500 hover:text-slate-700 font-bold py-2 px-4">Cancel</button>
+          <button type="submit"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none">Update
+            User</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-    </script>
-  </body>
+  <script src="role-access-control/permissions.js"></script>
+  <script src="js/layout/sidebar.js"></script>
+  <script src="js/admin/userManager.js"></script>
+  <script src="utils/logout.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/roomLimits.js"></script>
+  <script>
+    let currentUserId = null;
+
+    // Check session and permissions
+    window.checkSession()
+      .then(data => {
+        if (!data.loggedIn) {
+          window.location.href = 'index.html';
+        } else if (!window.hasPermission(data.user.role, window.PERMISSIONS.VIEW_ADMIN_PANEL)) {
+          alert('Unauthorized access');
+          window.location.href = 'dashboard.html';
+        } else {
+          window.hideSidePanel(data.user.role);
+          currentUserId = data.user.id;
+          fetchUsers();
+        }
+      });
+    window.addEventListener("load", async () => {
+      checkRoomLimits();
+    });
+  </script>
+</body>
+
 </html>
