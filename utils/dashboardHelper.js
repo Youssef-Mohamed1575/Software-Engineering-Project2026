@@ -15,6 +15,10 @@ async function loadDashboardData() {
     rooms = mapRoomsAndDevices(roomsResult.rooms, devicesResult.devices);
 
     renderRooms();
+    
+    if (typeof checkRoomLimits === "function") {
+      checkRoomLimits();
+    }
 
   } catch (error) {
     console.error("Dashboard load error:", error);

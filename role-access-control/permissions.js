@@ -42,40 +42,31 @@ const ROLE_PERMISSIONS = {
 };
 
 function hasPermission(role, permission) {
-  console.log('hasPermission called with:', { role, permission });
   const permissions = ROLE_PERMISSIONS[role];
-  console.log('permissions found:', permissions);
   if (!permissions) {
     return false;
   }
   const result = permissions.includes(permission);
-  console.log('hasPermission result:', result);
   return result;
 }
 
 
 function hideSidePanel(role) {
-  console.log('hideSidePanel called with role:', role);
   const userPanelBtn = document.getElementById('userPanelBtn');
   const activityLogBtn = document.getElementById('activityLogBtn');
-  console.log('userPanelBtn:', userPanelBtn, 'activityLogBtn:', activityLogBtn);
 
   if (userPanelBtn) {
     if (hasPermission(role, PERMISSIONS.VIEW_ADMIN_PANEL)) {
-      console.log('Showing userPanelBtn');
       userPanelBtn.classList.remove('hidden');
     } else {
-      console.log('Hiding userPanelBtn');
       userPanelBtn.classList.add('hidden');
     }
   }
 
   if (activityLogBtn) {
     if (hasPermission(role, PERMISSIONS.VIEW_ACTIVITY_LOG)) {
-      console.log('Showing activityLogBtn');
       activityLogBtn.classList.remove('hidden');
     } else {
-      console.log('Hiding activityLogBtn');
       activityLogBtn.classList.add('hidden');
     }
   }
