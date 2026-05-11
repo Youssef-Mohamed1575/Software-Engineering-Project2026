@@ -82,3 +82,53 @@ function resetDeviceFormInputs() {
     "text-red-500"
   );
 }
+
+function openDevicePopup(roomIndex) {
+  currentRoomIndex = roomIndex;
+  popup("device");
+}
+
+function openEditDevicePopup(roomIndex, deviceIndex) {
+  editingDeviceRoomIndex = roomIndex;
+  editingDeviceIndex = deviceIndex;
+
+  const device = rooms[roomIndex].devices[deviceIndex];
+
+  document.getElementById("edit_device_name").value = device.name;
+  document.getElementById("edit_device_type").value = device.type;
+  document.getElementById("edit_device_electricity").value = device.electricity;
+  document.getElementById("edit_device_gas").value = device.gas;
+  document.getElementById("edit_device_water").value = device.water;
+
+  popup("device_edit");
+}
+
+function refreshRoomDevices(roomIndex) {
+  const container = document.getElementById(`device_container_${roomIndex}`);
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  rooms[roomIndex].devices.forEach((device, deviceIndex) => {
+    const deviceHTML = `
+      <div class="grid grid-cols-[3fr_1fr_1fr_1fr] gap-4 items-center bg-slate-600 p-4 rounded-lg">
+          <div class="text-white font-semibold" id="device_title_${roomIndex}_${deviceIndex}">
+              ${device.name}
+          </div>
+          <button
+              id="device_toggle_${roomIndex}_${deviceIndex}"
+              onclick="toggleDeviceStatus(${roomIndex}, ${deviceIndex})"
+              class="${device.status ? "bg-green-500 hover:bg-green-400" : "bg-yellow-500 hover:bg-yellow-400"} text-white px-2 py-1 rounded">
+              ${device.status ? "ON" : "OFF"}
+          </button>
+          <button onclick="openEditDevicePopup(${roomIndex}, ${deviceIndex})" class="bg-blue-500 hover:bg-blue-400 text-white px-2 py-1 rounded">
+              Edit
+          </button>
+          <button onclick="removeDevice(${roomIndex}, ${deviceIndex})" class="bg-red-500 hover:bg-red-400 text-white px-2 py-1 rounded">
+              Remove
+          </button>
+      </div>
+    `;
+    container.insertAdjacentHTML("beforeend", deviceHTML);
+  });
+}

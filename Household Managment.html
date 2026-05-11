@@ -394,7 +394,14 @@
   <script src="services/devices/addDevice.js"></script>
   <script src="inputs/roomInput.js"></script>
   <script src="utils/roomHelper.js"></script>
+  <script src="utils/dashboardHelper.js"></script>
   <script src="services/rooms/addRoom.js"></script>
+  <script src="services/rooms/editRoom.js"></script>
+  <script src="services/rooms/getRooms.js"></script>
+  <script src="services/devices/getDevices.js"></script>
+  <script src="services/devices/editDevice.js"></script>
+  <script src="services/devices/removeDevice.js"></script>
+  <script src="services/devices/toggleDeviceStatus.js"></script>
   <script>
     let rooms = [];
     let devices = [];
@@ -479,72 +486,34 @@
     let editingRoomIndex = null;
 
 
-    function openEditRoomPopup(roomIndex) {
-      editingRoomIndex = roomIndex;
-
-      const room = rooms[roomIndex];
-
-      document.getElementById("edit_room_name").value = room.name;
-      document.getElementById("edit_room_electricity").value =
-        room.electricityLimit;
-      document.getElementById("edit_room_gas").value = room.gasLimit;
-      document.getElementById("edit_room_water").value = room.waterLimit;
-
-      popup("room_edit");
-    }
-
     async function applyRoomEdit() {
+      const roomEditData = getRoomEditInputs();
+      roomEditData.id = rooms[editingRoomIndex].id;
 
-      const updatedRoomData = {
-        ...rooms[editingRoomIndex],
-
-        name: document.getElementById("edit_room_name").value,
-        electricityLimit: parseFloat(
-          document.getElementById("edit_room_electricity").value
-        ) || 0,
-        gasLimit: parseFloat(
-          document.getElementById("edit_room_gas").value
-        ) || 0,
-        waterLimit: parseFloat(
-          document.getElementById("edit_room_water").value
-        ) || 0
-      };
+      if (!validateRoomEditInputs(roomEditData)) {
+        return;
+      }
 
       try {
-
-        const response = await fetch("api/edit_room.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            room_id: updatedRoomData.id,
-            name: updatedRoomData.name,
-            electricity: updatedRoomData.electricityLimit,
-            gas: updatedRoomData.gasLimit,
-            water: updatedRoomData.waterLimit
-          })
-        });
-
-        const result = await response.json();
+        const result = await editRoomApi(roomEditData);
 
         if (!result.success) {
           alert(result.message);
           return;
         }
 
+        const updatedRoomData = {
+          ...rooms[editingRoomIndex],
+          ...roomEditData
+        };
+
         rooms[editingRoomIndex] = updatedRoomData;
 
         document.getElementById(`room_${editingRoomIndex}`).innerHTML =
           updatedRoomData.name;
 
-        document.getElementById("edit_room_name").value = "";
-        document.getElementById("edit_room_electricity").value = "";
-        document.getElementById("edit_room_gas").value = "";
-        document.getElementById("edit_room_water").value = "";
-
+        resetEditRoomFormInputs();
         editingRoomIndex = null;
-
         closePopup("room_edit");
 
       } catch (error) {
@@ -556,20 +525,6 @@
     let editingDeviceRoomIndex = null;
     let editingDeviceIndex = null;
 
-    function openEditDevicePopup(roomIndex, deviceIndex) {
-      editingDeviceRoomIndex = roomIndex;
-      editingDeviceIndex = deviceIndex;
-
-      const device = rooms[roomIndex].devices[deviceIndex];
-
-      document.getElementById("edit_device_name").value = device.name;
-      document.getElementById("edit_device_type").value = device.type;
-      document.getElementById("edit_device_electricity").value = device.electricity;
-      document.getElementById("edit_device_gas").value = device.gas;
-      document.getElementById("edit_device_water").value = device.water;
-
-      popup("device_edit");
-    }
 
     async function applyDeviceEdit() {
 
@@ -585,23 +540,7 @@
       console.log(updatedDeviceData);
 
       try {
-
-        const response = await fetch("api/edit_device.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            device_id: updatedDeviceData.id,
-            name: updatedDeviceData.name,
-            type: updatedDeviceData.type,
-            electricity: parseFloat(updatedDeviceData.electricity) || 0,
-            gas: parseFloat(updatedDeviceData.gas) || 0,
-            water: parseFloat(updatedDeviceData.water) || 0
-          })
-        });
-
-        const result = await response.json();
+        const result = await editDeviceApi(updatedDeviceData);
 
         if (!result.success) {
           alert(result.message);
@@ -640,26 +579,12 @@
       }
     }
 
-    function openDevicePopup(roomIndex) {
-      currentRoomIndex = roomIndex;
-      popup("device");
-    }
     async function removeDevice(roomIndex, deviceIndex) {
 
       const device = rooms[roomIndex].devices[deviceIndex];
 
       try {
-        const response = await fetch("api/remove_device.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            device_id: device.id
-          })
-        });
-
-        const result = await response.json();
+        const result = await removeDeviceApi(device.id);
 
         if (!result.success) {
           alert(result.message);
@@ -679,45 +604,6 @@
       }
     }
 
-    function refreshRoomDevices(roomIndex) {
-      const container = document.getElementById(
-        `device_container_${roomIndex}`,
-      );
-
-      container.innerHTML = "";
-
-      rooms[roomIndex].devices.forEach((device, deviceIndex) => {
-        const deviceHTML = `
-            <div class="grid grid-cols-[3fr_1fr_1fr_1fr] gap-4 items-center bg-slate-600 p-4 rounded-lg">
-
-            <div class="text-white font-semibold" id="device_title_${roomIndex}_${rooms[roomIndex].devices.length - 1}">
-                ${device.name}
-            </div>
-
-            <button
-                id="device_toggle_${roomIndex}_${deviceIndex}"
-                onclick="toggleDeviceStatus(${roomIndex}, ${deviceIndex})"
-                class="${device.status
-            ? "bg-green-500 hover:bg-green-400"
-            : "bg-yellow-500 hover:bg-yellow-400"
-          } text-white px-2 py-1 rounded">
-                ${device.status ? "ON" : "OFF"}
-            </button>
-
-            <button onclick="openEditDevicePopup(${roomIndex}, ${deviceIndex})" class="bg-blue-500 hover:bg-blue-400 text-white px-2 py-1 rounded">
-                Edit
-            </button>
-
-            <button onclick="removeDevice(${roomIndex}, ${deviceIndex})" class="bg-red-500 hover:bg-red-400 text-white px-2 py-1 rounded">
-                Remove
-            </button>
-
-        </div>
-        `;
-
-        container.insertAdjacentHTML("beforeend", deviceHTML);
-      });
-    }
     async function toggleDeviceStatus(roomIndex, deviceIndex) {
 
       const device = rooms[roomIndex].devices[deviceIndex];
@@ -725,18 +611,7 @@
       const newStatus = !device.status;
 
       try {
-        const response = await fetch("api/toggle_device_status.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            device_id: device.id,
-            status: newStatus ? "on" : "off"
-          })
-        });
-
-        const result = await response.json();
+        const result = await toggleDeviceStatusApi(device.id, newStatus);
 
         if (!result.success) {
           alert(result.message);
@@ -785,6 +660,12 @@
           window.location.href = 'index.html';
           return;
         }
+
+        if (data.user) {
+          document.getElementById('welcome').textContent =
+            `${data.user.username}'s Household`;
+        }
+
         window.hideSidePanel(data.user.role);
       } catch (err) {
         console.error('Session check failed:', err);
@@ -792,70 +673,7 @@
 
       await loadDashboardData();
     });
-    async function loadDashboardData() {
-      try {
 
-        // Fetch rooms + devices together
-        const [roomsResponse, devicesResponse] = await Promise.all([
-          fetch("api/get_rooms.php"),
-          fetch("api/get_devices.php")
-        ]);
-
-        const roomsResult = await roomsResponse.json();
-        const devicesResult = await devicesResponse.json();
-
-        if (!roomsResult.success || !devicesResult.success) {
-          alert("Failed to load household data.");
-          return;
-        }
-
-        rooms = [];
-        devices = devicesResult.devices;
-
-        // Build room objects
-        roomsResult.rooms.forEach(room => {
-          rooms.push({
-            id: room.id,
-            name: room.name,
-            devices: [],
-            electricityLimit: room.electricity_limit || 0,
-            gasLimit: room.gas_limit || 0,
-            waterLimit: room.water_limit || 0
-          });
-        });
-
-        // Assign devices to proper rooms
-        devices.forEach(device => {
-          const matchingRoom = rooms.find(room => room.id == device.room_id);
-
-          if (matchingRoom) {
-            matchingRoom.devices.push({
-              id: device.id,
-              name: device.name,
-              type: device.type,
-              status: device.status === "on",
-              electricity: device.electricity,
-              gas: device.gas,
-              water: device.water
-            });
-          }
-        });
-
-        renderRooms();
-
-      } catch (error) {
-        console.error("Dashboard load error:", error);
-        alert("Failed to load dashboard.");
-      }
-    }
-
-    window.checkSession()
-      .then(data => {
-        if (data.loggedIn && data.user) {
-          document.getElementById('welcome').textContent =
-            ` ${data.user.username}'s Household.`;
-        }
-      });
   </script>
 </body>
 

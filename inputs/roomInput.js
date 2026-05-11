@@ -6,3 +6,18 @@ function getRoomInputs() {
     waterLimit: document.getElementById("room_water").value
   };
 }
+
+function getRoomEditInputs() {
+  return {
+    name: document.getElementById("edit_room_name").value,
+    electricityLimit: parseFloat(
+      document.getElementById("edit_room_electricity").value
+    ) || 0,
+    gasLimit: parseFloat(
+      document.getElementById("edit_room_gas").value
+    ) || 0,
+    waterLimit: parseFloat(
+      document.getElementById("edit_room_water").value
+    ) || 0
+  };
+}

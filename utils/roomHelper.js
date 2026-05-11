@@ -13,6 +13,21 @@ function validateRoomInputs(roomData) {
   return true;
 }
 
+function validateRoomEditInputs(roomData) {
+  if (!roomData.name.trim()) {
+    const roomNameInput = document.getElementById("edit_room_name");
+    roomNameInput.value = "";
+    roomNameInput.placeholder = "Please fill this field";
+    roomNameInput.classList.add(
+      "border-2",
+      "border-red-500",
+      "placeholder-red-500"
+    );
+    return false;
+  }
+  return true;
+}
+
 function generateRoomHTML(roomIndex, roomName) {
   return `
   <div id="room_card_${roomIndex}" class="bg-slate-700 rounded-xl p-6 mb-6">
@@ -48,6 +63,13 @@ function resetRoomFormInputs() {
   document.getElementById("room_water").value = "";
 }
 
+function resetEditRoomFormInputs() {
+  document.getElementById("edit_room_name").value = "";
+  document.getElementById("edit_room_electricity").value = "";
+  document.getElementById("edit_room_gas").value = "";
+  document.getElementById("edit_room_water").value = "";
+}
+
 function renderRooms() {
   const roomsContainer = document.getElementById("rooms_container");
   roomsContainer.innerHTML = "";
@@ -57,4 +79,46 @@ function renderRooms() {
     roomsContainer.insertAdjacentHTML("beforeend", roomHTML);
     refreshRoomDevices(roomIndex);
   });
+}
+
+function mapRoomsAndDevices(roomsData, devicesData) {
+  const mappedRooms = roomsData.map(room => ({
+    id: room.id,
+    name: room.name,
+    devices: [],
+    electricityLimit: room.electricity_limit || 0,
+    gasLimit: room.gas_limit || 0,
+    waterLimit: room.water_limit || 0
+  }));
+
+  devicesData.forEach(device => {
+    const matchingRoom = mappedRooms.find(room => room.id == device.room_id);
+    if (matchingRoom) {
+      matchingRoom.devices.push({
+        id: device.id,
+        name: device.name,
+        type: device.type,
+        status: device.status === "on",
+        electricity: device.electricity,
+        gas: device.gas,
+        water: device.water
+      });
+    }
+  });
+
+  return mappedRooms;
+}
+
+function openEditRoomPopup(roomIndex) {
+  editingRoomIndex = roomIndex;
+
+  const room = rooms[roomIndex];
+
+  document.getElementById("edit_room_name").value = room.name;
+  document.getElementById("edit_room_electricity").value =
+    room.electricityLimit;
+  document.getElementById("edit_room_gas").value = room.gasLimit;
+  document.getElementById("edit_room_water").value = room.waterLimit;
+
+  popup("room_edit");
 }
