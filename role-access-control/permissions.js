@@ -53,15 +53,6 @@ function hasPermission(role, permission) {
   return result;
 }
 
-async function checkSession() {
-  try {
-    const res = await fetch('api/check_session.php');
-    return await res.json();
-  } catch (err) {
-    console.error('Session check failed:', err);
-    return { loggedIn: false };
-  }
-}
 
 function hideSidePanel(role) {
   console.log('hideSidePanel called with role:', role);
@@ -93,5 +84,4 @@ function hideSidePanel(role) {
 window.ROLES = ROLES;
 window.PERMISSIONS = PERMISSIONS;
 window.hasPermission = hasPermission;
-window.checkSession = checkSession;
 window.hideSidePanel = hideSidePanel;
