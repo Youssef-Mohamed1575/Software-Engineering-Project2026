@@ -12,7 +12,6 @@ async function logoutUser() {
             sessionStorage.setItem("justLoggedOut", "true");
             localStorage.clear();
             sessionStorage.removeItem("user");
-
             window.location.replace("index.html");
         }
 
