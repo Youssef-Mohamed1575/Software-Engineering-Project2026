@@ -24,16 +24,8 @@
         Household Management
       </div>
       <div class="flex items-center gap-5 text-black mr-8">
-        <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-          <img src="icons and images/moon.png" class="h-10 w-10 transition-transform duration-200 hover:rotate-12" />
-        </button>
-
         <button class="transition-transform duration-200 hover:scale-110 active:scale-95 relative">
           <img src="icons and images/bell.png" class="h-9 w-9" />
-        </button>
-
-        <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-          <img src="icons and images/user.png" class="h-9 w-9 transition-transform duration-200 hover:-translate-y-1" />
         </button>
       </div>
     </div>
@@ -396,6 +388,8 @@
   <script src="utils/roomHelper.js"></script>
   <script src="utils/dashboardHelper.js"></script>
   <script src="services/rooms/addRoom.js"></script>
+  <script src="utils/notifications.js"></script>
+  <script src="services/rooms/roomLimits.js"></script>
   <script src="services/rooms/editRoom.js"></script>
   <script src="services/rooms/getRooms.js"></script>
   <script src="services/devices/getDevices.js"></script>
@@ -418,7 +412,11 @@
         const result = await addDeviceApi(deviceData);
 
         if (!result.success) {
-          alert(result.message);
+          Notifications.add({
+            title: 'Failed to Add Device',
+            message: result.message,
+            type: 'alert'
+          });
           return;
         }
 
@@ -439,6 +437,11 @@
           .insertAdjacentHTML("beforeend", deviceHTML);
 
         resetDeviceFormInputs();
+        Notifications.add({
+          title: 'Device Added',
+          message: `"${deviceData.name}" was added successfully to "${rooms[currentRoomIndex].name}".`,
+          type: 'success'
+        });
         closePopup("device");
 
       } catch (error) {
@@ -457,7 +460,11 @@
         const result = await addRoomApi(roomData);
 
         if (!result.success) {
-          alert(result.message);
+          Notifications.add({
+            title: 'Failed to Add Room',
+            message: result.message,
+            type: 'alert'
+          });
           return;
         }
 
@@ -476,6 +483,12 @@
           .insertAdjacentHTML("beforeend", roomHTML);
 
         resetRoomFormInputs();
+
+        Notifications.add({
+          title: 'Room Added',
+          message: `"${roomData.name}" was added successfully.`,
+          type: 'success'
+        });
         closePopup("room");
 
       } catch (error) {
@@ -498,7 +511,11 @@
         const result = await editRoomApi(roomEditData);
 
         if (!result.success) {
-          alert(result.message);
+          Notifications.add({
+            title: 'Failed to Edit Room',
+            message: result.message,
+            type: 'alert'
+          });
           return;
         }
 
@@ -514,6 +531,12 @@
 
         resetEditRoomFormInputs();
         editingRoomIndex = null;
+        Notifications.add({
+          title: 'Room Updated',
+          message: `"${updatedRoomData.name}" was updated successfully.`,
+          type: 'success'
+        });
+
         closePopup("room_edit");
 
       } catch (error) {
@@ -543,7 +566,11 @@
         const result = await editDeviceApi(updatedDeviceData);
 
         if (!result.success) {
-          alert(result.message);
+          Notifications.add({
+            title: 'Failed to Edit Device',
+            message: result.message,
+            type: 'alert'
+          });
           return;
         }
 
@@ -570,6 +597,11 @@
 
         editingDeviceRoomIndex = null;
         editingDeviceIndex = null;
+        Notifications.add({
+          title: 'Device Updated',
+          message: `"${updatedDeviceData.name}" was updated successfully.`,
+          type: 'success'
+        });
 
         closePopup("device_edit");
 
@@ -587,7 +619,11 @@
         const result = await removeDeviceApi(device.id);
 
         if (!result.success) {
-          alert(result.message);
+          Notifications.add({
+            title: 'Failed to Remove Device',
+            message: result.message,
+            type: 'alert'
+          });
           return;
         }
 
@@ -596,6 +632,11 @@
 
         devices = devices.filter(d => d.id !== device.id);
 
+        Notifications.add({
+          title: 'Device Removed',
+          message: `"${device.name}" was removed successfully from "${rooms[roomIndex].name}".`,
+          type: 'success'
+        });
         refreshRoomDevices(roomIndex);
 
       } catch (error) {
@@ -673,7 +714,94 @@
 
       await loadDashboardData();
     });
+    async function loadDashboardData() {
+      try {
 
+        // Fetch rooms + devices together
+        const [roomsResponse, devicesResponse] = await Promise.all([
+          fetch("api/get_rooms.php"),
+          fetch("api/get_devices.php")
+        ]);
+
+        const roomsResult = await roomsResponse.json();
+        const devicesResult = await devicesResponse.json();
+
+        if (!roomsResult.success || !devicesResult.success) {
+          alert("Failed to load household data.");
+          return;
+        }
+
+        rooms = [];
+        devices = devicesResult.devices;
+
+        // Build room objects
+        roomsResult.rooms.forEach(room => {
+          rooms.push({
+            id: room.id,
+            name: room.name,
+            devices: [],
+            electricityLimit: room.electricity_limit || 0,
+            gasLimit: room.gas_limit || 0,
+            waterLimit: room.water_limit || 0
+          });
+        });
+
+        // Assign devices to proper rooms
+        devices.forEach(device => {
+          const matchingRoom = rooms.find(room => room.id == device.room_id);
+
+          if (matchingRoom) {
+            matchingRoom.devices.push({
+              id: device.id,
+              name: device.name,
+              type: device.type,
+              status: device.status === "on",
+              electricity: device.electricity,
+              gas: device.gas,
+              water: device.water
+            });
+          }
+        });
+
+        renderRooms();
+        checkRoomLimits();
+
+      } catch (error) {
+        console.error("Dashboard load error:", error);
+        alert("Failed to load dashboard.");
+      }
+    }
+
+    window.checkSession()
+      .then(data => {
+        if (data.loggedIn && data.user) {
+          document.getElementById('welcome').textContent =
+            ` ${data.user.username}'s Household.`;
+        }
+      });
+    async function checkRoomLimits() {
+      const response = await fetch("api/check_room_limits.php");
+      const data = await response.json();
+
+      if (!data.success) return;
+
+      data.alerts.forEach(alert => {
+        const storageKey = `room_limit_${alert.room_id}_${alert.resource}`;
+
+        if (!sessionStorage.getItem(storageKey)) {
+          Notifications.add({
+            title: `${alert.resource.charAt(0).toUpperCase() + alert.resource.slice(1)} Limit Exceeded`,
+            message: `${alert.room_name} exceeded ${alert.resource} limit (${alert.total}/${alert.limit} ${alert.unit}).`,
+            type: "warning"
+          });
+
+          sessionStorage.setItem(storageKey, "true");
+        }
+      });
+    }
+    window.addEventListener("load", async () => {
+      checkRoomLimits();
+    });
   </script>
 </body>
 

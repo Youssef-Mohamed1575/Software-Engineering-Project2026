@@ -24,20 +24,11 @@
       <div class="text-3xl font-extrabold flex items-center gap-4">
         Dashboard
       </div>
-      <div class="flex items-center gap-5 text-black mr-8">
-        <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-          <img src="icons and images/moon.png" class="h-10 w-10 transition-transform duration-200 hover:rotate-12" />
-        </button>
-
-        <button class="transition-transform duration-200 hover:scale-110 active:scale-95 relative">
-          <img src="icons and images/bell.png" class="h-9 w-9" />
-        </button>
-
-        <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-          <img src="icons and images/user.png" class="h-9 w-9 transition-transform duration-200 hover:-translate-y-1" />
-        </button>
-      </div>
+      <button class="transition-transform duration-200 hover:scale-110 active:scale-95 relative">
+        <img src="icons and images/bell.png" class="h-9 w-9" />
+      </button>
     </div>
+  </div>
   </div>
 
   <!-- Sidebar -->
@@ -197,6 +188,8 @@
   <script src="role-access-control/permissions.js"></script>
   <script src="utils/sidebar.js"></script>
   <script src="services/auth/logout.js"></script>
+  <script src="utils/notifications.js"></script>
+  <script src="services/rooms/roomLimits.js"></script>
   <script>
     window.checkSession()
       .then(data => {
@@ -357,9 +350,22 @@
         const result = await response.json();
 
         if (!result.success) {
-          console.error(result.message);
+          Notifications.add({
+            title: 'Error',
+            message: result.message || 'Failed to turn off devices.',
+            type: 'alert'
+          });
           return;
         }
+
+        Notifications.add({
+          title: "Success",
+          message:
+            type === "devices"
+              ? "All devices have been turned off successfully."
+              : `All ${type} devices have been turned off successfully.`,
+          type: "success"
+        });
 
       } catch (error) {
         console.error("Failed to turn off devices:", error);
@@ -415,6 +421,7 @@
         updateUsageTable();
         loadDashboardUsage();
         loadBillingDashboard();
+        checkRoomLimits();
       });
     });
 
@@ -532,6 +539,10 @@
           console.error("Failed to load billing dashboard:", error);
         });
     }
+
+    window.addEventListener("load", async () => {
+      checkRoomLimits();
+    });
   </script>
 </body>
 

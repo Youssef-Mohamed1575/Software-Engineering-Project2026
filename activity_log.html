@@ -7,7 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <title>Activity Log | Home Sense</title>
   <link href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
 </head>
 
 <body class="font-[Inter] bg-slate-50 min-h-screen flex flex-col">
@@ -25,16 +26,8 @@
         Activity Log
       </div>
       <div class="flex items-center gap-5 text-black mr-8">
-        <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-          <img src="icons and images/moon.png" class="h-10 w-10 transition-transform duration-200 hover:rotate-12" />
-        </button>
-
         <button class="transition-transform duration-200 hover:scale-110 active:scale-95 relative">
           <img src="icons and images/bell.png" class="h-9 w-9" />
-        </button>
-
-        <button class="transition-transform duration-200 hover:scale-110 active:scale-95">
-          <img src="icons and images/user.png" class="h-9 w-9 transition-transform duration-200 hover:-translate-y-1" />
         </button>
       </div>
     </div>
@@ -50,22 +43,26 @@
 
     <ul class="p-6 space-y-4">
       <li>
-        <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+        <a href="dashboard.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
           Dashboard
         </a>
       </li>
       <li>
-        <a href="Household Managment.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+        <a href="Household Managment.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
           Household Management
         </a>
       </li>
       <li id="userPanelBtn" class="hidden">
-        <a href="admin.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
+        <a href="admin.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition font-medium">
           User Panel
         </a>
       </li>
       <li id="activityLogBtn" class="hidden">
-        <a href="activity_log.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition font-medium">
+        <a href="activity_log.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition font-medium">
           Activity Log
         </a>
       </li>
@@ -85,24 +82,33 @@
         <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight">System Activity Logs</h1>
         <p class="text-slate-500 mt-1">Real-time device manipulation and system audit trailing</p>
       </div>
-      <button onclick="fetchActivities()" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-slate-300/50 active:scale-95 transition-all duration-150">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 animate-hover-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15H19" />
+      <button onclick="fetchActivities()"
+        class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-slate-300/50 active:scale-95 transition-all duration-150">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 animate-hover-spin" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15H19" />
         </svg>
         Refresh Logs
       </button>
     </div>
 
     <!-- Activity Log Card Container -->
-    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-slate-200/60">
+    <div
+      class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-slate-200/60">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-slate-100">
           <thead>
             <tr class="bg-slate-50/75">
-              <th scope="col" class="px-8 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Device Name</th>
-              <th scope="col" class="px-8 py-4 class text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Last Activity</th>
-              <th scope="col" class="px-8 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Done By</th>
-              <th scope="col" class="px-8 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Timestamp</th>
+              <th scope="col" class="px-8 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Device Name</th>
+              <th scope="col"
+                class="px-8 py-4 class text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Last
+                Activity</th>
+              <th scope="col" class="px-8 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Done
+                By</th>
+              <th scope="col" class="px-8 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Timestamp</th>
             </tr>
           </thead>
           <tbody id="activityTableBody" class="divide-y divide-slate-100 bg-white">
@@ -124,8 +130,10 @@
   <!-- Scripts -->
   <script src="services/auth/checkSession.js"></script>
   <script src="role-access-control/permissions.js"></script>
-  <script src="utils/sidebar.js"></script>
-  <script src="services/auth/logout.js"></script>
+  <script src="js/layout/sidebar.js"></script>
+  <script src="utils/logout.js"></script>
+  <script src="utils/notifications.js"></script>
+  <script src="services/rooms/roomLimits.js"></script>
   <script>
     window.checkSession()
       .then(data => {
@@ -250,7 +258,7 @@
       try {
         const date = new Date(timestampStr.replace(/-/g, '/')); // Compatibility with PHP ISO/ANSI SQL formats
         if (isNaN(date.getTime())) return timestampStr;
-        
+
         return date.toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',
@@ -268,6 +276,9 @@
     function escapeHtml(str) {
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
+    window.addEventListener("load", async () => {
+      checkRoomLimits();
+    });
   </script>
 </body>
 
