@@ -388,202 +388,50 @@
   <script src="role-access-control/permissions.js"></script>
   <script src="utils/sidebar.js"></script>
   <script src="services/auth/logout.js"></script>
+  <script src="utils/popup.js"></script>
+  <script src="inputs/deviceInput.js"></script>
+  <script src="utils/deviceHelper.js"></script>
+  <script src="services/devices/addDevice.js"></script>
+  <script src="inputs/roomInput.js"></script>
+  <script src="utils/roomHelper.js"></script>
+  <script src="services/rooms/addRoom.js"></script>
   <script>
-    function popup(type) {
-      if (type === "device") {
-        document.getElementById("device_popup").classList.remove("hidden");
-        document.getElementById("overlay").classList.remove("hidden");
-      } else if (type === "room") {
-        document.getElementById("room_popup").classList.remove("hidden");
-        document.getElementById("overlay").classList.remove("hidden");
-      } else if (type === "room_edit") {
-        document.getElementById("room_edit").classList.remove("hidden");
-        document.getElementById("overlay").classList.remove("hidden");
-      } else if (type === "device_edit") {
-        document.getElementById("device_edit").classList.remove("hidden");
-        document.getElementById("overlay").classList.remove("hidden");
-      }
-    }
-    function closePopup(type) {
-      if (type === "device") {
-        document.getElementById("device_popup").classList.add("hidden");
-        document.getElementById("overlay").classList.add("hidden");
-        document.getElementById("device_name").value = "";
-        document.getElementById("device_name").placeholder =
-          " Enter device name";
-        document.getElementById("device_type").selectedIndex = 0;
-        document.getElementById("device_electricity").value = "";
-        document.getElementById("device_gas").value = "";
-        document.getElementById("device_water").value = "";
-        document.getElementById("device_type_placeholder").innerHTML =
-          "Select device type";
-        document
-          .getElementById("device_type")
-          .classList.remove("border-2", "border-red-500", "text-red-500");
-        document
-          .getElementById("device_type_placeholder")
-          .classList.add("text-gray-400");
-        document
-          .getElementById("device_name")
-          .classList.remove(
-            "border-2",
-            "border-red-500",
-            "placeholder-red-500",
-          );
-      } else if (type === "room") {
-        document.getElementById("room_popup").classList.add("hidden");
-        document.getElementById("overlay").classList.add("hidden");
-        document
-          .getElementById("room_name")
-          .classList.remove(
-            "border-2",
-            "border-red-500",
-            "placeholder-red-500",
-          );
-        document.getElementById("room_name").placeholder = " Enter room name";
-      } else if (type === "room_edit") {
-        document.getElementById("room_edit").classList.add("hidden");
-        document.getElementById("overlay").classList.add("hidden");
-      } else if (type === "device_edit") {
-        document.getElementById("device_edit").classList.add("hidden");
-        document.getElementById("overlay").classList.add("hidden");
-      }
-    }
     let rooms = [];
     let devices = [];
     let currentRoomIndex = null;
 
     async function addDevice() {
+      const deviceData = getDeviceInputs(rooms[currentRoomIndex].id);
 
-      const deviceData = {
-        name: document.getElementById("device_name").value,
-        type: document.getElementById("device_type").value,
-        electricity: document.getElementById("device_electricity").value,
-        gas: document.getElementById("device_gas").value,
-        water: document.getElementById("device_water").value,
-        status: false,
-        active_minutes: 0,
-        lastActivatedTime: null,
-        room_id: rooms[currentRoomIndex].id
-      };
-
-      // Validation
-      if (!deviceData.name.trim()) {
-        const deviceNameInput = document.getElementById("device_name");
-        deviceNameInput.value = "";
-        deviceNameInput.placeholder = "Please fill this field";
-        deviceNameInput.classList.add(
-          "border-2",
-          "border-red-500",
-          "placeholder-red-500"
-        );
-        return;
-      }
-
-      if (deviceData.type === "Select device type") {
-        const deviceTypeSelect = document.getElementById("device_type");
-        deviceTypeSelect.selectedIndex = 0;
-        deviceTypeSelect.classList.add(
-          "border-2",
-          "border-red-500",
-          "text-red-500"
-        );
-        document.getElementById("device_type_placeholder").innerHTML =
-          "Please select device type";
+      if (!validateDeviceInputs(deviceData)) {
         return;
       }
 
       try {
-        const response = await fetch("api/add_device.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            name: deviceData.name,
-            type: deviceData.type,
-            status: "off",
-            room_id: deviceData.room_id,
-            electricity: parseFloat(deviceData.electricity) || 0,
-            gas: parseFloat(deviceData.gas) || 0,
-            water: parseFloat(deviceData.water) || 0
-          })
-        });
-
-        const result = await response.json();
+        const result = await addDeviceApi(deviceData);
 
         if (!result.success) {
           alert(result.message);
           return;
         }
 
-        // Save backend device id
         deviceData.id = result.device_id;
 
         devices.push(deviceData);
         rooms[currentRoomIndex].devices.push(deviceData);
 
-        let currentDeviceIndex =
-          rooms[currentRoomIndex].devices.length - 1;
+        const currentDeviceIndex = rooms[currentRoomIndex].devices.length - 1;
 
-        const deviceHTML = `
-        <div class="grid grid-cols-[3fr_1fr_1fr_1fr] gap-4 items-center bg-slate-600 p-4 rounded-lg">
-
-            <div class="text-white font-semibold"
-                 id="device_title_${currentRoomIndex}_${currentDeviceIndex}">
-                ${deviceData.name}
-            </div>
-
-            <button
-                id="device_toggle_${currentRoomIndex}_${currentDeviceIndex}"
-                onclick="toggleDeviceStatus(${currentRoomIndex}, ${currentDeviceIndex})"
-                class="bg-yellow-500 hover:bg-green-400 text-white px-2 py-1 rounded">
-                OFF
-            </button>
-
-            <button
-                onclick="openEditDevicePopup(${currentRoomIndex}, ${currentDeviceIndex})"
-                class="bg-blue-500 hover:bg-blue-400 text-white px-2 py-1 rounded">
-                Edit
-            </button>
-
-            <button
-                onclick="removeDevice(${currentRoomIndex}, ${currentDeviceIndex})"
-                class="bg-red-500 hover:bg-red-400 text-white px-2 py-1 rounded">
-                Remove
-            </button>
-
-        </div>
-        `;
+        const deviceHTML = generateDeviceHTML(
+          currentRoomIndex,
+          currentDeviceIndex,
+          deviceData.name
+        );
 
         document.getElementById(`device_container_${currentRoomIndex}`)
           .insertAdjacentHTML("beforeend", deviceHTML);
 
-        // Reset fields
-        document.getElementById("device_name").value = "";
-        document.getElementById("device_name").placeholder =
-          " Enter device name";
-
-        document.getElementById("device_type").selectedIndex = 0;
-        document.getElementById("device_type_placeholder").innerHTML =
-          "Select device type";
-
-        document.getElementById("device_electricity").value = "";
-        document.getElementById("device_gas").value = "";
-        document.getElementById("device_water").value = "";
-
-        document.getElementById("device_name").classList.remove(
-          "border-2",
-          "border-red-500",
-          "placeholder-red-500"
-        );
-
-        document.getElementById("device_type").classList.remove(
-          "border-2",
-          "border-red-500",
-          "text-red-500"
-        );
-
+        resetDeviceFormInputs();
         closePopup("device");
 
       } catch (error) {
@@ -592,46 +440,20 @@
       }
     }
     async function addRoom() {
+      const roomData = getRoomInputs();
 
-      const roomData = {
-        name: document.getElementById("room_name").value,
-        electricityLimit: document.getElementById("room_electricity").value,
-        gasLimit: document.getElementById("room_gas").value,
-        waterLimit: document.getElementById("room_water").value
-      };
-
-      // Validation
-      if (!roomData.name.trim()) {
-        const roomNameInput = document.getElementById("room_name");
-        roomNameInput.value = "";
-        roomNameInput.placeholder = "Please fill this field";
-        roomNameInput.classList.add(
-          "border-2",
-          "border-red-500",
-          "placeholder-red-500"
-        );
+      if (!validateRoomInputs(roomData)) {
         return;
       }
 
       try {
-        const response = await fetch("api/add_room.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            name: roomData.name
-          })
-        });
-
-        const result = await response.json();
+        const result = await addRoomApi(roomData);
 
         if (!result.success) {
           alert(result.message);
           return;
         }
 
-        // Store backend room id
         roomData.id = result.room_id;
 
         rooms.push({
@@ -641,41 +463,12 @@
 
         const roomIndex = rooms.length - 1;
 
-        const roomHTML = `
-        <div id="room_card_${roomIndex}" class="bg-slate-700 rounded-xl p-6 mb-6">
-            
-            <div class="flex justify-between items-center mb-4">
-                
-                <h2 id="room_${roomIndex}" class="text-white text-2xl font-bold">
-                    ${roomData.name}
-                </h2>
-
-                <div class="flex gap-3">
-                    <button onclick="openDevicePopup(${roomIndex})"
-                        class="bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded">
-                        Add Device
-                    </button>
-
-                    <button onclick="openEditRoomPopup(${roomIndex})"
-                        class="bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded">
-                        Edit
-                    </button>
-                </div>
-            </div>
-
-            <div id="device_container_${roomIndex}" class="space-y-3"></div>
-        </div>
-        `;
+        const roomHTML = generateRoomHTML(roomIndex, roomData.name);
 
         document.getElementById("rooms_container")
           .insertAdjacentHTML("beforeend", roomHTML);
 
-        // Reset fields
-        document.getElementById("room_name").value = "";
-        document.getElementById("room_electricity").value = "";
-        document.getElementById("room_gas").value = "";
-        document.getElementById("room_water").value = "";
-
+        resetRoomFormInputs();
         closePopup("room");
 
       } catch (error) {
@@ -1055,44 +848,7 @@
         alert("Failed to load dashboard.");
       }
     }
-    function renderRooms() {
 
-      const roomsContainer = document.getElementById("rooms_container");
-      roomsContainer.innerHTML = "";
-
-      rooms.forEach((room, roomIndex) => {
-
-        const roomHTML = `
-        <div id="room_card_${roomIndex}" class="bg-slate-700 rounded-xl p-6 mb-6">
-
-            <div class="flex justify-between items-center mb-4">
-
-                <h2 id="room_${roomIndex}" class="text-white text-2xl font-bold">
-                    ${room.name}
-                </h2>
-
-                <div class="flex gap-3">
-                    <button onclick="openDevicePopup(${roomIndex})"
-                        class="bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded">
-                        Add Device
-                    </button>
-
-                    <button onclick="openEditRoomPopup(${roomIndex})"
-                        class="bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded">
-                        Edit
-                    </button>
-                </div>
-            </div>
-
-            <div id="device_container_${roomIndex}" class="space-y-3"></div>
-        </div>
-        `;
-
-        roomsContainer.insertAdjacentHTML("beforeend", roomHTML);
-
-        refreshRoomDevices(roomIndex);
-      });
-    }
     window.checkSession()
       .then(data => {
         if (data.loggedIn && data.user) {
