@@ -22,9 +22,6 @@ if ($conn->connect_error) {
     exit;
 }
 
-/*
-Get last 7 days from daily_resource_usage
-*/
 
 
 $home_id = intval($_SESSION['home_id']);
