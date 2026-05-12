@@ -720,13 +720,10 @@
           return;
         }
 
-        // Remove room devices from global devices
         devices = devices.filter(device => device.room_id !== room.id);
 
-        // Remove room locally
         rooms.splice(roomIndex, 1);
 
-        // Full UI refresh
         refreshAllRooms();
 
         Notifications.add({
