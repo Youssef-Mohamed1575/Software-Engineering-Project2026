@@ -8,7 +8,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Check if user is a homeOwner
 if (($_SESSION['role'] ?? '') !== 'homeOwner') {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Only home owners can add rooms']);
