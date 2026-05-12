@@ -77,7 +77,6 @@ $stmt->bind_param(
 
 if ($stmt->execute()) {
 
-    // Reset daily tracked device usage after successful save
     $conn->query("UPDATE devices SET active_minutes = 0");
 
     echo json_encode([
