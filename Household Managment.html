@@ -70,7 +70,7 @@
       </li>
     </ul>
   </div>
-  <div class="mt-40 mx-10 p-6 rounded-2xl bg-slate-900 shadow-lg flex items-center justify-between">
+  <div class="mt-40 mx-10 p-6 rounded-2xl bg-slate-800 shadow-lg flex items-center justify-between">
     <div id="welcome" class="text-white text-3xl font-bold ml-10">User's Household</div>
     <div class="w-full flex justify-end items-end">
       <button onclick="popup('room')"
@@ -387,6 +387,7 @@
   <script src="services/devices/editDevice.js"></script>
   <script src="services/devices/removeDevice.js"></script>
   <script src="services/devices/toggleDeviceStatus.js"></script>
+  <script src="services/rooms/remove_room.js"></script>
   <script>
     let rooms = [];
     let devices = [];
@@ -408,6 +409,7 @@
             message: result.message,
             type: 'alert'
           });
+          alert(result.message);
           return;
         }
 
@@ -456,6 +458,7 @@
             message: result.message,
             type: 'alert'
           });
+          alert(result.message);
           return;
         }
 
@@ -507,6 +510,7 @@
             message: result.message,
             type: 'alert'
           });
+          alert(result.message);
           return;
         }
 
@@ -562,6 +566,7 @@
             message: result.message,
             type: 'alert'
           });
+          alert(result.message);
           return;
         }
 
@@ -611,6 +616,7 @@
             message: result.message,
             type: 'alert'
           });
+          alert(result.message);
           return;
         }
 
@@ -698,6 +704,52 @@
 
       await loadDashboardData();
     });
+    async function removeRoom(roomIndex) {
+      const room = rooms[roomIndex];
+
+      try {
+        const result = await removeRoomApi(room.id);
+
+        if (!result.success) {
+          Notifications.add({
+            title: "Failed to Remove Room",
+            message: result.message,
+            type: "alert"
+          });
+          alert(result.message);
+          return;
+        }
+
+        // Remove room devices from global devices
+        devices = devices.filter(device => device.room_id !== room.id);
+
+        // Remove room locally
+        rooms.splice(roomIndex, 1);
+
+        // Full UI refresh
+        refreshAllRooms();
+
+        Notifications.add({
+          title: "Room Removed",
+          message: `"${room.name}" was removed successfully.`,
+          type: "success"
+        });
+
+      } catch (error) {
+        console.error("Remove room error:", error);
+      }
+    }
+    function refreshAllRooms() {
+      const container = document.getElementById("rooms_container");
+      container.innerHTML = "";
+
+      rooms.forEach((room, roomIndex) => {
+        const roomHTML = generateRoomHTML(roomIndex, room.name);
+        container.insertAdjacentHTML("beforeend", roomHTML);
+
+        refreshRoomDevices(roomIndex);
+      });
+    }
   </script>
 </body>
 
