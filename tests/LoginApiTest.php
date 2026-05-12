@@ -23,9 +23,6 @@ final class LoginApiTest extends TestCase
         }
     }
 
-    /**
-     * Helper method to simulate login.php logic safely.
-     */
     private function executeApiLogic(array $input): array
     {
         $username = trim($input['username'] ?? '');
@@ -43,8 +40,6 @@ final class LoginApiTest extends TestCase
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             
-            // In the actual API, it uses direct comparison or password_verify
-            // Simulating direct comparison based on original code
             if ($password === $user['password']) {
                 return ['http_code' => 200, 'body' => [
                     'success' => true, 
@@ -64,7 +59,6 @@ final class LoginApiTest extends TestCase
         }
     }
 
-    // ─── Basis Path Test Cases ───────────────────────────────────────────
 
     public function test_P1_EmptyUsernameAndPassword(): void
     {
@@ -94,10 +88,7 @@ final class LoginApiTest extends TestCase
 
     public function test_P5_WrongPassword(): void
     {
-        // Requires an actual user in DB to fully test locally, simulating path execution
-        // Assume 'owner' exists but password is wrong.
         $response = $this->executeApiLogic(['username' => 'owner', 'password' => 'wrongpass']);
-        // Might be 401 if user exists, or 401 if not. Both lead to same error.
         $this->assertEquals(401, $response['http_code']);
     }
 }

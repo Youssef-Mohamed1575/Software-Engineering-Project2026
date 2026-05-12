@@ -141,7 +141,6 @@ else {
     exit;
 }
 if ($stmt->execute()) {
-    // Log activity
     $bulk_name = "All Devices";
     if ($type === "light") $bulk_name = "All Lights";
     else if ($type === "heater") $bulk_name = "All Heaters";

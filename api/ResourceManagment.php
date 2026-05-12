@@ -33,22 +33,12 @@ if ($conn->connect_error) {
     exit;
 }
 
-/*
----------------------------------
-CONFIGURABLE TARIFF VARIABLES
----------------------------------
-Adjust these anytime
-*/
 
 $electricityTariff = 1.55; // EGP per kWh
 $gasTariff = 4;         // EGP per m³
 $waterTariff = 0.08;       // EGP per liter
 
-/*
----------------------------------
-CURRENT TOTAL USAGE
----------------------------------
-*/
+
 $stmt = $conn->prepare("
     SELECT 
         SUM(

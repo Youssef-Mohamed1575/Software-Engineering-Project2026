@@ -1,20 +1,6 @@
-/**
- * HomeSense Notification System
- * ─────────────────────────────
- * Usage:
- *   window.Notifications.add({ title, message, type })
- *   window.Notifications.clear()
- *
- * Types: 'info' | 'warning' | 'alert' | 'success'
- *
- * Call Notifications.add() from anywhere — PHP responses,
- * usage threshold checks, device events, etc.
- */
-
 (function () {
   const STORAGE_KEY = 'homesense_notifications';
 
-  // ── Persist to sessionStorage so notifications survive page nav ──
   function load() {
     try {
       return JSON.parse(sessionStorage.getItem(STORAGE_KEY)) || [];
@@ -27,7 +13,6 @@
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }
 
-  // ── Build the notification panel DOM (injected once per page) ────
   function injectPanel() {
     if (document.getElementById('notif-panel')) return;
 
@@ -213,7 +198,6 @@
     document.getElementById('notif-clear-btn')
       .addEventListener('click', () => window.Notifications.clear());
 
-    // Close on outside click
     document.addEventListener('click', (e) => {
       const bellBtn = document.getElementById('notif-bell-btn');
       const panel   = document.getElementById('notif-panel');
@@ -224,9 +208,7 @@
     });
   }
 
-  // ── Wrap the bell button so we control it ───────────────────────
   function hookBellButton() {
-    // Find the bell <button> by its img src
     const bells = document.querySelectorAll('button img[src*="bell"]');
     if (!bells.length) return;
 
@@ -234,10 +216,8 @@
     const bellBtn = bellImg.parentElement;
     bellBtn.id    = 'notif-bell-btn';
 
-    // Make the button relatively positioned for the badge
     bellBtn.style.position = 'relative';
 
-    // Inject badge dot
     const badge = document.createElement('div');
     badge.id = 'notif-badge';
     bellBtn.appendChild(badge);
@@ -273,7 +253,6 @@
     }, 220);
   }
 
-  // ── Render ───────────────────────────────────────────────────────
   function renderList() {
     const list  = document.getElementById('notif-list');
     const items = load();
@@ -344,7 +323,6 @@
     return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   }
 
-  // ── Public API ───────────────────────────────────────────────────
   const Notifications = {
     /**
      * Add a notification.
@@ -358,11 +336,9 @@
         type:    notif.type    || 'info',
         ts:      Date.now()
       });
-      // Cap at 50 notifications
       if (items.length > 50) items.length = 50;
       save(items);
       updateBadge();
-      // Briefly animate badge
       const badge = document.getElementById('notif-badge');
       if (badge) {
         badge.style.transform = 'scale(1.5)';
@@ -370,14 +346,12 @@
       }
     },
 
-    /** Remove all notifications */
     clear() {
       save([]);
       renderList();
       updateBadge();
     },
 
-    /** Get all stored notifications */
     getAll() {
       return load();
     }
@@ -385,7 +359,6 @@
 
   window.Notifications = Notifications;
 
-  // ── Init on DOM ready ────────────────────────────────────────────
   function init() {
     injectPanel();
     hookBellButton();

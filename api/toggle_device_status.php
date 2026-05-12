@@ -48,7 +48,6 @@ if ($row = $name_result->fetch_assoc()) {
 }
 $name_stmt->close();
 
-// TURNING ON
 if ($new_status === "on") {
 
     $stmt = $conn->prepare("
@@ -61,10 +60,8 @@ if ($new_status === "on") {
     $stmt->bind_param("ii", $device_id, $home_id);
 }
 
-// TURNING OFF
 else {
 
-// REPLACE OFF query with this safer version:
 
 $stmt = $conn->prepare("
     UPDATE devices
@@ -89,7 +86,6 @@ $stmt->bind_param("ii", $device_id, $home_id);
 }
 
 if ($stmt->execute()) {
-    // Log activity
     $activity = ($new_status === 'on') ? 'Turned ON' : 'Turned OFF';
     $done_by = $_SESSION['username'] ?? 'Unknown';
 

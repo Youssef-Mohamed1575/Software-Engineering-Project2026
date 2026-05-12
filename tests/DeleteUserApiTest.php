@@ -23,9 +23,6 @@ final class DeleteUserApiTest extends TestCase
         }
     }
 
-    /**
-     * Helper method to simulate delete_user.php logic safely.
-     */
     private function executeApiLogic(array $session, array $input): array
     {
         if (!isset($session['user_id'])) {
@@ -53,7 +50,7 @@ final class DeleteUserApiTest extends TestCase
 
         if ($stmt->execute()) {
             if ($stmt->affected_rows > 0) {
-                $this->conn->rollback(); // Revert changes
+                $this->conn->rollback();
                 return ['http_code' => 200, 'body' => ['success' => true, 'message' => 'User deleted successfully']];
             } else {
                 $this->conn->rollback();
@@ -65,7 +62,6 @@ final class DeleteUserApiTest extends TestCase
         }
     }
 
-    // ─── Basis Path Test Cases ───────────────────────────────────────────
 
     public function test_P1_UnauthorizedFails(): void
     {
@@ -95,8 +91,6 @@ final class DeleteUserApiTest extends TestCase
     {
         $response = $this->executeApiLogic(['user_id' => 1, 'role' => 'homeOwner'], ['user_id' => 2]);
         
-        // Affected rows will be 0 if user 2 doesn't exist in DB, returning 404.
-        // In a true unit test with mocked DB it would be 200. We assert it runs successfully without crashing.
         $this->assertContains($response['http_code'], [200, 404]);
     }
 }

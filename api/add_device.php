@@ -61,7 +61,6 @@ $stmt = $conn->prepare("
     $stmt->bind_param("sssiiddd", $name, $type, $status, $home_id, $room_id, $electricity, $gas, $water);
 
 if ($stmt->execute()) {
-    // Log activity
     $activity = "Added Device";
     $done_by = $_SESSION['username'] ?? 'Unknown';
 

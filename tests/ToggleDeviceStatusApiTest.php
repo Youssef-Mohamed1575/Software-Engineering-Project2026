@@ -23,9 +23,7 @@ final class ToggleDeviceStatusApiTest extends TestCase
         }
     }
 
-    /**
-     * Helper method to simulate toggle_device_status.php logic safely.
-     */
+
     private function executeApiLogic(array $session, array $input): array
     {
         if (!isset($session['user_id'])) {
@@ -58,7 +56,7 @@ final class ToggleDeviceStatusApiTest extends TestCase
 
         if ($stmt->execute()) {
             if ($stmt->affected_rows > 0) {
-                $this->conn->rollback(); // Revert changes
+                $this->conn->rollback(); 
                 return ['http_code' => 200, 'body' => ['success' => true, 'message' => 'Device status updated successfully']];
             } else {
                 $this->conn->rollback();
@@ -70,7 +68,6 @@ final class ToggleDeviceStatusApiTest extends TestCase
         }
     }
 
-    // ─── Basis Path Test Cases ───────────────────────────────────────────
 
     public function test_P1_Unauthorized(): void
     {
@@ -93,16 +90,13 @@ final class ToggleDeviceStatusApiTest extends TestCase
 
     public function test_P4_ToggleOnSuccess(): void
     {
-        // Path 4: Valid ID and Status = 'on'
         $response = $this->executeApiLogic(['user_id' => 1, 'home_id' => 101], ['device_id' => 1, 'status' => 'on']);
         
-        // It might be 404 if device 1 doesn't exist, but logic executes correctly
         $this->assertContains($response['http_code'], [200, 404]);
     }
 
     public function test_P5_ToggleOffSuccess(): void
     {
-        // Path 5: Valid ID and Status = 'off'
         $response = $this->executeApiLogic(['user_id' => 1, 'home_id' => 101], ['device_id' => 1, 'status' => 'off']);
         
         $this->assertContains($response['http_code'], [200, 404]);

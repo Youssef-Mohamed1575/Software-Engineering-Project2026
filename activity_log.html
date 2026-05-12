@@ -12,7 +12,6 @@
 </head>
 
 <body class="font-[Inter] bg-slate-50 min-h-screen flex flex-col">
-  <!-- Header  -->
   <div
     class="fixed top-0 w-full h-[8%] z-40 bg-gradient-to-r from-slate-100 to-slate-300 text-black flex items-center px-4 gap-4 shadow-md">
     <div class="flex items-center justify-between w-full px-4">
@@ -33,7 +32,6 @@
     </div>
   </div>
 
-  <!-- Sidebar -->
   <div id="sidebar"
     class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300 z-50 shadow-2xl">
     <div class="p-4 font-bold flex items-center gap-2 border-b border-slate-700">
@@ -75,7 +73,6 @@
     </ul>
   </div>
 
-  <!-- Main Content Area -->
   <main class="flex-grow mt-[8%] p-8 max-w-6xl w-full mx-auto">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
       <div>
@@ -93,7 +90,6 @@
       </button>
     </div>
 
-    <!-- Activity Log Card Container -->
     <div
       class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-slate-200/60">
       <div class="overflow-x-auto">
@@ -112,7 +108,6 @@
             </tr>
           </thead>
           <tbody id="activityTableBody" class="divide-y divide-slate-100 bg-white">
-            <!-- Loading State -->
             <tr>
               <td colspan="4" class="px-8 py-16 text-center">
                 <div class="flex flex-col items-center justify-center gap-3">
@@ -127,7 +122,6 @@
     </div>
   </main>
 
-  <!-- Scripts -->
   <script src="services/auth/checkSession.js"></script>
   <script src="role-access-control/permissions.js"></script>
   <script src="js/layout/sidebar.js"></script>
@@ -256,7 +250,7 @@
 
     function formatTimestamp(timestampStr) {
       try {
-        const date = new Date(timestampStr.replace(/-/g, '/')); // Compatibility with PHP ISO/ANSI SQL formats
+        const date = new Date(timestampStr.replace(/-/g, '/'));
         if (isNaN(date.getTime())) return timestampStr;
 
         return date.toLocaleDateString('en-US', {

@@ -1,6 +1,5 @@
 async function loadDashboardData() {
   try {
-    // Fetch rooms + devices together
     const [roomsResult, devicesResult] = await Promise.all([
       getRoomsApi(),
       getDevicesApi()

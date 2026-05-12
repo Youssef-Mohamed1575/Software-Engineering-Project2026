@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Modal styles */
     .modal {
       display: none;
     }
@@ -21,7 +20,6 @@
 </head>
 
 <body class="font-[Inter] bg-slate-100">
-  <!-- Header  -->
   <div
     class="fixed top-0 w-full h-[8%] z-40 bg-gradient-to-r from-slate-100 to-slate-300 text-black flex items-center px-4 gap-4 shadow-md">
     <div class="flex items-center justify-between w-full px-4">
@@ -42,7 +40,6 @@
     </div>
   </div>
 
-  <!-- Sidebar -->
   <div id="sidebar"
     class="fixed top-0 left-0 h-screen w-64 bg-slate-800 text-white -translate-x-full transition-transform duration-300 z-50 shadow-2xl">
     <div class="p-4 font-bold flex items-center gap-2 border-b border-slate-700">
@@ -84,7 +81,6 @@
     </ul>
   </div>
 
-  <!-- Content -->
   <div class="mt-[8%] p-10 max-w-6xl mx-auto">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-3xl font-bold text-slate-800">Household Users</h1>
@@ -113,13 +109,11 @@
           </tr>
         </thead>
         <tbody id="usersTableBody">
-          <!-- Users will be populated here -->
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Add User Modal -->
   <div id="addModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 justify-center items-center">
     <div class="bg-white rounded-lg shadow-xl w-96 p-6">
       <h2 class="text-2xl font-bold mb-4 text-slate-800">Add New User</h2>
@@ -154,7 +148,6 @@
     </div>
   </div>
 
-  <!-- Edit User Modal -->
   <div id="editModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 justify-center items-center">
     <div class="bg-white rounded-lg shadow-xl w-96 p-6">
       <h2 class="text-2xl font-bold mb-4 text-slate-800">Edit User</h2>
@@ -201,7 +194,6 @@
   <script>
     let currentUserId = null;
 
-    // Check session and permissions
     window.checkSession()
       .then(data => {
         if (!data.loggedIn) {

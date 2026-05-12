@@ -70,7 +70,6 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
-    // Log activity
     $activity = "Edited Device Details";
     $done_by = $_SESSION['username'] ?? 'Unknown';
 

@@ -71,7 +71,6 @@
     </ul>
   </div>
   <div class="mt-40 mx-10 p-6 rounded-2xl bg-slate-900 shadow-lg flex items-center justify-between">
-    <!-- Left -->
     <div id="welcome" class="text-white text-3xl font-bold ml-10">User's Household</div>
     <div class="w-full flex justify-end items-end">
       <button onclick="popup('room')"
@@ -86,13 +85,11 @@
     class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
     <div class="w-full h-full grid grid-cols-2 grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]">
       <div class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3">
-        <!-- Centered title across full row -->
         <div class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
           style="font-family: Yellowtail, cursive">
           Add Room
         </div>
 
-        <!-- Right-side close button -->
         <div class="ml-auto relative z-10">
           <button class="bg-slate-600 text-white rounded-full w-10 h-10 m-5" onclick="closePopup('room')">
             X
@@ -151,13 +148,11 @@
     class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
     <div class="w-full h-full grid grid-cols-2 grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]">
       <div class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3">
-        <!-- Centered title across full row -->
         <div class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
           style="font-family: Yellowtail, cursive">
           Add Device
         </div>
 
-        <!-- Right-side close button -->
         <div class="ml-auto relative z-10">
           <button class="bg-slate-600 text-white rounded-full w-10 h-10 m-5" onclick="closePopup('device')">
             X
@@ -232,13 +227,11 @@
     class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
     <div class="w-full h-full grid grid-cols-2 grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]">
       <div class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3">
-        <!-- Centered title across full row -->
         <div class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
           style="font-family: Yellowtail, cursive">
           Edit Room
         </div>
 
-        <!-- Right-side close button -->
         <div class="ml-auto relative z-10">
           <button class="bg-slate-600 text-white rounded-full w-10 h-10 m-5" onclick="closePopup('room_edit')">
             X
@@ -297,13 +290,11 @@
     class="fixed bg-slate-800 rounded-3xl shadow-2xl hidden z-50 w-[80%] max-w-[500px] h-[80%] max-h-[500px] scrollbar-thin min-w-[600px] overflow-y-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
     <div class="w-full h-full grid grid-cols-2 grid-rows-[0.7fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_auto]">
       <div class="bg-emerald-400 rounded-t-2xl col-span-2 relative flex items-center mb-3">
-        <!-- Centered title across full row -->
         <div class="absolute inset-0 flex justify-center items-center text-2xl font-bold text-white"
           style="font-family: Yellowtail, cursive">
           Edit Device
         </div>
 
-        <!-- Right-side close button -->
         <div class="ml-auto relative z-10">
           <button class="bg-slate-600 text-white rounded-full w-10 h-10 m-5" onclick="closePopup('device_edit')">
             X
@@ -574,21 +565,17 @@
           return;
         }
 
-        // Update room-local array
         rooms[editingDeviceRoomIndex].devices[editingDeviceIndex] =
           updatedDeviceData;
 
-        // Update global devices array
         devices = devices.map(device =>
           device.id === updatedDeviceData.id
             ? updatedDeviceData
             : device
         );
 
-        // Full UI refresh
         refreshRoomDevices(editingDeviceRoomIndex);
 
-        // Reset popup
         document.getElementById("edit_device_name").value = "";
         document.getElementById("edit_device_type").value = "";
         document.getElementById("edit_device_electricity").value = "";
@@ -627,7 +614,6 @@
           return;
         }
 
-        // Remove locally
         rooms[roomIndex].devices.splice(deviceIndex, 1);
 
         devices = devices.filter(d => d.id !== device.id);
@@ -659,7 +645,6 @@
           return;
         }
 
-        // Update local state
         device.status = newStatus;
 
         const toggleButton = document.getElementById(
@@ -694,7 +679,6 @@
       }
     }
     window.addEventListener("DOMContentLoaded", async () => {
-      // Check session and permissions
       try {
         const data = await window.checkSession();
         if (!data.loggedIn) {

@@ -16,7 +16,6 @@ try {
 $conn->query("CREATE DATABASE IF NOT EXISTS projectdb");
 $conn->select_db("projectdb");
 
-// Create homes table
 $createHomesTableQuery = "CREATE TABLE IF NOT EXISTS homes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -46,7 +45,6 @@ if ($conn->query($createTableQuery)) {
     echo "Error creating table 'users': " . $conn->error . "<br>";
 }
 
-// Create rooms table
 $createRoomsTableQuery = "CREATE TABLE IF NOT EXISTS rooms (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -64,7 +62,6 @@ if ($conn->query($createRoomsTableQuery)) {
     echo "Error creating table 'rooms': " . $conn->error . "<br>";
 }
 
-// Create devices table
 $createDevicesTableQuery = "CREATE TABLE IF NOT EXISTS devices (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -89,7 +86,6 @@ if ($conn->query($createDevicesTableQuery)) {
     echo "Error creating table 'devices': " . $conn->error . "<br>";
 }
 
-// Create device_activities table
 $createActivitiesTableQuery = "CREATE TABLE IF NOT EXISTS device_activities (
     id INT AUTO_INCREMENT PRIMARY KEY,
     device_name VARCHAR(100) NOT NULL,
@@ -124,7 +120,6 @@ if ($conn->query($createActivitiesTableQuery)) {
     echo "Error creating table 'device_activities': " . $conn->error . "<br>";
 }
 
-// Seed users
 $checkEmpty = $conn->query("SELECT COUNT(*) as count FROM users");
 if ($checkEmpty) {
     $row = $checkEmpty->fetch_assoc();
@@ -143,8 +138,7 @@ if ($checkEmpty) {
         $stmt->bind_param("sss", $user[0], $user[1], $user[2]);
         $stmt->execute();
     }
-    // need to do this better way 
-    $ownerId = $conn->insert_id - 3; // owner was first of 4
+    $ownerId = $conn->insert_id - 3;
     if ($ownerId < 1) $ownerId = 1;
 
     $conn->query("INSERT INTO homes (name, owner_id) VALUES ('My Smart Home', $ownerId)");

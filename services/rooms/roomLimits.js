@@ -23,7 +23,6 @@ window.checkRoomLimits = async function () {
             }
         });
 
-        // Remove flags if room no longer exceeds limits
         Object.keys(sessionStorage).forEach(key => {
             if (key.startsWith("room_limit_")) {
                 const exists = data.alerts.some(alert =>

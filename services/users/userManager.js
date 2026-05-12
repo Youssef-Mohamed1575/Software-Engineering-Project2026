@@ -1,4 +1,3 @@
-// Modal logic
 function openModal(id) {
   document.getElementById(id).classList.add('active');
 }
@@ -9,7 +8,6 @@ function closeModal(id) {
   if (id === 'editModal') document.getElementById('editUserForm').reset();
 }
 
-// Fetch users
 function fetchUsers() {
   fetch('api/get_users.php')
     .then(res => res.json())
@@ -42,7 +40,6 @@ function fetchUsers() {
     });
 }
 
-// Add user
 function handleAddUser(e) {
   e.preventDefault();
   const username = document.getElementById('addUsername').value;
@@ -65,7 +62,6 @@ function handleAddUser(e) {
   });
 }
 
-// Edit user
 function openEditModal(id, username, role) {
   document.getElementById('editUserId').value = id;
   document.getElementById('editUsername').value = username;
@@ -97,7 +93,6 @@ function handleEditUser(e) {
   });
 }
 
-// Delete user
 function deleteUser(id) {
   if (confirm('Are you sure you want to delete this user?')) {
     fetch('api/delete_user.php', {

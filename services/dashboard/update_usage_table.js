@@ -8,7 +8,6 @@
         .then(data => {
           console.log("Usage table refreshed:", data);
 
-          // Update UI table values here
         })
         .catch(err => {
           console.error("Usage update failed:", err);

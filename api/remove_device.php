@@ -63,7 +63,6 @@ $stmt = $conn->prepare("
 $stmt->bind_param("ii", $device_id, $home_id);
 
 if ($stmt->execute()) {
-    // Log activity
     $activity = "Removed Device";
     $done_by = $_SESSION['username'] ?? 'Unknown';
 

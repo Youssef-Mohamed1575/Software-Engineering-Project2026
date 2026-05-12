@@ -57,7 +57,7 @@ final class AddDeviceApiTest extends TestCase
 
         if ($stmt->execute()) {
             $device_id = $stmt->insert_id;
-            $this->conn->rollback(); // Revert changes to keep DB clean
+            $this->conn->rollback(); 
             $this->conn->query("SET FOREIGN_KEY_CHECKS = 1");
             return ['http_code' => 200, 'body' => ['success' => true, 'message' => 'Device added successfully', 'device_id' => $device_id]];
         } else {

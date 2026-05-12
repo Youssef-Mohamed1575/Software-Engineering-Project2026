@@ -11,7 +11,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Check role
 if (($_SESSION['role'] ?? '') !== 'homeOwner') {
     http_response_code(403);
     echo json_encode([

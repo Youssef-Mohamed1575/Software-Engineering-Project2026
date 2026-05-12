@@ -23,10 +23,6 @@ final class TurnOffDevicesApiTest extends TestCase
         }
     }
 
-    /**
-     * Helper method to simulate the exact logic of turn_off_devices.php 
-     * without using exit; or session_start() which break PHPUnit.
-     */
     private function executeApiLogic(array $session, array $input): array
     {
         if (!isset($session['user_id'])) {
@@ -40,7 +36,6 @@ final class TurnOffDevicesApiTest extends TestCase
 
         $type = strtolower(trim($input['type'] ?? 'devices'));
 
-        // Use transaction so we don't modify real data during testing
         $this->conn->begin_transaction();
 
         $stmt = null;
@@ -56,7 +51,7 @@ final class TurnOffDevicesApiTest extends TestCase
         }
 
         if ($stmt->execute()) {
-            $this->conn->rollback(); // Revert changes to keep DB clean
+            $this->conn->rollback(); 
             return ['http_code' => 200, 'body' => ['success' => true, 'message' => ucfirst($type) . ' turned off successfully']];
         } else {
             $this->conn->rollback();
@@ -64,7 +59,6 @@ final class TurnOffDevicesApiTest extends TestCase
         }
     }
 
-    // ─── Basis Path Test Cases ───────────────────────────────────────────
 
     public function test_P1_Unauthorized(): void
     {
