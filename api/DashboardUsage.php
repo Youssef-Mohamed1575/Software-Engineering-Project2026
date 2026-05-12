@@ -24,10 +24,6 @@ if ($conn->connect_error) {
     exit;
 }
 
-/*
-Formula:
-(total_minutes / 60) * resource_rate
-*/
 $currentMonth = date('m');
 $currentYear = date('Y');
 $home_id = intval($_SESSION['home_id']);
