@@ -78,6 +78,11 @@
         style="font-family: cursive">
         Add Room
       </button>
+      <button onclick="generatePDFReport()"
+        class="bg-blue-500 rounded-lg text-white p-3 text-base mr-10 hover:bg-blue-400 duration-300"
+        style="font-family: cursive">
+        Generate Household Analysis Report
+      </button>
     </div>
   </div>
   <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
@@ -366,6 +371,7 @@
     </div>
   </div>
   <div id="rooms_container" class="bg-slate-800 p-20 m-10 rounded-lg"></div>
+
 
   <script src="services/auth/checkSession.js"></script>
   <script src="role-access-control/permissions.js"></script>
@@ -747,6 +753,9 @@
 
         refreshRoomDevices(roomIndex);
       });
+    }
+    function generatePDFReport() {
+      window.open("api/generate_household_report.php", "_blank");
     }
   </script>
 </body>
