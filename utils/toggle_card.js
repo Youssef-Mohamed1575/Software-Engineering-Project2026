@@ -5,14 +5,14 @@ function toggleCard(card, type) {
         Light: "Turning OFF<br>all lights",
         AC: "Turning OFF<br>all ACs",
         Heater: "Turning OFF<br>all heaters",
-        devices: "Turning OFF<br>all devices",
+        devices: "Activating Vacation Mode",
       };
 
       const finalMessages = {
-        Light: "All lights are<br>OFF",
-        AC: "All ACs are<br>OFF",
-        Heater: "All heaters are<br>OFF",
-        devices: "All devices are<br>OFF",
+        Light: "All lights are OFF",
+        AC: "All ACs are OFF",
+        Heater: "All heaters are OFF",
+        devices: "Vacation Mode Activated",
       };
       if (card.classList.contains("processing")) return;
 
