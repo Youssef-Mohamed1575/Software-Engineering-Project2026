@@ -149,8 +149,6 @@ $projectedBill = ($currentDay > 0)
 ---------------------------------
 LAST MONTH ESTIMATE
 ---------------------------------
-Simple placeholder:
-Could later use archived monthly data
 */
 
 $lastMonthBill =
