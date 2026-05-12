@@ -13,6 +13,7 @@
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }
 
+ 
   function injectPanel() {
     if (document.getElementById('notif-panel')) return;
 
@@ -208,7 +209,9 @@
     });
   }
 
+
   function hookBellButton() {
+    
     const bells = document.querySelectorAll('button img[src*="bell"]');
     if (!bells.length) return;
 
@@ -216,6 +219,7 @@
     const bellBtn = bellImg.parentElement;
     bellBtn.id    = 'notif-bell-btn';
 
+    
     bellBtn.style.position = 'relative';
 
     const badge = document.createElement('div');
@@ -252,6 +256,7 @@
       panel.classList.remove('animating');
     }, 220);
   }
+
 
   function renderList() {
     const list  = document.getElementById('notif-list');
@@ -323,6 +328,7 @@
     return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   }
 
+
   const Notifications = {
     /**
      * Add a notification.
@@ -339,6 +345,7 @@
       if (items.length > 50) items.length = 50;
       save(items);
       updateBadge();
+
       const badge = document.getElementById('notif-badge');
       if (badge) {
         badge.style.transform = 'scale(1.5)';
@@ -346,18 +353,21 @@
       }
     },
 
+  
     clear() {
       save([]);
       renderList();
       updateBadge();
     },
 
+ 
     getAll() {
       return load();
     }
   };
 
   window.Notifications = Notifications;
+
 
   function init() {
     injectPanel();
